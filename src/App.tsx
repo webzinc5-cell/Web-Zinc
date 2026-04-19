@@ -24,6 +24,11 @@ export default function App() {
       setIsLoggedIn(!!user);
       
       if (user) {
+        // Automatically push the user to the profile route if they are on the homepage
+        if (window.location.pathname === "/") {
+          window.location.href = "/profile";
+        }
+        
         try {
           // Fetch from nested user path to match aligned structure
           const projectsRef = collection(db, "users", user.uid, "projects");

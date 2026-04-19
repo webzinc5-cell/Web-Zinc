@@ -45,6 +45,7 @@ export function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
       onClose();
       navigate("/profile");
     } catch (error: any) {
+      alert("Login failed: " + error.message);
       setErrorMsg(error.message.replace("Firebase: ", ""));
     } finally {
       setIsLoading(false);
@@ -75,6 +76,7 @@ export function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
       onClose();
       navigate("/profile");
     } catch (error: any) {
+      alert("Login failed: " + error.message);
       setErrorMsg(error.message.replace("Firebase: ", ""));
     } finally {
       setIsLoading(false);
@@ -224,7 +226,7 @@ export function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
                           fill="#EA4335"
                         />
                       </svg>
-                      Continue with Google
+                      {isLoading ? "Authenticating..." : "Continue with Google"}
                     </button>
 
                     <p className="mt-8 text-center text-sm text-zinc-400 pb-2">
