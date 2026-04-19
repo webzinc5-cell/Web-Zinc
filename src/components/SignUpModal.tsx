@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { X } from "lucide-react";
 import { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, setPersistence, browserLocalPersistence } from "firebase/auth";
 import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "../lib/firebase";
 
@@ -26,6 +26,7 @@ export function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
     setErrorMsg("");
 
     try {
+      await setPersistence(auth, browserLocalPersistence);
       if (view === 'signup') {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
@@ -56,9 +57,12 @@ export function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
     setIsLoading(true);
     setErrorMsg("");
     try {
+      await setPersistence(auth, browserLocalPersistence);
       const provider = new GoogleAuthProvider();
       const userCredential = await signInWithPopup(auth, provider);
       const user = userCredential.user;
+      
+      alert("Login Successful: " + (user.displayName || user.email));
 
       try {
         const userDoc = await getDoc(doc(db, "users", user.uid));

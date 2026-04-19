@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "./lib/firebase";
@@ -13,11 +13,12 @@ import { ProjectFunnel } from "./pages/ProjectFunnel";
 import { CursorGlow } from "./components/CursorGlow";
 import { SignUpModal } from "./components/SignUpModal";
 
-export default function App() {
+function AppContent() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAuthReady, setIsAuthReady] = useState(false);
   const [userProjects, setUserProjects] = useState<any[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -25,9 +26,9 @@ export default function App() {
       setIsLoggedIn(!!user);
       
       if (user) {
-        // Automatically push the user to the profile route if they are on the homepage
+        // Only redirect to profile if they are specifically on the root landing page path
         if (window.location.pathname === "/") {
-          window.location.href = "/profile";
+          navigate("/profile");
         }
         
         try {
@@ -46,12 +47,15 @@ export default function App() {
         }
       } else {
         setUserProjects([]);
+        if (window.location.pathname === "/profile" || window.location.pathname === "/start") {
+          navigate("/");
+        }
       }
       
       setIsAuthReady(true);
     });
     return () => unsubscribe();
-  }, []);
+  }, [navigate]);
 
   if (!isAuthReady) {
     return (
@@ -62,54 +66,60 @@ export default function App() {
   }
 
   return (
+    <div className="relative min-h-screen font-sans selection:bg-primary selection:text-black">
+      <CursorGlow />
+      
+      <Routes>
+        {/* Profile gets its own layout */}
+        <Route 
+          path="/profile" 
+          element={
+            isLoggedIn ? (
+              <Dashboard userProjects={userProjects} setUserProjects={setUserProjects} />
+            ) : (
+              <ProtectedGuard onRequireAuth={() => setIsAuthModalOpen(true)} />
+            )
+          } 
+        />
+        
+        <Route 
+          path="/start" 
+          element={
+            isLoggedIn ? (
+              <ProjectFunnel userProjects={userProjects} setUserProjects={setUserProjects} />
+            ) : (
+              <ProtectedGuard onRequireAuth={() => setIsAuthModalOpen(true)} />
+            )
+          } 
+        />
+        
+        <Route
+          path="*"
+          element={
+            <>
+              <Navbar onSignUp={() => setIsAuthModalOpen(true)} isLoggedIn={isLoggedIn} />
+              <main className="relative z-10 flex min-h-screen flex-col">
+                <Routes>
+                  <Route path="/" element={isLoggedIn ? <Navigate to="/profile" replace /> : <Home onGetStarted={() => setIsAuthModalOpen(true)} isLoggedIn={isLoggedIn} />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/reviews" element={<Reviews />} />
+                </Routes>
+              </main>
+              <Footer />
+            </>
+          }
+        />
+      </Routes>
+      
+      <SignUpModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
+    </div>
+  );
+}
+
+export default function App() {
+  return (
     <Router>
-      <div className="relative min-h-screen font-sans selection:bg-primary selection:text-black">
-        <CursorGlow />
-        
-        <Routes>
-          {/* Profile gets its own layout */}
-          <Route 
-            path="/profile" 
-            element={
-              isLoggedIn ? (
-                <Dashboard userProjects={userProjects} setUserProjects={setUserProjects} />
-              ) : (
-                <ProtectedGuard onRequireAuth={() => setIsAuthModalOpen(true)} />
-              )
-            } 
-          />
-          
-          <Route 
-            path="/start" 
-            element={
-              isLoggedIn ? (
-                <ProjectFunnel userProjects={userProjects} setUserProjects={setUserProjects} />
-              ) : (
-                <ProtectedGuard onRequireAuth={() => setIsAuthModalOpen(true)} />
-              )
-            } 
-          />
-          
-          <Route
-            path="*"
-            element={
-              <>
-                <Navbar onSignUp={() => setIsAuthModalOpen(true)} isLoggedIn={isLoggedIn} />
-                <main className="relative z-10 flex min-h-screen flex-col">
-                  <Routes>
-                    <Route path="/" element={<Home onGetStarted={() => setIsAuthModalOpen(true)} isLoggedIn={isLoggedIn} />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/reviews" element={<Reviews />} />
-                  </Routes>
-                </main>
-                <Footer />
-              </>
-            }
-          />
-        </Routes>
-        
-        <SignUpModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
-      </div>
+      <AppContent />
     </Router>
   );
 }
