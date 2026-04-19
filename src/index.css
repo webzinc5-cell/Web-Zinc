@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --color-primary: #22D3EE;
+  --color-zinc-black: #000000;
+  --color-zinc-card: #111111;
+  --color-zinc-border: rgba(34, 211, 238, 0.2);
+}
+
+body {
+  background-color: var(--color-zinc-black);
+  color: #ffffff;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background-color: var(--color-primary);
+  color: #000000;
+}
