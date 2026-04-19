@@ -21,6 +21,7 @@ export default function App() {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      console.log("Current User:", user);
       setIsLoggedIn(!!user);
       
       if (user) {

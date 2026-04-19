@@ -45,7 +45,7 @@ export function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
       onClose();
       navigate("/profile");
     } catch (error: any) {
-      alert("Login failed: " + error.message);
+      alert("Auth Error: " + error.code + " - " + error.message);
       setErrorMsg(error.message.replace("Firebase: ", ""));
     } finally {
       setIsLoading(false);
@@ -76,7 +76,7 @@ export function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
       onClose();
       navigate("/profile");
     } catch (error: any) {
-      alert("Login failed: " + error.message);
+      alert("Auth Error: " + error.code + " - " + error.message);
       setErrorMsg(error.message.replace("Firebase: ", ""));
     } finally {
       setIsLoading(false);
