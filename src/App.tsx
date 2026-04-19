@@ -22,7 +22,9 @@ function AppContent() {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      console.log("Current User:", user);
+      if (user) {
+        console.log("User detected:", user.email);
+      }
       setIsLoggedIn(!!user);
       
       if (user) {
