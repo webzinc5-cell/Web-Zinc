@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowUpRight, ArrowLeft } from "lucide-react";
 
@@ -12,6 +12,13 @@ interface ProjectItem {
 
 export function PastWorksPage() {
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
+
+  // Cleanup effect to prevent 404s and leftover state on unmount
+  useEffect(() => {
+    return () => {
+      setSelectedProject(null);
+    };
+  }, []);
 
   const portfolioItems: ProjectItem[] = [
     {
@@ -113,7 +120,10 @@ export function PastWorksPage() {
             <div className="mt-auto">
               {item.link ? (
                 <button 
-                  onClick={() => setSelectedProject(item)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedProject(item);
+                  }}
                   className="flex w-full items-center justify-center gap-2 rounded-lg border border-primary/40 bg-primary/5 py-3 text-sm font-bold tracking-[0.5px] text-primary transition-all duration-300 hover:bg-primary hover:text-black hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] cursor-pointer uppercase"
                 >
                   Live Site <ArrowUpRight size={18} />
@@ -166,9 +176,15 @@ export function PastWorksPage() {
               
               <div className="flex flex-col gap-3 w-full">
                 <button 
-                  onClick={() => {
-                    window.open(selectedProject.link, '_blank', 'noopener,noreferrer');
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const targetLink = selectedProject.link;
+                    // Reset state immediately before navigation
                     setSelectedProject(null);
+                    // Use replace to prevent browser history loop
+                    if (targetLink) {
+                      window.location.replace(targetLink);
+                    }
                   }}
                   className="flex w-full items-center justify-center gap-2 rounded-lg border border-primary/40 bg-primary/10 py-4 text-sm font-bold tracking-[0.5px] text-primary transition-all duration-300 hover:bg-primary hover:text-black hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] cursor-pointer uppercase"
                 >
