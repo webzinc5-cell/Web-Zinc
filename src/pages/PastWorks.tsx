@@ -12,15 +12,17 @@ export function PastWorksPage() {
     },
     {
       id: 2,
-      title: "Apex Dental Clinic",
-      category: "Healthcare",
-      description: "Luminescent Healthcare UI/UX",
+      title: "Cake Delights",
+      category: "Gourmet Bakery Experience",
+      description: "A delightful, high-performance interface designed for local culinary branding.",
+      link: "https://cake.vercel.app"
     },
     {
       id: 3,
-      title: "Durgapur Tech Hub",
-      category: "Enterprise Software",
-      description: "Dark-Mode Enterprise Dashboard",
+      title: "Axon",
+      category: "Cutting-edge Tech Solutions",
+      description: "A sleek, modern architectural site focused on technical precision and luminescent UI.",
+      link: "https://axon-s-website.vercel.app"
     },
   ];
 
