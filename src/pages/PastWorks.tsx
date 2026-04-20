@@ -8,7 +8,7 @@ export function PastWorksPage() {
       title: "VALORÉ Clothing",
       category: "Premium E-commerce Experience",
       description: "A high-end fashion interface featuring luminescent design and seamless product navigation.",
-      image: "https://via.placeholder.com/600x400/0a0a0a/22D3EE?text=VALOR%C3%89+Clothing",
+      image: "https://i.postimg.cc/xjcwf9ZN/IMG-20260420-090513.jpg",
       link: "https://valoreclothing.vercel.app"
     },
     {
@@ -78,47 +78,52 @@ export function PastWorksPage() {
           <motion.div 
             key={item.id}
             variants={fadeUp}
-            className="group relative flex flex-col rounded-[20px] bg-[#0a0a0a]/50 p-4 border border-white/5 backdrop-blur-xl transition-all duration-500 hover:-translate-y-2 hover:border-primary/40 hover:shadow-[0_15px_40px_-15px_rgba(34,211,238,0.3)] overflow-hidden"
+            className="group flex flex-col border border-white/5 transition-all duration-500 hover:-translate-y-2 hover:border-primary/40 hover:shadow-[0_15px_40px_-15px_rgba(34,211,238,0.3)] overflow-hidden rounded-[20px]"
+            style={{
+              backgroundImage: `url(${item.image})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'top center',
+              height: '300px',
+              position: 'relative'
+            }}
           >
-            {/* Image Container */}
-            <div className="relative w-full aspect-video rounded-xl overflow-hidden mb-6 bg-black/50">
-              <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 MixBlendMode-overlay mix-blend-overlay z-10" />
-              <img 
-                src={item.image} 
-                alt={item.title} 
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                loading="lazy"
-                referrerPolicy="no-referrer"
-              />
-            </div>
+            {/* Dark Gradient Overlay */}
+            <div 
+              className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-500 group-hover:opacity-90" 
+              style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.8))' }} 
+            />
             
             {/* Content */}
-            <div className="flex-1 flex flex-col px-2">
-              <h3 className="text-2xl font-bold tracking-tight text-white mb-1">{item.title}</h3>
-              {item.category && (
-                <span className="text-primary text-[11px] font-bold tracking-widest uppercase mb-3 block">
-                  {item.category}
-                </span>
-              )}
-              <p className="text-zinc-500 text-sm font-medium mb-8 leading-relaxed max-w-[280px]">
-                {item.description}
-              </p>
+            <div className="relative z-10 flex flex-col p-5 h-full justify-end">
+              <div>
+                <h3 className="text-2xl font-bold tracking-tight text-white mb-1 drop-shadow-md">{item.title}</h3>
+                {item.category && (
+                  <span className="text-primary text-[11px] font-bold tracking-widest uppercase mb-2 block drop-shadow-md">
+                    {item.category}
+                  </span>
+                )}
+                <p className="text-zinc-200 text-[13px] font-medium mb-5 leading-relaxed drop-shadow-md line-clamp-2">
+                  {item.description}
+                </p>
+              </div>
               
               {/* Glowing Button */}
-              {item.link ? (
-                <a 
-                  href={item.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-auto flex w-full items-center justify-center gap-2 rounded-lg border border-primary/40 bg-primary/5 py-4 text-sm font-bold tracking-[0.5px] text-primary transition-all duration-300 hover:bg-primary hover:text-black hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] cursor-pointer uppercase"
-                >
-                  Live Site <ArrowUpRight size={18} />
-                </a>
-              ) : (
-                <button className="mt-auto flex w-full items-center justify-center gap-2 rounded-lg border border-zinc-800 bg-zinc-900/50 py-4 text-sm font-bold tracking-[0.5px] text-zinc-500 cursor-not-allowed uppercase">
-                  Coming Soon
-                </button>
-              )}
+              <div className="mt-auto">
+                {item.link ? (
+                  <a 
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex w-full items-center justify-center gap-2 rounded-lg border border-primary/40 bg-black/40 backdrop-blur-md py-3 text-sm font-bold tracking-[0.5px] text-primary transition-all duration-300 hover:bg-primary hover:text-black hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] cursor-pointer uppercase"
+                  >
+                    Live Site <ArrowUpRight size={18} />
+                  </a>
+                ) : (
+                  <button className="flex w-full items-center justify-center gap-2 rounded-lg border border-zinc-500/30 bg-black/40 backdrop-blur-md py-3 text-sm font-bold tracking-[0.5px] text-zinc-400 cursor-not-allowed uppercase">
+                    Coming Soon
+                  </button>
+                )}
+              </div>
             </div>
           </motion.div>
         ))}
