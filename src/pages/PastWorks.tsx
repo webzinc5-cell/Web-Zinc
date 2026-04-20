@@ -15,7 +15,7 @@ export function PastWorksPage() {
       title: "Cake Delights",
       category: "Gourmet Bakery Experience",
       description: "A delightful, high-performance interface designed for local culinary branding.",
-      link: "https://cake.vercel.app"
+      link: "https://cakedelights.vercel.app"
     },
     {
       id: 3,
