@@ -13,6 +13,8 @@ import { ProjectFunnel } from "./pages/ProjectFunnel";
 import { CursorGlow } from "./components/CursorGlow";
 import { SignUpModal } from "./components/SignUpModal";
 
+import { PastWorksPage } from "./pages/PastWorks";
+
 function AppContent() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -98,6 +100,7 @@ function AppContent() {
               <main className="relative z-10 flex min-h-screen flex-col">
                 <Routes>
                   <Route path="/" element={<Home onGetStarted={() => setIsAuthModalOpen(true)} isLoggedIn={isLoggedIn} />} />
+                  <Route path="/past-works" element={<PastWorksPage />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/reviews" element={<Reviews />} />
                 </Routes>
