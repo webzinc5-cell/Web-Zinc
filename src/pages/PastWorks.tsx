@@ -1,8 +1,19 @@
-import { motion } from "motion/react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { ArrowUpRight, ArrowLeft } from "lucide-react";
 
+interface ProjectItem {
+  id: number;
+  title: string;
+  category: string;
+  description: string;
+  link?: string;
+}
+
 export function PastWorksPage() {
-  const portfolioItems = [
+  const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
+
+  const portfolioItems: ProjectItem[] = [
     {
       id: 1,
       title: "VALORÉ Clothing",
@@ -98,17 +109,15 @@ export function PastWorksPage() {
               </p>
             </div>
             
-            {/* Glowing Button */}
+              {/* Glowing Button */}
             <div className="mt-auto">
               {item.link ? (
-                <a 
-                  href={item.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button 
+                  onClick={() => setSelectedProject(item)}
                   className="flex w-full items-center justify-center gap-2 rounded-lg border border-primary/40 bg-primary/5 py-3 text-sm font-bold tracking-[0.5px] text-primary transition-all duration-300 hover:bg-primary hover:text-black hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] cursor-pointer uppercase"
                 >
                   Live Site <ArrowUpRight size={18} />
-                </a>
+                </button>
               ) : (
                 <button className="flex w-full items-center justify-center gap-2 rounded-lg border border-zinc-800 bg-zinc-900/50 py-3 text-sm font-bold tracking-[0.5px] text-zinc-500 cursor-not-allowed uppercase">
                   Coming Soon
@@ -118,6 +127,64 @@ export function PastWorksPage() {
           </motion.div>
         ))}
       </motion.div>
+
+      {/* Redirect Confirmation Modal */}
+      <AnimatePresence>
+        {selectedProject && (
+          <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black/85 backdrop-blur-md"
+              onClick={() => setSelectedProject(null)}
+            />
+            
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative w-full max-w-md bg-[#0a0a0a] rounded-[20px] p-8 flex flex-col items-center text-center outline-none"
+              style={{
+                border: '1px solid rgba(34, 211, 238, 0.3)',
+                boxShadow: '0 0 20px rgba(34, 211, 238, 0.2)'
+              }}
+            >
+              <h2 className="text-3xl font-[900] text-white mb-2 tracking-tight">{selectedProject.title}</h2>
+              <span className="text-primary text-[11px] font-bold tracking-widest uppercase mb-4 block drop-shadow-[0_0_8px_rgba(34,211,238,0.3)]">
+                {selectedProject.category}
+              </span>
+              <p className="text-zinc-400 text-[14px] font-medium mb-6 leading-relaxed">
+                {selectedProject.description}
+              </p>
+              
+              <div className="w-full h-[1px] bg-white/10 mb-6" />
+              
+              <p className="text-white text-sm font-bold tracking-wide leading-relaxed mb-8">
+                You are now being redirected to our external portfolio site. Would you like to proceed?
+              </p>
+              
+              <div className="flex flex-col gap-3 w-full">
+                <button 
+                  onClick={() => {
+                    window.open(selectedProject.link, '_blank', 'noopener,noreferrer');
+                    setSelectedProject(null);
+                  }}
+                  className="flex w-full items-center justify-center gap-2 rounded-lg border border-primary/40 bg-primary/10 py-4 text-sm font-bold tracking-[0.5px] text-primary transition-all duration-300 hover:bg-primary hover:text-black hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] cursor-pointer uppercase"
+                >
+                  View Website <ArrowUpRight size={18} />
+                </button>
+                <button 
+                  onClick={() => setSelectedProject(null)}
+                  className="w-full py-4 rounded-lg border border-zinc-700 bg-transparent text-zinc-400 text-sm font-bold tracking-[0.5px] uppercase transition-all duration-300 hover:border-white hover:text-white"
+                >
+                  Go Back
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
