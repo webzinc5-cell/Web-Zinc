@@ -13,7 +13,7 @@ export function Navbar({ onSignUp, isLoggedIn }: NavbarProps) {
   const links = [
     { name: "Platform", path: "/" },
     { name: "PAST WORKS", path: "/past-works" },
-    { name: "Pricing", path: "/#pricing" },
+    { name: "Pricing", path: "/payments" },
     { name: "Contact", path: "/#contact" },
   ];
 

@@ -13,6 +13,9 @@ export function Footer() {
           </p>
         </div>
         <div className="flex gap-6">
+          <Link to="/payments" className="text-xs font-medium uppercase tracking-wider text-zinc-500 hover:text-white">
+            Pricing & Payments
+          </Link>
           <Link to="#" className="text-xs font-medium uppercase tracking-wider text-zinc-500 hover:text-white">
             Privacy Policy
           </Link>

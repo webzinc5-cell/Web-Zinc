@@ -14,6 +14,7 @@ import { CursorGlow } from "./components/CursorGlow";
 import { SignUpModal } from "./components/SignUpModal";
 
 import { PastWorksPage } from "./pages/PastWorks";
+import { PaymentsPage } from "./pages/Payments";
 
 function AppContent() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -101,6 +102,7 @@ function AppContent() {
                 <Routes>
                   <Route path="/" element={<Home onGetStarted={() => setIsAuthModalOpen(true)} isLoggedIn={isLoggedIn} />} />
                   <Route path="/past-works" element={<PastWorksPage />} />
+                  <Route path="/payments" element={<PaymentsPage />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/reviews" element={<Reviews />} />
                 </Routes>
