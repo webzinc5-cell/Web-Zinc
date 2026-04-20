@@ -109,8 +109,8 @@ export function Dashboard({ userProjects = [], setUserProjects }: any) {
           {/* Back Button */}
           <motion.button 
             variants={fadeUp}
-            onClick={() => navigate("/")}
-            className="mb-8 flex items-center gap-2 text-zinc-400 hover:text-white transition-colors text-[13px] font-bold tracking-widest uppercase"
+            onClick={() => window.location.href = "/"}
+            className="mb-8 flex items-center gap-2 text-zinc-400 hover:text-white transition-colors text-[13px] font-bold tracking-widest uppercase cursor-pointer"
           >
             <ArrowLeft size={16} />
             Back to Home
@@ -277,9 +277,8 @@ function OverviewView({ userName, initials, projects, fadeUp }: any) {
         </div>
       </motion.div>
 
-      <motion.div variants={fadeUp} className="grid grid-cols-1 gap-6 sm:grid-cols-2 mb-12">
+      <motion.div variants={fadeUp} className="grid grid-cols-1 mb-12">
         <StatWidget title="Total Websites" value={projects?.length?.toString() || "0"} />
-        <StatWidget title="Account Status" value="Premium Member" primary />
       </motion.div>
 
       <motion.div variants={fadeUp}>

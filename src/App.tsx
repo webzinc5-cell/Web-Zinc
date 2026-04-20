@@ -27,12 +27,7 @@ function AppContent() {
       }
       setIsLoggedIn(!!user);
       
-      if (user) {
-        // Only redirect to profile if they are specifically on the root landing page path
-        if (window.location.pathname === "/") {
-          navigate("/profile");
-        }
-        
+      if (user) {        
         try {
           // Fetch from nested user path to match aligned structure
           const projectsRef = collection(db, "users", user.uid, "projects");
@@ -102,7 +97,7 @@ function AppContent() {
               <Navbar onSignUp={() => setIsAuthModalOpen(true)} isLoggedIn={isLoggedIn} />
               <main className="relative z-10 flex min-h-screen flex-col">
                 <Routes>
-                  <Route path="/" element={isLoggedIn ? <Navigate to="/profile" replace /> : <Home onGetStarted={() => setIsAuthModalOpen(true)} isLoggedIn={isLoggedIn} />} />
+                  <Route path="/" element={<Home onGetStarted={() => setIsAuthModalOpen(true)} isLoggedIn={isLoggedIn} />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/reviews" element={<Reviews />} />
                 </Routes>
