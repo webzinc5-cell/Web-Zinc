@@ -4,9 +4,10 @@ import { cn } from "../../lib/utils";
 interface NavbarProps {
   onSignUp: () => void;
   isLoggedIn?: boolean;
+  onOpenContact?: () => void;
 }
 
-export function Navbar({ onSignUp, isLoggedIn }: NavbarProps) {
+export function Navbar({ onSignUp, isLoggedIn, onOpenContact }: NavbarProps) {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -14,7 +15,7 @@ export function Navbar({ onSignUp, isLoggedIn }: NavbarProps) {
     { name: "Platform", path: "/" },
     { name: "PAST WORKS", path: "/past-works" },
     { name: "Pricing", path: "/payments" },
-    { name: "Contact", path: "/#contact" },
+    { name: "Contact", action: onOpenContact },
   ];
 
   return (
@@ -24,18 +25,28 @@ export function Navbar({ onSignUp, isLoggedIn }: NavbarProps) {
       </Link>
       <div className="hidden items-center gap-[24px] md:flex">
         {links.map((link) => (
-          <Link
-            key={link.name}
-            to={link.path}
-            className={cn(
-              "text-[13px] font-medium transition-opacity",
-              location.pathname === link.path || (location.pathname === '/' && link.path === '/')
-                ? "text-white opacity-100"
-                : "text-white opacity-70 hover:opacity-100"
-            )}
-          >
-            {link.name}
-          </Link>
+          link.path ? (
+            <Link
+              key={link.name}
+              to={link.path}
+              className={cn(
+                "text-[13px] font-medium transition-opacity",
+                location.pathname === link.path || (location.pathname === '/' && link.path === '/')
+                  ? "text-white opacity-100"
+                  : "text-white opacity-70 hover:opacity-100"
+              )}
+            >
+              {link.name}
+            </Link>
+          ) : (
+            <button
+              key={link.name}
+              onClick={link.action}
+              className="text-[13px] font-medium transition-opacity text-white opacity-70 hover:opacity-100 uppercase uppercase cursor-pointer"
+            >
+              {link.name}
+            </button>
+          )
         ))}
       </div>
       <button

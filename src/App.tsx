@@ -15,9 +15,11 @@ import { SignUpModal } from "./components/SignUpModal";
 
 import { PastWorksPage } from "./pages/PastWorks";
 import { PaymentsPage } from "./pages/Payments";
+import { ContactModal } from "./components/ContactModal";
 
 function AppContent() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isContactOpen, setIsContactOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAuthReady, setIsAuthReady] = useState(false);
   const [userProjects, setUserProjects] = useState<any[]>([]);
@@ -97,7 +99,7 @@ function AppContent() {
           path="*"
           element={
             <>
-              <Navbar onSignUp={() => setIsAuthModalOpen(true)} isLoggedIn={isLoggedIn} />
+              <Navbar onSignUp={() => setIsAuthModalOpen(true)} isLoggedIn={isLoggedIn} onOpenContact={() => setIsContactOpen(true)} />
               <main className="relative z-10 flex min-h-screen flex-col">
                 <Routes>
                   <Route path="/" element={<Home onGetStarted={() => setIsAuthModalOpen(true)} isLoggedIn={isLoggedIn} />} />
@@ -107,13 +109,14 @@ function AppContent() {
                   <Route path="/reviews" element={<Reviews />} />
                 </Routes>
               </main>
-              <Footer />
+              <Footer onOpenContact={() => setIsContactOpen(true)} />
             </>
           }
         />
       </Routes>
       
       <SignUpModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
+      <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
     </div>
   );
 }
