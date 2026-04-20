@@ -1,23 +1,27 @@
 import { motion } from "motion/react";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, ArrowLeft } from "lucide-react";
 
 export function PastWorksPage() {
   const portfolioItems = [
     {
       id: 1,
+      title: "VALORÉ Clothing",
+      category: "Premium E-commerce Experience",
+      description: "A high-end fashion interface featuring luminescent design and seamless product navigation.",
+      image: "https://via.placeholder.com/600x400/0a0a0a/22D3EE?text=VALOR%C3%89+Clothing",
+      link: "https://valoreclothing.vercel.app"
+    },
+    {
+      id: 2,
       title: "Apex Dental Clinic",
+      category: "Healthcare",
       description: "Luminescent Healthcare UI/UX",
       image: "https://via.placeholder.com/600x400/0a0a0a/22D3EE?text=Apex+Dental+Clinic",
     },
     {
-      id: 2,
-      title: "Roast & Co.",
-      description: "Modern E-Commerce Coffee Experience",
-      image: "https://via.placeholder.com/600x400/0a0a0a/22D3EE?text=Roast+%26+Co.",
-    },
-    {
       id: 3,
       title: "Durgapur Tech Hub",
+      category: "Enterprise Software",
       description: "Dark-Mode Enterprise Dashboard",
       image: "https://via.placeholder.com/600x400/0a0a0a/22D3EE?text=Durgapur+Tech+Hub",
     },
@@ -40,6 +44,16 @@ export function PastWorksPage() {
 
   return (
     <div className="min-h-screen pt-32 pb-24 px-6 md:px-12 w-full max-w-7xl mx-auto flex flex-col items-center">
+      <div className="w-full mb-8">
+        <button 
+          onClick={() => window.location.href = '/'}
+          className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors text-[13px] font-bold tracking-widest uppercase cursor-pointer"
+        >
+          <ArrowLeft size={16} />
+          Back to Home
+        </button>
+      </div>
+
       <motion.div 
         initial="hidden"
         animate="visible"
@@ -80,15 +94,31 @@ export function PastWorksPage() {
             
             {/* Content */}
             <div className="flex-1 flex flex-col px-2">
-              <h3 className="text-2xl font-bold tracking-tight text-white mb-2">{item.title}</h3>
+              <h3 className="text-2xl font-bold tracking-tight text-white mb-1">{item.title}</h3>
+              {item.category && (
+                <span className="text-primary text-[11px] font-bold tracking-widest uppercase mb-3 block">
+                  {item.category}
+                </span>
+              )}
               <p className="text-zinc-500 text-sm font-medium mb-8 leading-relaxed max-w-[280px]">
                 {item.description}
               </p>
               
               {/* Glowing Button */}
-              <button className="mt-auto flex w-full items-center justify-center gap-2 rounded-lg border border-primary/40 bg-primary/5 py-4 text-sm font-bold tracking-[0.5px] text-primary transition-all duration-300 hover:bg-primary hover:text-black hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] cursor-pointer uppercase">
-                Live Site <ArrowUpRight size={18} />
-              </button>
+              {item.link ? (
+                <a 
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-auto flex w-full items-center justify-center gap-2 rounded-lg border border-primary/40 bg-primary/5 py-4 text-sm font-bold tracking-[0.5px] text-primary transition-all duration-300 hover:bg-primary hover:text-black hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] cursor-pointer uppercase"
+                >
+                  Live Site <ArrowUpRight size={18} />
+                </a>
+              ) : (
+                <button className="mt-auto flex w-full items-center justify-center gap-2 rounded-lg border border-zinc-800 bg-zinc-900/50 py-4 text-sm font-bold tracking-[0.5px] text-zinc-500 cursor-not-allowed uppercase">
+                  Coming Soon
+                </button>
+              )}
             </div>
           </motion.div>
         ))}
