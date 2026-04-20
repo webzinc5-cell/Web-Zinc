@@ -83,14 +83,14 @@ export function PastWorksPage() {
               backgroundImage: `url(${item.image})`,
               backgroundSize: 'cover',
               backgroundPosition: 'top center',
-              height: '300px',
+              height: '280px',
               position: 'relative'
             }}
           >
             {/* Dark Gradient Overlay */}
             <div 
               className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-500 group-hover:opacity-90" 
-              style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.8))' }} 
+              style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.9) 100%)' }} 
             />
             
             {/* Content */}
