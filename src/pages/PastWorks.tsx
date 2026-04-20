@@ -78,23 +78,24 @@ export function PastWorksPage() {
           <motion.div 
             key={item.id}
             variants={fadeUp}
-            className="group flex flex-col border border-white/5 transition-all duration-500 hover:-translate-y-2 hover:border-primary/40 hover:shadow-[0_15px_40px_-15px_rgba(34,211,238,0.3)] overflow-hidden rounded-[20px]"
+            className="group border border-white/5 transition-all duration-500 hover:-translate-y-2 hover:border-primary/40 hover:shadow-[0_15px_40px_-15px_rgba(34,211,238,0.3)] overflow-hidden rounded-[20px]"
             style={{
-              backgroundImage: `url(${item.image})`,
+              backgroundImage: `url('${item.image}${item.image.includes('?') ? '&' : '?'}v=1')`,
               backgroundSize: 'cover',
-              backgroundPosition: 'top center',
-              height: '280px',
-              position: 'relative'
+              backgroundPosition: 'top',
+              backgroundRepeat: 'no-repeat',
+              height: '250px',
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'flex-end'
             }}
           >
-            {/* Dark Gradient Overlay */}
+            {/* Content Wrapped in Gradient Overlay */}
             <div 
-              className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-500 group-hover:opacity-90" 
-              style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.9) 100%)' }} 
-            />
-            
-            {/* Content */}
-            <div className="relative z-10 flex flex-col p-5 h-full justify-end">
+              className="w-full flex flex-col p-5 mt-auto pt-20"
+              style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.9), transparent)' }}
+            >
               <div>
                 <h3 className="text-2xl font-bold tracking-tight text-white mb-1 drop-shadow-md">{item.title}</h3>
                 {item.category && (
