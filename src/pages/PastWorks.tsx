@@ -15,10 +15,21 @@ export function PastWorksPage() {
 
   // Cleanup effect to prevent 404s and leftover state on unmount
   useEffect(() => {
-    return () => {
+    const handlePopState = () => {
       setSelectedProject(null);
     };
+    window.addEventListener('popstate', handlePopState);
+    return () => {
+      setSelectedProject(null);
+      window.removeEventListener('popstate', handlePopState);
+    };
   }, []);
+
+  const handleRedirect = (url: string) => {
+    setSelectedProject(null); // Close modal first
+    const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
+    if (newWindow) newWindow.opener = null; 
+  };
 
   const portfolioItems: ProjectItem[] = [
     {
@@ -63,7 +74,7 @@ export function PastWorksPage() {
     <div className="min-h-screen pt-32 pb-24 px-6 md:px-12 w-full max-w-7xl mx-auto flex flex-col items-center">
       <div className="w-full mb-8">
         <button 
-          onClick={() => window.location.href = '/'}
+          onClick={() => window.location.hash = '#/'}
           className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors text-[13px] font-bold tracking-widest uppercase cursor-pointer"
         >
           <ArrowLeft size={16} />
@@ -178,12 +189,8 @@ export function PastWorksPage() {
                 <button 
                   onClick={(e) => {
                     e.stopPropagation();
-                    const targetLink = selectedProject.link;
-                    // Reset state immediately before navigation
-                    setSelectedProject(null);
-                    // Use replace to prevent browser history loop
-                    if (targetLink) {
-                      window.location.replace(targetLink);
+                    if (selectedProject.link) {
+                      handleRedirect(selectedProject.link);
                     }
                   }}
                   className="flex w-full items-center justify-center gap-2 rounded-lg border border-primary/40 bg-primary/10 py-4 text-sm font-bold tracking-[0.5px] text-primary transition-all duration-300 hover:bg-primary hover:text-black hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] cursor-pointer uppercase"
