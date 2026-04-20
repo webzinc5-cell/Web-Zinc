@@ -65,7 +65,7 @@ export function PaymentsPage() {
         initial="hidden"
         animate="visible"
         variants={containerVariants}
-        className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+        className="w-full grid grid-cols-1 md:grid-cols-2 gap-8"
       >
         {/* Bank Transfer Section */}
         <motion.div 
@@ -87,7 +87,8 @@ export function PaymentsPage() {
               { label: 'Bank Name', value: 'Canara Bank', id: 'bank' },
               { label: 'Account Holder', value: 'Indra Tantubay', id: 'name' },
               { label: 'Account Number', value: '110037366980', id: 'acc' },
-              { label: 'IFSC Code', value: 'CNRB0019529', id: 'ifsc' }
+              { label: 'IFSC Code', value: 'CNRB0019529', id: 'ifsc' },
+              { label: 'Mobile (GPay/PhonePe)', value: '9641553429', id: 'phone' }
             ].map((detail) => (
               <div key={detail.id} className="flex flex-col gap-1 pb-3 border-b border-white/5 last:border-0 last:pb-0">
                 <span className="text-[11px] font-bold tracking-widest uppercase text-zinc-500">{detail.label}</span>
@@ -143,39 +144,6 @@ export function PaymentsPage() {
                   title="Copy UPI ID"
                 >
                   {copiedField === 'upi' ? <Check size={14} className="text-primary" /> : <Copy size={14} />}
-                </button>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Phone Number Section */}
-        <motion.div 
-          variants={itemVariants}
-          className="flex flex-col p-8 rounded-[20px] bg-[#050505] transition-all duration-500 md:col-span-2 lg:col-span-1"
-          style={glowStyle}
-          onMouseOver={(e) => e.currentTarget.style.boxShadow = hoverGlowStyle.boxShadow}
-          onMouseOut={(e) => e.currentTarget.style.boxShadow = glowStyle.boxShadow}
-        >
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center border border-primary/30 shadow-[0_0_10px_rgba(34,211,238,0.2)]">
-              <ShieldCheck size={20} className="text-primary" />
-            </div>
-            <h2 className="text-2xl font-bold tracking-tight text-white">Mobile Pay</h2>
-          </div>
-          
-          <div className="flex flex-col items-center justify-center flex-1 py-4 pt-8">
-             <div className="w-full flex flex-col gap-1 text-center px-4">
-              <span className="text-[11px] font-bold tracking-widest uppercase text-zinc-500 mb-2">Pay via Mobile Number (GPay / PhonePe)</span>
-              
-              <div className="flex items-center justify-center gap-3 bg-zinc-900/50 py-6 px-4 rounded-lg border border-white/5 mt-2">
-                <span className="text-zinc-200 font-bold text-2xl tracking-[2px]">9641553429</span>
-                <button 
-                  onClick={() => handleCopy('9641553429', 'phone')}
-                  className="p-2 rounded-md hover:bg-white/10 transition-colors text-zinc-400 hover:text-primary ml-2"
-                  title="Copy Phone Number"
-                >
-                  {copiedField === 'phone' ? <Check size={18} className="text-primary" /> : <Copy size={18} />}
                 </button>
               </div>
             </div>
