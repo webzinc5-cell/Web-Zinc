@@ -8,12 +8,12 @@ interface ContactModalProps {
 }
 
 export function ContactModal({ isOpen, onClose }: ContactModalProps) {
-  const [copied, setCopied] = useState(false);
+  const [copiedField, setCopiedField] = useState<string | null>(null);
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText("9091063123 / 9641553429");
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const handleCopy = (text: string, fieldId: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedField(fieldId);
+    setTimeout(() => setCopiedField(null), 2000);
   };
 
   return (
@@ -41,51 +41,64 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
             
             <div className="w-full flex flex-col gap-4">
               {/* WhatsApp */}
-              <div className="bg-[#050505] border border-primary/20 rounded-xl p-6 flex flex-col gap-4 drop-shadow-[0_0_10px_rgba(34,211,238,0.1)]">
+              <div className="bg-[#050505] border border-primary/30 rounded-xl p-6 flex flex-col gap-4 shadow-[0_0_10px_rgba(34,211,238,0.2)]">
                 <div className="flex items-center justify-center gap-2 text-zinc-300">
                   <MessageCircle size={18} className="text-primary" />
-                  <span className="font-bold tracking-wide">+91 9641553429</span>
+                  <span className="font-bold tracking-wide">WhatsApp: +91 9641553429</span>
                 </div>
                 <button 
                   onClick={() => window.open('https://wa.me/919641553429', '_blank', 'noopener,noreferrer')}
-                  className="w-full py-4 rounded-lg bg-primary/10 border border-primary text-primary font-bold tracking-widest uppercase text-sm hover:bg-primary hover:text-black transition-all shadow-[0_0_15px_rgba(34,211,238,0.3)] animate-pulse hover:animate-none"
+                  className="w-full py-4 rounded-lg bg-primary/10 border border-primary/40 text-primary font-bold tracking-widest uppercase text-sm hover:bg-primary hover:text-black transition-all shadow-[0_0_15px_rgba(34,211,238,0.1)] hover:shadow-[0_0_25px_rgba(34,211,238,0.4)] cursor-pointer"
                 >
                   Chat Now
                 </button>
               </div>
 
               {/* Email */}
-              <div className="bg-[#050505] border border-white/10 rounded-xl p-6 flex flex-col gap-4">
+              <div className="bg-[#050505] border border-primary/30 rounded-xl p-6 flex flex-col gap-4 shadow-[0_0_10px_rgba(34,211,238,0.2)]">
                 <div className="flex items-center justify-center gap-2 text-zinc-300">
-                  <Mail size={18} className="text-zinc-400" />
+                  <Mail size={18} className="text-primary" />
                   <span className="font-bold tracking-wide">webzinc5@gmail.com</span>
                 </div>
                 <a 
                   href="mailto:webzinc5@gmail.com"
-                  className="flex items-center justify-center w-full py-4 rounded-lg bg-white/5 border border-white/10 text-white font-bold tracking-widest uppercase text-sm hover:bg-white/10 transition-all"
+                  className="flex items-center justify-center w-full py-4 rounded-lg bg-primary/10 border border-primary/40 text-primary font-bold tracking-widest uppercase text-sm hover:bg-primary hover:text-black transition-all shadow-[0_0_15px_rgba(34,211,238,0.1)] hover:shadow-[0_0_25px_rgba(34,211,238,0.4)] cursor-pointer"
                 >
                   Send Email
                 </a>
               </div>
 
               {/* Mobile */}
-              <div className="bg-[#050505] border border-white/10 rounded-xl p-6 flex flex-col gap-4">
-                <div className="flex items-center justify-center gap-2 text-zinc-300">
-                  <Phone size={18} className="text-zinc-400" />
-                  <span className="font-bold tracking-wide">9091063123 / 9641553429</span>
+              <div className="bg-[#050505] border border-primary/30 rounded-xl p-6 flex flex-col gap-4 shadow-[0_0_10px_rgba(34,211,238,0.2)]">
+                <div className="flex items-center justify-center gap-2 text-zinc-300 mb-1">
+                  <Phone size={18} className="text-primary" />
+                  <span className="font-bold tracking-wide">Mobile Numbers</span>
                 </div>
-                <button 
-                  onClick={handleCopy}
-                  className="flex items-center justify-center gap-2 w-full py-4 rounded-lg bg-white/5 border border-white/10 text-white font-bold tracking-widest uppercase text-sm hover:bg-white/10 transition-all"
-                >
-                  {copied ? <><Check size={16} className="text-primary" /> Copied</> : <><Copy size={16} /> Copy Number</>}
-                </button>
+                
+                <div className="flex flex-col gap-3">
+                  {[
+                    { label: "Line 1", number: "9091063123", id: "line1" },
+                    { label: "Line 2", number: "9641553429", id: "line2" }
+                  ].map((item) => (
+                    <div key={item.id} className="flex items-center justify-between bg-black/50 border border-white/10 rounded-lg p-2 pl-4">
+                      <span className="text-zinc-300 font-bold tracking-wide text-[13px]">
+                        {item.label}: <span className="text-white ml-1">{item.number}</span>
+                      </span>
+                      <button 
+                        onClick={() => handleCopy(item.number, item.id)}
+                        className="flex items-center justify-center gap-2 px-4 py-2 rounded-md bg-primary/10 border border-primary/40 text-primary font-bold tracking-widest uppercase text-[11px] hover:bg-primary hover:text-black transition-all shadow-[0_0_10px_rgba(34,211,238,0.1)] hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] cursor-pointer group"
+                      >
+                        {copiedField === item.id ? <><Check size={14} className="group-hover:text-black" /> Copied</> : <><Copy size={14} /> Copy</>}
+                      </button>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
             <button 
               onClick={onClose}
-              className="mt-8 w-full py-4 rounded-lg border border-zinc-700 bg-transparent text-zinc-400 text-sm font-bold tracking-[0.5px] uppercase transition-all duration-300 hover:border-white hover:text-white"
+              className="mt-8 w-full py-4 rounded-lg border border-primary bg-primary text-black text-sm font-bold tracking-[0.5px] uppercase transition-all duration-300 hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] cursor-pointer"
             >
               Close
             </button>
