@@ -88,7 +88,7 @@ export function PaymentsPage() {
               { label: 'Account Holder', value: 'Indra Tantubay', id: 'name' },
               { label: 'Account Number', value: '110037366980', id: 'acc' },
               { label: 'IFSC Code', value: 'CNRB0019529', id: 'ifsc' },
-              { label: 'Mobile (GPay/PhonePe)', value: '9641553429', id: 'phone' }
+              { label: 'Mobile', value: '9641553429', id: 'phone' }
             ].map((detail) => (
               <div key={detail.id} className="flex flex-col gap-1 pb-3 border-b border-white/5 last:border-0 last:pb-0">
                 <span className="text-[11px] font-bold tracking-widest uppercase text-zinc-500">{detail.label}</span>
