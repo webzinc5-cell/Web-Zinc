@@ -15,6 +15,7 @@ export function Navbar({ onSignUp, isLoggedIn, onOpenContact }: NavbarProps) {
     { name: "Platform", path: "/" },
     { name: "PAST WORKS", path: "/past-works" },
     { name: "Pricing", path: "/payments" },
+    { name: "Reviews", path: "/reviews" },
     { name: "Contact", action: onOpenContact },
   ];
 

@@ -20,6 +20,9 @@ export function Footer({ onOpenContact }: FooterProps) {
           <Link to="/payments" className="text-xs font-medium uppercase tracking-wider text-zinc-500 hover:text-white">
             Pricing & Payments
           </Link>
+          <Link to="/reviews" className="text-xs font-medium uppercase tracking-wider text-zinc-500 hover:text-white">
+            Reviews
+          </Link>
           <button onClick={onOpenContact} className="text-xs font-medium uppercase tracking-wider text-zinc-500 hover:text-white cursor-pointer bg-transparent border-none p-0 outline-none">
             Contact
           </button>

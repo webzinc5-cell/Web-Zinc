@@ -1,34 +1,69 @@
+import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { Star } from "lucide-react";
+import { collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "firebase/firestore";
+import { db } from "../lib/firebase";
 
-const reviews = [
-  {
-    name: "Dr. Sarah Jenkins",
-    company: "Apex Dental Clinic",
-    content: "WebZinc completely restructured our client acquisition. Within 3 months, our local search visibility skyrocketed and we saw a 40% increase in high-value patient bookings.",
-    rating: 5,
-  },
-  {
-    name: "Marcus Thornton",
-    company: "Thornton Legal Partners",
-    content: "The level of precision and strategic depth WebZinc brings is unmatched. They don't just supply marketing, they build an impenetrable local presence.",
-    rating: 5,
-  },
-  {
-    name: "Elena Rostova",
-    company: "Roast & Co.",
-    content: "Our foot traffic has doubled since the new infrastructure deployed. The aesthetic is perfect, but the actual conversion metrics are what blew us away.",
-    rating: 5,
-  },
-  {
-    name: "David Chen",
-    company: "Chen Auto Group",
-    content: "Hard numbers. No fluff. WebZinc delivered exactly what they promised. We dominate the local search results for our most profitable services.",
-    rating: 5,
-  },
-];
+function getSentimentLabel(rating: number) {
+  switch (rating) {
+    case 5: return "Excellent";
+    case 4: return "Great";
+    case 3: return "Good";
+    case 2: return "Bad";
+    case 1: return "Worst";
+    default: return "";
+  }
+}
 
 export function Reviews() {
+  const [reviews, setReviews] = useState<any[]>([]);
+  const [rating, setRating] = useState(5);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [name, setName] = useState("");
+  const [content, setContent] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const fetchReviews = async () => {
+    try {
+      const q = query(collection(db, "reviews"), orderBy("timestamp", "desc"));
+      const querySnapshot = await getDocs(q);
+      const fetchedReviews = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setReviews(fetchedReviews);
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchReviews();
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name || !content || rating === 0) return;
+    
+    setIsSubmitting(true);
+    try {
+      await addDoc(collection(db, "reviews"), {
+        name,
+        content,
+        rating,
+        timestamp: serverTimestamp()
+      });
+      setName("");
+      setContent("");
+      setRating(5);
+      fetchReviews();
+    } catch (error) {
+      console.error("Error adding review: ", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="flex w-full flex-col pt-32 text-white pb-24">
       <div className="mx-auto w-full max-w-7xl px-6">
@@ -46,28 +81,109 @@ export function Reviews() {
           </p>
         </motion.div>
 
+        {/* Submit Review Form */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mb-16 mx-auto max-w-2xl rounded-xl border border-primary/30 bg-[#0a0a0a] p-8 shadow-[0_0_20px_rgba(34,211,238,0.15)]"
+        >
+          <h2 className="mb-6 text-2xl font-bold tracking-tight text-white">Leave a Review</h2>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <div>
+              <label className="mb-2 block text-sm font-medium text-zinc-400">Your Rating</label>
+              <div className="flex gap-2">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    type="button"
+                    key={star}
+                    onClick={() => setRating(star)}
+                    onMouseEnter={() => setHoverRating(star)}
+                    onMouseLeave={() => setHoverRating(0)}
+                    className="focus:outline-none focus:scale-110 transition-transform"
+                  >
+                    <Star 
+                      className={`h-8 w-8 transition-colors ${
+                        star <= (hoverRating || rating) 
+                          ? "fill-primary text-primary drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]" 
+                          : "text-zinc-600"
+                      }`} 
+                    />
+                  </button>
+                ))}
+              </div>
+            </div>
+            
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium text-zinc-400">Your Name</label>
+              <input 
+                type="text" 
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="John Doe"
+                className="w-full rounded-md border border-zinc-800 bg-zinc-900/50 p-3 text-white placeholder-zinc-500 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all"
+                required
+              />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label className="text-sm font-medium text-zinc-400">Your Experience</label>
+              <textarea 
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                placeholder="Share your results..."
+                rows={4}
+                className="w-full resize-none rounded-md border border-zinc-800 bg-zinc-900/50 p-3 text-white placeholder-zinc-500 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all"
+                required
+              />
+            </div>
+
+            <button 
+              type="submit"
+              disabled={isSubmitting}
+              className="mt-4 w-full py-4 rounded-lg bg-primary text-black font-bold tracking-widest uppercase transition-all hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] disabled:opacity-50"
+            >
+              {isSubmitting ? "Submitting..." : "Submit Review"}
+            </button>
+          </form>
+        </motion.div>
+
+        {/* Reviews List */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {reviews.map((review, i) => (
             <motion.div
-              key={i}
+              key={review.id || i}
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
-              className="rounded-xl border border-zinc-800 bg-zinc-card p-8 hover:bg-zinc-900 transition-colors"
+              transition={{ delay: (i % 4) * 0.1, duration: 0.5 }}
+              className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-8 shadow-lg backdrop-blur-sm transition-all hover:border-zinc-700"
             >
-              <div className="mb-4 flex space-x-1">
-                {[...Array(review.rating)].map((_, j) => (
-                  <Star key={j} className="h-4 w-4 fill-primary text-primary drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]" />
-                ))}
+              <div className="mb-4 flex items-center justify-between">
+                <div className="flex space-x-1">
+                  {[...Array(5)].map((_, j) => (
+                    <Star 
+                      key={j} 
+                      className={`h-4 w-4 ${j < review.rating ? "fill-primary text-primary drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]" : "text-zinc-700"}`} 
+                    />
+                  ))}
+                </div>
+                {/* AI Sentiment Label */}
+                <span className="text-xs font-bold uppercase tracking-wider text-primary shadow-primary drop-shadow-[0_0_5px_rgba(34,211,238,0.3)]">
+                  {getSentimentLabel(review.rating)}
+                </span>
               </div>
               <p className="mb-6 text-lg italic text-zinc-300">"{review.content}"</p>
               <div>
                 <p className="font-bold text-white">{review.name}</p>
-                <p className="text-sm text-primary uppercase tracking-wider">{review.company}</p>
               </div>
             </motion.div>
           ))}
+          {reviews.length === 0 && (
+            <div className="col-span-full py-12 text-center text-zinc-500">
+              No reviews available yet. Be the first to leave one!
+            </div>
+          )}
         </div>
       </div>
     </div>
