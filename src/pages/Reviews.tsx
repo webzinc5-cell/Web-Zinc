@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { Star } from "lucide-react";
-import { collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "firebase/firestore";
 import { db } from "../lib/firebase";
 
 function getSentimentLabel(rating: number) {
@@ -20,43 +20,45 @@ export function Reviews() {
   const [rating, setRating] = useState(5);
   const [hoverRating, setHoverRating] = useState(0);
   const [name, setName] = useState("");
-  const [content, setContent] = useState("");
+  const [experience, setExperience] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
-  const fetchReviews = async () => {
-    try {
-      const q = query(collection(db, "reviews"), orderBy("timestamp", "desc"));
-      const querySnapshot = await getDocs(q);
+  useEffect(() => {
+    const q = query(collection(db, "reviews"), orderBy("timestamp", "desc"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const fetchedReviews = querySnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
       }));
       setReviews(fetchedReviews);
-    } catch (error) {
-      console.error("Error fetching reviews:", error);
-    }
-  };
+    }, (error) => {
+      console.error("Error listening to reviews:", error);
+    });
 
-  useEffect(() => {
-    fetchReviews();
+    return () => unsubscribe();
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !content || rating === 0) return;
+    if (!name || !experience || rating === 0) return;
     
     setIsSubmitting(true);
     try {
+      const sentiment = getSentimentLabel(rating);
       await addDoc(collection(db, "reviews"), {
         name,
-        content,
+        experience,
         rating,
+        sentiment,
         timestamp: serverTimestamp()
       });
       setName("");
-      setContent("");
+      setExperience("");
       setRating(5);
-      fetchReviews();
+      
+      setSuccessMessage("Thank you for your review!");
+      setTimeout(() => setSuccessMessage(""), 3000);
     } catch (error) {
       console.error("Error adding review: ", error);
     } finally {
@@ -129,14 +131,20 @@ export function Reviews() {
             <div className="flex flex-col gap-2">
               <label className="text-sm font-medium text-zinc-400">Your Experience</label>
               <textarea 
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
+                value={experience}
+                onChange={(e) => setExperience(e.target.value)}
                 placeholder="Share your results..."
                 rows={4}
                 className="w-full resize-none rounded-md border border-zinc-800 bg-zinc-900/50 p-3 text-white placeholder-zinc-500 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all"
                 required
               />
             </div>
+
+            {successMessage && (
+              <div className="rounded-md bg-primary/20 p-4 border border-primary/50 text-primary text-center font-bold tracking-wide">
+                {successMessage}
+              </div>
+            )}
 
             <button 
               type="submit"
@@ -170,10 +178,10 @@ export function Reviews() {
                 </div>
                 {/* AI Sentiment Label */}
                 <span className="text-xs font-bold uppercase tracking-wider text-primary shadow-primary drop-shadow-[0_0_5px_rgba(34,211,238,0.3)]">
-                  {getSentimentLabel(review.rating)}
+                  {review.sentiment || getSentimentLabel(review.rating)}
                 </span>
               </div>
-              <p className="mb-6 text-lg italic text-zinc-300">"{review.content}"</p>
+              <p className="mb-6 text-lg italic text-zinc-300">"{review.experience || review.content}"</p>
               <div>
                 <p className="font-bold text-white">{review.name}</p>
               </div>
