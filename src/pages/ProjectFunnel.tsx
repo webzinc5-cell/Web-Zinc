@@ -21,8 +21,7 @@ export function ProjectFunnel({ userProjects = [], setUserProjects }: any) {
     instructions: ""
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSaved, setIsSaved] = useState(false);
-  const [orderData, setOrderData] = useState<any>(null);
+  const [showRedirectPopup, setShowRedirectPopup] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
@@ -81,9 +80,11 @@ export function ProjectFunnel({ userProjects = [], setUserProjects }: any) {
         setUserProjects([...userProjects, newOrderInfo]);
       }
 
-      setOrderData(newOrderInfo);
-      setIsSaved(true);
-      setIsSubmitting(false);
+      setShowRedirectPopup(true);
+
+      timeoutRef.current = setTimeout(() => {
+        window.location.href = getWhatsAppUrl(newOrderInfo);
+      }, 4000);
 
     } catch (error) {
       alert(`Error processing your order: ${(error as Error).message}`);
@@ -224,19 +225,6 @@ export function ProjectFunnel({ userProjects = [], setUserProjects }: any) {
                )}
 
                <div className="pt-8">
-                {isSaved && orderData ? (
-                  <a 
-                    href={getWhatsAppUrl(orderData)} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    onClick={() => {
-                      setTimeout(() => navigate('/profile'), 500);
-                    }}
-                    className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#25D366] px-8 py-5 font-bold text-white transition-all hover:bg-white hover:text-[#25D366] shadow-[0_0_20px_rgba(37,211,102,0.4)] uppercase tracking-widest text-[15px]"
-                  >
-                    SEND TO WHATSAPP <ArrowUpRight size={20} className="ml-1" />
-                  </a>
-                ) : (
                   <button 
                     onClick={handleOrderSubmit}
                     disabled={isSubmitting} 
@@ -248,7 +236,6 @@ export function ProjectFunnel({ userProjects = [], setUserProjects }: any) {
                       </>
                     )}
                   </button>
-                )}
                 <p className="text-center text-[10px] uppercase tracking-widest text-zinc-500 mt-4">
                   You will be redirected to WhatsApp to finalize the consultation.
                 </p>
@@ -257,6 +244,33 @@ export function ProjectFunnel({ userProjects = [], setUserProjects }: any) {
           </motion.div>
         )}
       </motion.div>
+
+      <AnimatePresence>
+        {showRedirectPopup && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="flex max-w-sm flex-col items-center text-center rounded-2xl border border-primary bg-[#0a0a0a] p-8 shadow-[0_0_50px_rgba(34,211,238,0.5)]"
+            >
+              <div className="relative flex h-16 w-16 items-center justify-center mb-6">
+                <div className="absolute inset-0 rounded-full border-t-2 border-primary animate-spin" />
+                <div className="absolute inset-2 rounded-full border-r-2 border-primary opacity-50 animate-spin" style={{ animationDirection: 'reverse', animationDuration: '1.5s' }} />
+                <Rocket className="text-primary animate-pulse" size={24} />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">Order Saved!</h3>
+              <p className="text-sm text-zinc-400 leading-relaxed">
+                You will be redirected to WhatsApp for confirmation in 4 seconds...
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
