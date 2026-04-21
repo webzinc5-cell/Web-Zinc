@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
-import { Star } from "lucide-react";
+import { Star, Lock } from "lucide-react";
 import { collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "firebase/firestore";
-import { db } from "../lib/firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import { db, auth } from "../lib/firebase";
+import { handleFirestoreError } from "../lib/handleFirestoreError";
 
 function getSentimentLabel(rating: number) {
   switch (rating) {
@@ -23,8 +25,16 @@ export function Reviews() {
   const [experience, setExperience] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
+    const unsubscribeAuth = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      if (currentUser) {
+        setName(currentUser.displayName || currentUser.email || "");
+      }
+    });
+
     const q = query(collection(db, "reviews"), orderBy("timestamp", "desc"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const fetchedReviews = querySnapshot.docs.map(doc => ({
@@ -34,13 +44,24 @@ export function Reviews() {
       setReviews(fetchedReviews);
     }, (error) => {
       console.error("Error listening to reviews:", error);
+      // Run the handler outside the Firestore callback stack to prevent INTERNAL ASSERTION failures
+      setTimeout(() => {
+        handleFirestoreError(error, "list", "/reviews");
+      }, 0);
     });
 
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+      unsubscribeAuth();
+    };
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) {
+      alert("Please login to the website to add reviews.");
+      return;
+    }
     if (!name || !experience || rating === 0) return;
     
     setIsSubmitting(true);
@@ -48,6 +69,8 @@ export function Reviews() {
       const sentiment = getSentimentLabel(rating);
       await addDoc(collection(db, "reviews"), {
         name,
+        email: user.email || null,
+        uid: user.uid,
         experience,
         rating,
         sentiment,
@@ -61,6 +84,7 @@ export function Reviews() {
       setTimeout(() => setSuccessMessage(""), 3000);
     } catch (error) {
       console.error("Error adding review: ", error);
+      handleFirestoreError(error, "create", "/reviews");
     } finally {
       setIsSubmitting(false);
     }
@@ -123,7 +147,8 @@ export function Reviews() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="John Doe"
-                className="w-full rounded-md border border-zinc-800 bg-zinc-900/50 p-3 text-white placeholder-zinc-500 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all"
+                disabled={!user}
+                className="w-full rounded-md border border-zinc-800 bg-zinc-900/50 p-3 text-white placeholder-zinc-500 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 required
               />
             </div>
@@ -135,7 +160,8 @@ export function Reviews() {
                 onChange={(e) => setExperience(e.target.value)}
                 placeholder="Share your results..."
                 rows={4}
-                className="w-full resize-none rounded-md border border-zinc-800 bg-zinc-900/50 p-3 text-white placeholder-zinc-500 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all"
+                disabled={!user}
+                className="w-full resize-none rounded-md border border-zinc-800 bg-zinc-900/50 p-3 text-white placeholder-zinc-500 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 required
               />
             </div>
@@ -148,10 +174,17 @@ export function Reviews() {
 
             <button 
               type="submit"
-              disabled={isSubmitting}
-              className="mt-4 w-full py-4 rounded-lg bg-primary text-black font-bold tracking-widest uppercase transition-all hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] disabled:opacity-50"
+              disabled={isSubmitting || !user}
+              onClick={(e) => {
+                if (!user) {
+                  e.preventDefault();
+                  alert("Please login to the website to add reviews.");
+                }
+              }}
+              className="mt-4 w-full flex items-center justify-center gap-2 py-4 rounded-lg bg-primary text-black font-bold tracking-widest uppercase transition-all hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? "Submitting..." : "Submit Review"}
+              {!user && <Lock size={18} />}
+              {isSubmitting ? "Submitting..." : user ? "Submit Review" : "Login Required"}
             </button>
           </form>
         </motion.div>

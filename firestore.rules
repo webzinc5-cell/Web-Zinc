@@ -1,0 +1,22 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+    
+    match /reviews/{document=**} {
+      allow read: if true;
+      allow write: if true;
+    }
+    
+    // Add allow read, write for users just in case Dashboard hits it
+    match /users/{userId} {
+      allow read, write: if true;
+    }
+
+    match /projects/{projectId} {
+      allow read, write: if true;
+    }
+  }
+}

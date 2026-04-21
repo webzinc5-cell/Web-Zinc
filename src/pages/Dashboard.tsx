@@ -194,6 +194,7 @@ function ProjectCard({ id, title, progress, date, status, category }: any) {
   const [liveProgress, setLiveProgress] = useState(progress);
 
   useEffect(() => {
+    if (!id) return;
     const progressRef = ref(rtdb, `projects/${id}/progress`);
     
     // Set up real-time listener
