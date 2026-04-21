@@ -75,8 +75,11 @@ export function ProjectFunnel({ userProjects = [], setUserProjects }: any) {
         instructions: formData.instructions
       };
 
-      // 1. Save data to Firestore first within the nested user path as per security rules
-      await addDoc(collection(db, "users", user.uid, "projects"), newOrderInfo);
+      // 1. Save data to Firestore exactly matching the new security rules
+      await addDoc(collection(db, "projects"), newOrderInfo);
+
+      // Show alert so user knows database accepted the write
+      alert("Order confirmed and saved to database successfully!");
 
       // 2. ONLY update local state mapped to dashboard after database confirms success
       if (setUserProjects) {

@@ -34,9 +34,11 @@ function AppContent() {
       
       if (user) {        
         try {
-          // Fetch from nested user path to match aligned structure
-          const projectsRef = collection(db, "users", user.uid, "projects");
-          const querySnapshot = await getDocs(projectsRef);
+          const q = query(
+            collection(db, "projects"),
+            where("userId", "==", user.uid)
+          );
+          const querySnapshot = await getDocs(q);
           
           const fetchedOrders = querySnapshot.docs.map(doc => ({
             id: doc.id,

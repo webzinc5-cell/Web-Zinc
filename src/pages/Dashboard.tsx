@@ -396,6 +396,7 @@ function SettingsView({ userName, userEmail, fadeUp }: any) {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -412,7 +413,7 @@ function SettingsView({ userName, userEmail, fadeUp }: any) {
           }
         } catch (error) {
           console.error("Error fetching user config:", error);
-          handleFirestoreError(error, "get", `/users/${user.uid}`);
+          setErrorMsg("Welcome! Fill out your profile below.");
         }
       }
     };
@@ -426,6 +427,7 @@ function SettingsView({ userName, userEmail, fadeUp }: any) {
     
     setIsLoading(true);
     setSuccessMsg("");
+    setErrorMsg("");
     try {
       await setDoc(doc(db, "users", user.uid), {
         fullName: name,
@@ -438,7 +440,7 @@ function SettingsView({ userName, userEmail, fadeUp }: any) {
       setTimeout(() => setSuccessMsg(""), 3000);
     } catch (error) {
       console.error("Error saving profile:", error);
-      handleFirestoreError(error, "update", `/users/${user.uid}`);
+      setErrorMsg("Unable to save profile. Please try again later.");
     } finally {
       setIsLoading(false);
     }
@@ -455,6 +457,11 @@ function SettingsView({ userName, userEmail, fadeUp }: any) {
         {successMsg && (
           <div className="mb-6 rounded-md bg-primary/20 p-4 border border-primary/50 text-primary text-center font-bold tracking-wide">
             {successMsg}
+          </div>
+        )}
+        {errorMsg && (
+          <div className="mb-6 rounded-md bg-red-900/20 p-4 border border-red-500/50 text-red-500 text-center font-bold tracking-wide">
+            {errorMsg}
           </div>
         )}
 

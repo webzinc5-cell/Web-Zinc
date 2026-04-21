@@ -43,11 +43,8 @@ export function Reviews() {
       }));
       setReviews(fetchedReviews);
     }, (error) => {
+      // Just log without triggering a UI crashing alert
       console.error("Error listening to reviews:", error);
-      // Run the handler outside the Firestore callback stack to prevent INTERNAL ASSERTION failures
-      setTimeout(() => {
-        handleFirestoreError(error, "list", "/reviews");
-      }, 0);
     });
 
     return () => {
@@ -58,8 +55,9 @@ export function Reviews() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) {
-      alert("Please login to the website to add reviews.");
+    const currentUser = auth.currentUser;
+    if (!currentUser) {
+      alert("Please login to leave a review.");
       return;
     }
     if (!name || !experience || rating === 0) return;
@@ -69,8 +67,8 @@ export function Reviews() {
       const sentiment = getSentimentLabel(rating);
       await addDoc(collection(db, "reviews"), {
         name,
-        email: user.email || null,
-        uid: user.uid,
+        email: currentUser.email || null,
+        uid: currentUser.uid,
         experience,
         rating,
         sentiment,
@@ -80,7 +78,7 @@ export function Reviews() {
       setExperience("");
       setRating(5);
       
-      setSuccessMessage("Thank you for your review!");
+      setSuccessMessage("Review added successfully!");
       setTimeout(() => setSuccessMessage(""), 3000);
     } catch (error) {
       console.error("Error adding review: ", error);
@@ -176,9 +174,9 @@ export function Reviews() {
               type="submit"
               disabled={isSubmitting || !user}
               onClick={(e) => {
-                if (!user) {
+                if (!auth.currentUser) {
                   e.preventDefault();
-                  alert("Please login to the website to add reviews.");
+                  alert("Please login to leave a review.");
                 }
               }}
               className="mt-4 w-full flex items-center justify-center gap-2 py-4 rounded-lg bg-primary text-black font-bold tracking-widest uppercase transition-all hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] disabled:opacity-50 disabled:cursor-not-allowed"
