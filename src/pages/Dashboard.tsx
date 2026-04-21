@@ -3,7 +3,7 @@ import { LayoutDashboard, FolderKanban, CreditCard, Settings, LogOut, ArrowUpRig
 import { motion, AnimatePresence } from "motion/react";
 import { useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
-import { doc, getDoc, collection, getDocs } from "firebase/firestore";
+import { doc, getDoc, collection, getDocs, setDoc } from "firebase/firestore";
 import { ref, onValue } from "firebase/database";
 import { auth, db, rtdb } from "../lib/firebase";
 
@@ -394,11 +394,51 @@ function SettingsView({ userName, userEmail, fadeUp }: any) {
   const [about, setAbout] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [successMsg, setSuccessMsg] = useState("");
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const user = auth.currentUser;
+      if (user) {
+        try {
+          const userDoc = await getDoc(doc(db, "users", user.uid));
+          if (userDoc.exists()) {
+            const data = userDoc.data();
+            if (data.fullName) setName(data.fullName);
+            if (data.phoneNumber) setPhone(data.phoneNumber);
+            if (data.businessName) setBName(data.businessName);
+            if (data.aboutBusiness) setAbout(data.aboutBusiness);
+          }
+        } catch (error) {
+          console.error("Error fetching user config:", error);
+        }
+      }
+    };
+    fetchUserData();
+  }, []);
 
   const handleSave = async (e: FormEvent) => {
     e.preventDefault();
+    const user = auth.currentUser;
+    if (!user) return;
+    
     setIsLoading(true);
-    setTimeout(() => { setIsLoading(false); }, 1000);
+    setSuccessMsg("");
+    try {
+      await setDoc(doc(db, "users", user.uid), {
+        fullName: name,
+        phoneNumber: phone,
+        businessName: bName,
+        aboutBusiness: about
+      }, { merge: true });
+      
+      setSuccessMsg("Profile Updated Successfully!");
+      setTimeout(() => setSuccessMsg(""), 3000);
+    } catch (error) {
+      console.error("Error saving profile:", error);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -409,6 +449,12 @@ function SettingsView({ userName, userEmail, fadeUp }: any) {
       </div>
       
       <form onSubmit={handleSave} className="space-y-8">
+        {successMsg && (
+          <div className="mb-6 rounded-md bg-primary/20 p-4 border border-primary/50 text-primary text-center font-bold tracking-wide">
+            {successMsg}
+          </div>
+        )}
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           
           {/* Column 1: Account */}
