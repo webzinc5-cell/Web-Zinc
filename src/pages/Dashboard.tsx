@@ -6,6 +6,7 @@ import { signOut } from "firebase/auth";
 import { doc, getDoc, collection, getDocs, setDoc } from "firebase/firestore";
 import { ref, onValue } from "firebase/database";
 import { auth, db, rtdb } from "../lib/firebase";
+import { handleFirestoreError } from "../lib/handleFirestoreError";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -411,6 +412,7 @@ function SettingsView({ userName, userEmail, fadeUp }: any) {
           }
         } catch (error) {
           console.error("Error fetching user config:", error);
+          handleFirestoreError(error, "get", `/users/${user.uid}`);
         }
       }
     };
@@ -436,6 +438,7 @@ function SettingsView({ userName, userEmail, fadeUp }: any) {
       setTimeout(() => setSuccessMsg(""), 3000);
     } catch (error) {
       console.error("Error saving profile:", error);
+      handleFirestoreError(error, "update", `/users/${user.uid}`);
     } finally {
       setIsLoading(false);
     }
