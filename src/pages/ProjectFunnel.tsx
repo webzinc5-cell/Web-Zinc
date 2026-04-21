@@ -2,7 +2,7 @@ import React, { useState, FormEvent, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "../lib/firebase";
-import { ArrowLeft, Rocket } from "lucide-react";
+import { ArrowLeft, Rocket, ArrowUpRight } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 
 const fadeUp = {
@@ -21,7 +21,8 @@ export function ProjectFunnel({ userProjects = [], setUserProjects }: any) {
     instructions: ""
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showRedirectModal, setShowRedirectModal] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
+  const [orderData, setOrderData] = useState<any>(null);
   const timeoutRef = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
@@ -36,7 +37,7 @@ export function ProjectFunnel({ userProjects = [], setUserProjects }: any) {
     setStep('review');
   };
 
-  const sendWhatsAppNotification = (data: any) => {
+  const getWhatsAppUrl = (data: any) => {
     const message = `🚀 *New WebZinc Order!* 🚀
 
 *Website Name:* ${data.title}
@@ -45,8 +46,8 @@ export function ProjectFunnel({ userProjects = [], setUserProjects }: any) {
 *Instructions:* ${data.instructions || 'None'}`;
     
     const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/919641553429?text=${encodedMessage}`;
-    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+    // Use api.whatsapp.com/send instead of wa.me to bypass popup blocker limitations on mobile
+    return `https://api.whatsapp.com/send?phone=919641553429&text=${encodedMessage}`;
   };
 
   const handleOrderSubmit = async () => {
@@ -66,7 +67,6 @@ export function ProjectFunnel({ userProjects = [], setUserProjects }: any) {
         about: formData.about,
         status: "Pending Review",
         timestamp: serverTimestamp(),
-        // Keep these so the Dashboard UI still binds correctly
         id: Date.now().toString(),
         title: formData.title,
         progress: 0,
@@ -75,26 +75,15 @@ export function ProjectFunnel({ userProjects = [], setUserProjects }: any) {
         instructions: formData.instructions
       };
 
-      // 1. Save data to Firestore exactly matching the new security rules
       await addDoc(collection(db, "projects"), newOrderInfo);
 
-      // Show alert so user knows database accepted the write
-      alert("Order confirmed and saved to database successfully!");
-
-      // 2. ONLY update local state mapped to dashboard after database confirms success
       if (setUserProjects) {
         setUserProjects([...userProjects, newOrderInfo]);
       }
 
-      // 3. Trigger Modal and Modal Timout for Redirect (Only happens if addDoc succeeds)
-      setShowRedirectModal(true);
-
-      timeoutRef.current = setTimeout(() => {
-        sendWhatsAppNotification(newOrderInfo);
-        setIsSubmitting(false);
-        setShowRedirectModal(false);
-        navigate("/profile");
-      }, 3000);
+      setOrderData(newOrderInfo);
+      setIsSaved(true);
+      setIsSubmitting(false);
 
     } catch (error) {
       alert(`Error processing your order: ${(error as Error).message}`);
@@ -235,17 +224,31 @@ export function ProjectFunnel({ userProjects = [], setUserProjects }: any) {
                )}
 
                <div className="pt-8">
-                <button 
-                  onClick={handleOrderSubmit}
-                  disabled={isSubmitting} 
-                  className="w-full flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-5 font-bold text-black transition-all hover:bg-white disabled:opacity-50 shadow-[0_0_20px_rgba(34,211,238,0.4)] hover:shadow-[0_0_40px_rgba(255,255,255,0.6)] hover:scale-[1.02] uppercase tracking-widest text-[15px]"
-                >
-                  {isSubmitting ? "Processing..." : (
-                    <>
-                      Confirm & Order Website <Rocket size={20} className="ml-2" />
-                    </>
-                  )}
-                </button>
+                {isSaved && orderData ? (
+                  <a 
+                    href={getWhatsAppUrl(orderData)} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    onClick={() => {
+                      setTimeout(() => navigate('/profile'), 500);
+                    }}
+                    className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#25D366] px-8 py-5 font-bold text-white transition-all hover:bg-white hover:text-[#25D366] shadow-[0_0_20px_rgba(37,211,102,0.4)] uppercase tracking-widest text-[15px]"
+                  >
+                    SEND TO WHATSAPP <ArrowUpRight size={20} className="ml-1" />
+                  </a>
+                ) : (
+                  <button 
+                    onClick={handleOrderSubmit}
+                    disabled={isSubmitting} 
+                    className="w-full flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-5 font-bold text-black transition-all hover:bg-white disabled:opacity-50 shadow-[0_0_20px_rgba(34,211,238,0.4)] hover:shadow-[0_0_40px_rgba(255,255,255,0.6)] hover:scale-[1.02] uppercase tracking-widest text-[15px]"
+                  >
+                    {isSubmitting ? "Processing..." : (
+                      <>
+                        Confirm & Order Website <Rocket size={20} className="ml-2" />
+                      </>
+                    )}
+                  </button>
+                )}
                 <p className="text-center text-[10px] uppercase tracking-widest text-zinc-500 mt-4">
                   You will be redirected to WhatsApp to finalize the consultation.
                 </p>
@@ -254,33 +257,6 @@ export function ProjectFunnel({ userProjects = [], setUserProjects }: any) {
           </motion.div>
         )}
       </motion.div>
-
-      <AnimatePresence>
-        {showRedirectModal && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              className="flex max-w-sm flex-col items-center text-center rounded-2xl border border-primary/40 bg-[#0a0a0a] p-8 shadow-[0_0_50px_rgba(34,211,238,0.15)]"
-            >
-              <div className="relative flex h-16 w-16 items-center justify-center mb-6">
-                <div className="absolute inset-0 rounded-full border-t-2 border-primary animate-spin" />
-                <div className="absolute inset-2 rounded-full border-r-2 border-primary opacity-50 animate-spin" style={{ animationDirection: 'reverse', animationDuration: '1.5s' }} />
-                <Rocket className="text-primary animate-pulse" size={24} />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-2">Preparing your order...</h3>
-              <p className="text-sm text-zinc-400 leading-relaxed">
-                You will be redirected to WhatsApp for final confirmation.
-              </p>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }
