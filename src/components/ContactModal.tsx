@@ -19,20 +19,20 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[200] p-4 pointer-events-none">
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 bg-black/85 backdrop-blur-md"
+            className="absolute inset-0 bg-black/85 backdrop-blur-md pointer-events-auto"
             onClick={onClose}
           />
           
           <motion.div 
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="relative w-full max-w-md bg-[#0a0a0a] rounded-[20px] p-8 flex flex-col items-center text-center outline-none border border-primary/30 shadow-[0_0_20px_rgba(34,211,238,0.2)]"
+            initial={{ opacity: 0, scale: 0.95, x: "-50%", y: "-40%" }}
+            animate={{ opacity: 1, scale: 1, x: "-50%", y: "-50%" }}
+            exit={{ opacity: 0, scale: 0.95, x: "-50%", y: "-40%" }}
+            className="absolute top-[50%] left-[50%] pointer-events-auto w-[95%] max-w-none md:max-w-md bg-[#0a0a0a] rounded-[20px] p-4 md:p-8 flex flex-col items-center text-center outline-none border border-primary/30 shadow-[0_0_20px_rgba(34,211,238,0.2)] max-h-[85vh] overflow-y-auto"
           >
             <h2 className="text-3xl font-[900] text-white mb-2 tracking-tight">Get in Touch</h2>
             <p className="text-zinc-400 text-[14px] font-medium mb-8 leading-relaxed">
@@ -80,13 +80,13 @@ export function ContactModal({ isOpen, onClose }: ContactModalProps) {
                     { label: "Line 1", number: "9091063123", id: "line1" },
                     { label: "Line 2", number: "9641553429", id: "line2" }
                   ].map((item) => (
-                    <div key={item.id} className="flex items-center justify-between bg-black/50 border border-white/10 rounded-lg p-2 pl-4">
-                      <span className="text-zinc-300 font-bold tracking-wide text-[13px]">
-                        {item.label}: <span className="text-white ml-1">{item.number}</span>
+                    <div key={item.id} className="flex flex-col sm:flex-row items-center sm:justify-between gap-3 sm:gap-0 bg-black/50 border border-white/10 rounded-lg p-3 sm:p-2 sm:pl-4">
+                      <span className="text-zinc-300 font-bold tracking-wide text-[13px] flex flex-col sm:flex-row items-center gap-1 sm:gap-0">
+                        {item.label}: <span className="text-white ml-0 sm:ml-1">{item.number}</span>
                       </span>
                       <button 
                         onClick={() => handleCopy(item.number, item.id)}
-                        className="flex items-center justify-center gap-2 px-4 py-2 rounded-md bg-primary/10 border border-primary/40 text-primary font-bold tracking-widest uppercase text-[11px] hover:bg-primary hover:text-black transition-all shadow-[0_0_10px_rgba(34,211,238,0.1)] hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] cursor-pointer group"
+                        className="flex w-full sm:w-auto items-center justify-center gap-2 px-4 py-2 rounded-md bg-primary/10 border border-primary/40 text-primary font-bold tracking-widest uppercase text-[11px] hover:bg-primary hover:text-black transition-all shadow-[0_0_10px_rgba(34,211,238,0.1)] hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] cursor-pointer group"
                       >
                         {copiedField === item.id ? <><Check size={14} className="group-hover:text-black" /> Copied</> : <><Copy size={14} /> Copy</>}
                       </button>

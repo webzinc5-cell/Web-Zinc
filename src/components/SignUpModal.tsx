@@ -106,16 +106,16 @@ export function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
             className="fixed inset-0 z-[60] bg-[#000000bf] backdrop-blur-xl"
             onClick={onClose}
           />
-          <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 pointer-events-none">
+          <div className="fixed inset-0 z-[70] p-4 pointer-events-none">
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.9, x: "-50%", y: "-50%" }}
+              animate={{ opacity: 1, scale: 1, x: "-50%", y: "-50%" }}
+              exit={{ opacity: 0, scale: 0.9, x: "-50%", y: "-50%" }}
               transition={{ type: "spring", damping: 25, stiffness: 300, duration: 0.3 }}
-              className="relative w-full max-w-md pointer-events-auto flex flex-col rounded-2xl border border-primary/30 bg-zinc-950/80 p-6 md:p-8 shadow-[0_0_40px_rgba(34,211,238,0.15)] max-h-[90vh] overflow-y-auto"
+              className="absolute top-[50%] left-[50%] mt-2 md:mt-0 w-[95%] max-w-none md:max-w-md pointer-events-auto flex flex-col rounded-2xl border border-primary/30 bg-zinc-950/80 p-5 md:p-8 shadow-[0_0_40px_rgba(34,211,238,0.15)] max-h-[85vh] overflow-y-auto"
             >
               <div className="mb-6 flex items-center justify-between z-10 w-full shrink-0">
-                <h2 className="text-2xl font-bold text-white">
+                <h2 className="text-xl sm:text-2xl font-bold text-white uppercase tracking-tight">
                   {view === 'signup' ? "Join WebZinc" : "Welcome Back"}
                 </h2>
                 <button
@@ -194,7 +194,7 @@ export function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
                       <button
                         type="submit"
                         disabled={isLoading}
-                        className="mt-6 flex w-full justify-center rounded-lg bg-primary py-3 font-bold text-black transition-colors hover:bg-primary/90 disabled:opacity-50"
+                        className="mt-6 flex w-full justify-center items-center gap-2 rounded-lg bg-primary py-3 text-xs sm:text-sm font-bold uppercase tracking-wider text-black transition-colors hover:bg-primary/90 disabled:opacity-50"
                       >
                         {isLoading ? "Authenticating..." : (view === 'signup' ? "Create Account" : "Sign In")}
                       </button>
@@ -210,7 +210,7 @@ export function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
                       type="button"
                       onClick={handleGoogleSignIn}
                       disabled={isLoading}
-                      className="mt-6 border border-zinc-700 bg-zinc-900/50 hover:bg-zinc-800 flex w-full items-center justify-center rounded-lg py-3 text-sm font-bold text-white transition-all shadow-none hover:shadow-[0_0_10px_rgba(255,255,255,0.1)] gap-3 disabled:opacity-50"
+                      className="mt-6 border border-zinc-700 bg-zinc-900/50 hover:bg-zinc-800 flex w-full flex-wrap sm:flex-nowrap items-center justify-center rounded-lg py-3 text-xs sm:text-sm font-bold uppercase tracking-wider text-white transition-all shadow-none hover:shadow-[0_0_10px_rgba(255,255,255,0.1)] gap-2 sm:gap-3 disabled:opacity-50"
                     >
                       <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
                         <path

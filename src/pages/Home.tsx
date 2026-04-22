@@ -39,7 +39,7 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
     <div className="flex w-full flex-col pt-24 text-white relative">
       <div className="absolute top-[-100px] right-[-100px] w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(34,211,238,0.08)_0%,transparent_70%)] z-0 pointer-events-none" />
       {/* Hero Section */}
-      <section className="mx-auto flex w-full max-w-7xl flex-col md:flex-row justify-between items-start gap-12 px-6 pt-[80px] pb-24 md:pb-40 relative z-10">
+      <section className="mx-auto flex w-full max-w-7xl flex-row justify-between items-start gap-4 md:gap-12 px-4 md:px-6 pt-[40px] md:pt-[80px] pb-24 md:pb-40 relative z-10">
         
         {/* Left Column (Content) */}
         <motion.div
@@ -47,17 +47,17 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
           variants={staggerContainer}
-          className="flex flex-col items-start text-left order-1 md:max-w-[50%]"
+          className="flex flex-col items-start text-left order-1 flex-1 min-w-0"
         >
           <motion.div
             variants={fadeInUp}
-            className="mb-8 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold tracking-widest text-primary uppercase border border-primary/20 glow-border"
+            className="mb-4 md:mb-8 rounded-full bg-primary/10 px-3 md:px-4 py-1 flex items-center justify-center md:py-1.5 text-[8px] md:text-xs font-bold tracking-widest text-primary uppercase border border-primary/20 glow-border w-max max-w-full truncate"
           >
             Website Building Agency
           </motion.div>
           <motion.h1
             variants={fadeInUp}
-            className="mb-6 text-[56px] md:text-[72px] font-[800] leading-[1] tracking-[-2px] md:tracking-[-4px]"
+            className="mb-4 md:mb-6 text-[22px] sm:text-[28px] md:text-[72px] font-[800] leading-[1.1] md:leading-[1] tracking-[-1px] md:tracking-[-4px] shrink-0"
           >
             Dominate<br />
             Your Local<br />
@@ -65,14 +65,14 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
           </motion.h1>
           <motion.p
             variants={fadeInUp}
-            className="mb-10 max-w-[500px] text-[18px] text-white/60 leading-relaxed"
+            className="mb-6 md:mb-10 max-w-[500px] text-[12px] md:text-[18px] text-white/60 leading-relaxed pr-2 md:pr-0 hidden sm:block"
           >
             Harness luminescent digital strategies to ignite exponential growth and outshine your competitors.
           </motion.p>
-          <motion.div variants={fadeInUp} className="flex gap-[16px] w-full justify-start items-center">
+          <motion.div variants={fadeInUp} className="flex gap-[16px] w-full justify-start items-center mt-2 sm:mt-0">
             <button
               onClick={isLoggedIn ? () => navigate("/start") : onGetStarted}
-              className="rounded-[4px] px-[36px] py-[16px] text-[14px] font-bold text-black bg-white uppercase tracking-[1px] border-none transition-all duration-300 ease-out shadow-[0_0_20px_rgba(34,211,238,0.6)] hover:shadow-[0_0_40px_rgba(34,211,238,1)] hover:scale-105 w-full sm:w-auto"
+              className="rounded-[4px] px-[24px] md:px-[36px] py-[14px] md:py-[16px] text-[12px] md:text-[14px] font-bold text-black bg-white uppercase tracking-[1px] border-none transition-all duration-300 ease-out shadow-[0_0_20px_rgba(34,211,238,0.6)] hover:shadow-[0_0_40px_rgba(34,211,238,1)] hover:scale-105 w-full sm:w-auto min-h-[48px] flex items-center justify-center cursor-pointer"
             >
               Get Started
             </button>
@@ -85,10 +85,10 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
           variants={fadeInUp}
-          className="relative flex flex-col items-end justify-start order-2 w-full md:max-w-[50%] mt-10 md:mt-0"
+          className="relative flex flex-col items-end justify-start order-2 shrink-0 ml-2 md:ml-0"
         >
           {/* Main Cube Image */}
-          <div className="relative w-full max-w-[280px] md:max-w-[350px]">
+          <div className="relative w-[120px] sm:w-[150px] md:w-full md:max-w-[350px]">
             <img 
               src="https://i.postimg.cc/hPVND3xM/IMG-20260422-153046.png" 
               alt="Luminescent Cube" 
@@ -100,12 +100,12 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
           </div>
           
           {/* Subtle Ground Reflection */}
-          <div className="w-[80%] max-w-[280px] md:max-w-[350px] h-[12px] mt-4 rounded-[100%] bg-primary/30 blur-[15px] pointer-events-none shadow-[0_0_40px_rgba(0,255,255,0.6)]" />
+          <div className="w-[80%] max-w-[120px] sm:max-w-[150px] md:max-w-[350px] h-[12px] mt-4 rounded-[100%] bg-primary/30 blur-[15px] pointer-events-none shadow-[0_0_40px_rgba(0,255,255,0.6)]" />
         </motion.div>
       </section>
 
       {/* Process Section */}
-      <section className="mx-auto flex w-full max-w-7xl flex-col items-start px-6 py-[100px] lg:px-20 border-t border-white/5">
+      <section className="mx-auto flex w-full max-w-7xl flex-col items-start px-6 py-10 md:py-[100px] lg:px-20 border-t border-white/5">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -113,12 +113,12 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
           variants={staggerContainer}
           className="w-full flex flex-col items-start text-left"
         >
-          <motion.div variants={fadeInUp} className="mb-10 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold tracking-widest text-primary uppercase border border-primary/20 glow-border w-fit">
+          <motion.div variants={fadeInUp} className="mb-10 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold tracking-widest text-primary uppercase border border-primary/20 glow-border w-fit text-left">
             The Luminescent Process
           </motion.div>
 
           <motion.div
-            className="grid grid-cols-1 sm:grid-cols-3 gap-8 w-full"
+            className="grid grid-cols-1 sm:grid-cols-3 gap-8 w-full px-4 md:px-0"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
@@ -141,7 +141,7 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
       </section>
 
       {/* Portfolio Section */}
-      <section className="mx-auto flex w-full max-w-7xl flex-col items-start px-6 py-[100px] lg:px-20 border-t border-white/5">
+      <section className="mx-auto flex w-full max-w-7xl flex-col items-start px-6 py-10 md:py-[100px] lg:px-20 border-t border-white/5">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -154,7 +154,7 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
           </motion.div>
 
           <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 w-full"
+            className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 w-full px-4 md:px-0"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
@@ -182,7 +182,7 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
             className="flex justify-center w-full"
           >
             <Link to="/past-works">
-              <button className="rounded px-8 py-4 text-[12px] font-extrabold text-[#000000] bg-[#00FFFF] border-none uppercase tracking-[2px] transition-all cursor-pointer animate-cyan-pulse hover:shadow-[0_0_35px_rgba(0,255,255,0.9)] hover:scale-105">
+              <button className="flex min-h-[48px] items-center justify-center rounded px-8 py-4 text-[12px] font-extrabold text-[#000000] bg-[#00FFFF] border-none uppercase tracking-[2px] transition-all cursor-pointer animate-cyan-pulse hover:shadow-[0_0_35px_rgba(0,255,255,0.9)] hover:scale-105">
                 View All Portfolio
               </button>
             </Link>
@@ -191,7 +191,7 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
       </section>
 
       {/* Testimonials Section */}
-      <section className="mx-auto flex w-full max-w-7xl flex-col items-start text-left px-6 py-[100px] lg:px-20 relative z-10 border-t border-white/5 bg-[#050505]">
+      <section className="mx-auto flex w-full max-w-7xl flex-col items-start text-left px-6 py-10 md:py-[100px] lg:px-20 relative z-10 border-t border-white/5 bg-[#050505]">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -203,7 +203,7 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
             What Our Customers Say
           </motion.div>
           
-          <motion.div variants={fadeInUp} className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mt-2 mb-12">
+          <motion.div variants={fadeInUp} className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mt-2 mb-12 px-4 md:px-0">
             {latestReviews.map((review, idx) => (
               <div 
                 key={review.id || idx}
@@ -239,7 +239,7 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
 
           <motion.div variants={fadeInUp} className="flex justify-center w-full mt-6">
             <Link to="/reviews">
-              <button className="cursor-pointer rounded-[4px] px-[30px] py-[14px] text-[12px] font-bold text-black bg-primary uppercase tracking-[2px] transition-all duration-300 ease-out shadow-[0_0_20px_rgba(34,211,238,0.4)] hover:shadow-[0_0_40px_rgba(34,211,238,0.8)] hover:scale-105">
+              <button className="flex min-h-[48px] items-center justify-center cursor-pointer rounded-[4px] px-[30px] py-[14px] text-[12px] font-bold text-black bg-primary uppercase tracking-[2px] transition-all duration-300 ease-out shadow-[0_0_20px_rgba(34,211,238,0.4)] hover:shadow-[0_0_40px_rgba(34,211,238,0.8)] hover:scale-105">
                 See All Reviews
               </button>
             </Link>
@@ -248,7 +248,7 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
       </section>
 
       {/* About Us Section */}
-      <section className="mx-auto flex w-full max-w-7xl flex-col items-start px-6 py-[100px] lg:px-20 relative z-10 border-t border-white/5">
+      <section className="mx-auto flex w-full max-w-7xl flex-col items-start px-6 py-10 md:py-[100px] lg:px-20 relative z-10 border-t border-white/5">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -260,7 +260,7 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
             About Us
           </motion.div>
 
-          <motion.div variants={fadeInUp} className="grid grid-cols-1 lg:grid-cols-2 gap-12 w-full items-center">
+          <motion.div variants={fadeInUp} className="grid grid-cols-1 lg:grid-cols-2 gap-12 w-full items-center px-4 md:px-0">
             <div className="flex flex-col justify-center text-left">
               <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white mb-6">Pioneering Digital Excellence</h2>
               <p className="text-zinc-400 text-[18px] leading-relaxed mb-6">
@@ -289,9 +289,9 @@ function ProcessCard({ title, description }: { title: string; description: strin
   return (
     <motion.div
       variants={fadeInUp}
-      className="group rounded-[12px] bg-[#111111] p-[30px] transition-all duration-300 border border-white/5 relative hover:bg-zinc-900 shadow-[0_0_15px_rgba(0,255,255,0.2)] hover:shadow-[0_0_25px_rgba(0,255,255,0.5)]"
+      className="process-card group rounded-[12px] bg-[#111111] p-[30px] transition-all duration-300 border border-white/5 relative hover:bg-zinc-900 shadow-[0_0_15px_rgba(0,255,255,0.2)] hover:shadow-[0_0_25px_rgba(0,255,255,0.5)]"
     >
-      <div className="w-[8px] h-[8px] bg-primary rounded-full mb-[20px] shadow-[0_0_10px_rgba(34,211,238,1)] transition-shadow group-hover:shadow-[0_0_15px_rgba(34,211,238,1)]" />
+      <div className="process-dot w-[8px] h-[8px] bg-primary rounded-full mb-[20px] shadow-[0_0_10px_rgba(34,211,238,1)] transition-shadow group-hover:shadow-[0_0_15px_rgba(34,211,238,1)]" />
       <h4 className="mb-[12px] text-[16px] uppercase tracking-[1px] font-bold text-white">{title}</h4>
       <p className="text-[13px] leading-relaxed text-zinc-400">{description}</p>
     </motion.div>

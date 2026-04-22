@@ -89,7 +89,7 @@ export function PastWorksPage() {
         className="text-center max-w-3xl mb-20"
       >
         <h1 className="text-4xl md:text-6xl font-[900] tracking-tighter uppercase mb-6 drop-shadow-[0_0_15px_rgba(34,211,238,0.2)]">
-          Past Works
+          PORTFOLIO
         </h1>
         <p className="text-zinc-400 text-lg sm:text-xl font-medium tracking-wide">
           A showcase of our premium dark-mode aesthetic and luminescent web applications.
@@ -135,12 +135,12 @@ export function PastWorksPage() {
                     e.stopPropagation();
                     setSelectedProject(item);
                   }}
-                  className="flex w-full items-center justify-center gap-2 rounded-lg border border-primary/40 bg-primary/5 py-3 text-sm font-bold tracking-[0.5px] text-primary transition-all duration-300 hover:bg-primary hover:text-black hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] cursor-pointer uppercase"
+                  className="flex w-full min-h-[48px] items-center justify-center gap-2 rounded-lg border border-primary/40 bg-primary/5 py-3 text-sm font-bold tracking-[0.5px] text-primary transition-all duration-300 hover:bg-primary hover:text-black hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] cursor-pointer uppercase"
                 >
                   Live Site <ArrowUpRight size={18} />
                 </button>
               ) : (
-                <button className="flex w-full items-center justify-center gap-2 rounded-lg border border-zinc-800 bg-zinc-900/50 py-3 text-sm font-bold tracking-[0.5px] text-zinc-500 cursor-not-allowed uppercase">
+                <button className="flex w-full min-h-[48px] items-center justify-center gap-2 rounded-lg border border-zinc-800 bg-zinc-900/50 py-3 text-sm font-bold tracking-[0.5px] text-zinc-500 cursor-not-allowed uppercase">
                   Coming Soon
                 </button>
               )}

@@ -23,7 +23,23 @@ function AppContent() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAuthReady, setIsAuthReady] = useState(false);
   const [userProjects, setUserProjects] = useState<any[]>([]);
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    return (localStorage.getItem('theme') as 'dark' | 'light') || 'dark';
+  });
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('light');
+    } else {
+      document.documentElement.classList.add('light');
+      document.documentElement.classList.remove('dark');
+    }
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => setTheme(prev => prev === 'dark' ? 'light' : 'dark');
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -70,7 +86,7 @@ function AppContent() {
   }
 
   return (
-    <div className="relative min-h-screen font-sans selection:bg-primary selection:text-black">
+    <div className="relative min-h-screen font-sans selection:bg-primary selection:text-black overflow-x-hidden">
       <CursorGlow />
       
       <Routes>
@@ -79,7 +95,7 @@ function AppContent() {
           path="/profile" 
           element={
             isLoggedIn ? (
-              <Dashboard userProjects={userProjects} setUserProjects={setUserProjects} />
+              <Dashboard userProjects={userProjects} setUserProjects={setUserProjects} theme={theme} />
             ) : (
               <ProtectedGuard onRequireAuth={() => setIsAuthModalOpen(true)} />
             )
@@ -101,7 +117,7 @@ function AppContent() {
           path="*"
           element={
             <>
-              <Navbar onSignUp={() => setIsAuthModalOpen(true)} isLoggedIn={isLoggedIn} onOpenContact={() => setIsContactOpen(true)} />
+              <Navbar onSignUp={() => setIsAuthModalOpen(true)} isLoggedIn={isLoggedIn} onOpenContact={() => setIsContactOpen(true)} theme={theme} toggleTheme={toggleTheme} />
               <main className="relative z-10 flex min-h-screen flex-col">
                 <Routes>
                   <Route path="/" element={<Home onGetStarted={() => setIsAuthModalOpen(true)} isLoggedIn={isLoggedIn} />} />

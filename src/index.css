@@ -40,6 +40,148 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* 
+=======================================
+LIGHT MODE OVERRIDES FOR HARDCODED DARK 
+======================================= 
+*/
+html.light body {
+  background-color: #F8FAFC !important;
+  color: #1E293B !important;
+}
+
+/* Target all white text natively */
+html.light .text-white {
+  color: #1E293B !important;
+}
+
+html.light .text-white\/90 {
+  color: #1E293B !important;
+}
+
+html.light .text-white\/80 {
+  color: #334155 !important;
+}
+
+html.light .text-white\/70,
+html.light .text-white\/60,
+html.light .text-zinc-400,
+html.light .text-zinc-500 {
+  color: #64748B !important;
+}
+
+/* Base Light Mode Borders for inputs and widgets */
+html.light .placeholder-zinc-600::placeholder {
+  color: #94A3B8 !important;
+}
+
+html.light .bg-zinc-900\/50 {
+  background-color: #F1F5F9 !important;
+}
+
+/* Global Backgrounds overrides */
+html.light .bg-\[\#000000\],
+html.light .bg-\[\#050505\], 
+html.light .bg-black,
+html.light .bg-zinc-950,
+html.light .bg-black\/60,
+html.light .bg-\[\#0a0a0a\],
+html.light .bg-\[\#0a0a0a\]\/50,
+html.light .bg-\[\#000\] {
+  background-color: #F8FAFC !important;
+}
+
+/* Sidebar and Mobile bottom nav specifically */
+html.light aside,
+html.light nav.bg-\[\#050505\]\/90 {
+  background-color: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+}
+
+/* Cards & Modals */
+html.light .bg-zinc-900\/40,
+html.light .bg-zinc-950\/80,
+html.light .bg-[rgba(5,5,5,0.9)],
+html.light .bg-\[\#111111\],
+html.light .bg-\[\#111\] {
+  background-color: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+  box-shadow: 0 10px 30px rgba(0, 255, 255, 0.1) !important;
+}
+
+/* Navbar */
+html.light nav {
+  background-color: rgba(248, 250, 252, 0.8) !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Process Cards Specifically */
+html.light .process-card {
+  background-color: #FFFFFF !important;
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+  box-shadow: 0 10px 30px rgba(0, 255, 255, 0.15) !important;
+}
+
+html.light .process-card:hover {
+  background-color: #FFFFFF !important;
+  transform: translateY(-4px) !important;
+  box-shadow: 0 15px 35px rgba(0, 255, 255, 0.25) !important;
+}
+
+html.light .process-dot {
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.4) !important;
+}
+html.light .process-card:hover .process-dot {
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.6) !important;
+}
+
+/* Base Light Mode Borders for inputs and widgets */
+html.light .border-\[\#222\],
+html.light .border-zinc-800\/80,
+html.light .border-zinc-800,
+html.light .border-zinc-800\/50,
+html.light .border-white\/5,
+html.light .border-white\/10 {
+  border-color: #E2E8F0 !important;
+}
+
+html.light .hover\:border-\[\#333\]:hover {
+  border-color: rgba(0,255,255, 0.4) !important;
+}
+
+/* Special Case for Primary Blue text so it is readable on white */
+html.light .text-primary, 
+html.light .text-\[\#00FFFF\] {
+  color: #00B1C8 !important; /* Slightly darker cyan */
+}
+
+/* Keep borders but soften */
+html.light .border-primary\/30,
+html.light .border-primary\/20 {
+  border-color: rgba(0, 177, 200, 0.3) !important;
+}
+
+/* Mobile Drawer Links & Active States */
+html.light .bg-primary\/10,
+html.light .bg-\[rgba\(0\,255\,255\,0\.15\)\] {
+  background-color: rgba(0, 177, 200, 0.1) !important;
+  border-color: #00B1C8 !important;
+}
+
+html.light .hover\:bg-zinc-900:hover {
+  background-color: #F8FAFC !important;
+  color: #1E293B !important;
+}
+
+html.light .bg-\[rgba\(0\,255\,255\,0\.05\)\] {
+  background-color: rgba(0, 0, 0, 0.03) !important;
+  border-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+html.light .shadow-\[-10px_0_30px_rgba\(34\,211\,238\,0\.1\)\] {
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.05) !important;
+}
+
 ::selection {
   background-color: var(--color-primary);
   color: #000000;
