@@ -27,6 +27,7 @@ export function Dashboard({ userProjects = [], setUserProjects }: any) {
   const [userName, setUserName] = useState("User");
   const [userEmail, setUserEmail] = useState("");
   const [initials, setInitials] = useState("US");
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [activeTab, setActiveTab] = useState<'overview' | 'projects' | 'settings'>('overview');
 
   useEffect(() => {
@@ -101,13 +102,8 @@ export function Dashboard({ userProjects = [], setUserProjects }: any) {
           <NavItem icon={<LayoutDashboard size={18} />} label="Overview" active={activeTab === 'overview'} onClick={() => setActiveTab('overview')} />
           <NavItem icon={<FolderKanban size={18} />} label="My Projects" active={activeTab === 'projects'} onClick={() => setActiveTab('projects')} />
           <NavItem icon={<Settings size={18} />} label="Settings" active={activeTab === 'settings'} onClick={() => setActiveTab('settings')} />
+          <NavItem icon={<LogOut size={18} />} label="Sign Out" onClick={() => setShowLogoutConfirm(true)} />
         </nav>
-        <div className="mt-auto pt-6 border-t border-[#222] flex flex-col gap-2">
-          <a href="mailto:support@webzinc.com" className="flex items-center w-full gap-3 rounded-lg px-3 py-3 text-sm font-medium transition-all duration-300 text-zinc-400 hover:bg-zinc-900 border border-transparent hover:text-white">
-            <Mail size={18} /> Contact Support
-          </a>
-          <NavItem icon={<LogOut size={18} />} label="Sign Out" onClick={handleLogout} />
-        </div>
       </aside>
 
       {/* Main Content */}
@@ -155,7 +151,48 @@ export function Dashboard({ userProjects = [], setUserProjects }: any) {
         <MobileNavItem icon={<LayoutDashboard size={20} />} label="Overview" active={activeTab === 'overview'} onClick={() => setActiveTab('overview')} />
         <MobileNavItem icon={<FolderKanban size={20} />} label="Projects" active={activeTab === 'projects'} onClick={() => setActiveTab('projects')} />
         <MobileNavItem icon={<Settings size={20} />} label="Settings" active={activeTab === 'settings'} onClick={() => setActiveTab('settings')} />
+        <MobileNavItem icon={<LogOut size={20} />} label="Sign Out" onClick={() => setShowLogoutConfirm(true)} />
       </nav>
+
+      <AnimatePresence>
+        {showLogoutConfirm && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="flex w-full max-w-sm flex-col items-center text-center rounded-2xl border border-primary bg-[#0a0a0a] p-8 shadow-[0_0_50px_rgba(34,211,238,0.5)]"
+            >
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 border border-primary/30 mb-6 drop-shadow-[0_0_15px_rgba(34,211,238,0.3)]">
+                <LogOut className="text-primary" size={28} />
+              </div>
+              <h3 className="text-[24px] font-extrabold text-white mb-3">Confirm Logout</h3>
+              <p className="text-[14px] text-zinc-400 leading-relaxed mb-8">
+                Do you really want to logout from your account?
+              </p>
+              
+              <div className="flex flex-col gap-3 w-full">
+                <button
+                  onClick={handleLogout}
+                  className="w-full flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-4 font-bold text-black transition-all hover:bg-white shadow-[0_0_20px_rgba(34,211,238,0.4)] hover:shadow-[0_0_40px_rgba(255,255,255,0.6)] uppercase tracking-widest text-[13px]"
+                >
+                  Confirm Logout
+                </button>
+                <button
+                  onClick={() => setShowLogoutConfirm(false)}
+                  className="w-full flex items-center justify-center gap-2 rounded-xl border border-zinc-800 bg-transparent px-6 py-4 font-bold text-zinc-400 transition-all hover:bg-zinc-900 hover:text-white uppercase tracking-widest text-[13px]"
+                >
+                  Back
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
