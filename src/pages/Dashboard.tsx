@@ -1,11 +1,10 @@
 import { ReactNode, useEffect, useState, FormEvent } from "react";
-import { LayoutDashboard, FolderKanban, CreditCard, Settings, LogOut, ArrowUpRight, ArrowLeft, Plus, Mail, FileText, Download, User, Briefcase, Shield } from "lucide-react";
+import { LayoutDashboard, FolderKanban, Settings, LogOut, ArrowLeft, Plus, Mail, User, Briefcase, Shield } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
-import { doc, getDoc, collection, getDocs, setDoc } from "firebase/firestore";
-import { ref, onValue } from "firebase/database";
-import { auth, db, rtdb } from "../lib/firebase";
+import { doc, getDoc, collection, getDocs, setDoc, onSnapshot } from "firebase/firestore";
+import { auth, db } from "../lib/firebase";
 import { handleFirestoreError } from "../lib/handleFirestoreError";
 
 const fadeUp = {
@@ -28,44 +27,57 @@ export function Dashboard({ userProjects = [], setUserProjects }: any) {
   const [userName, setUserName] = useState("User");
   const [userEmail, setUserEmail] = useState("");
   const [initials, setInitials] = useState("US");
-  const [activeTab, setActiveTab] = useState<'overview' | 'projects' | 'payments' | 'settings'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'projects' | 'settings'>('overview');
 
   useEffect(() => {
+    let unsubscribe: () => void;
+
     const fetchUserData = async () => {
       const user = auth.currentUser;
       if (user) {
         setUserEmail(user.email || "");
-        try {
-          const userDoc = await getDoc(doc(db, "users", user.uid));
+        unsubscribe = onSnapshot(doc(db, "users", user.uid), (userDoc) => {
           if (userDoc.exists()) {
             const data = userDoc.data();
-            if (data.businessName) {
+            const fullName = data.fullName || data.full_name;
+            if (fullName) {
+              setUserName(fullName);
+              setInitials(fullName.substring(0, 2).toUpperCase());
+            } else if (data.businessName) {
               setUserName(data.businessName);
               setInitials(data.businessName.substring(0, 2).toUpperCase());
+            } else if (user.displayName) {
+              setUserName(user.displayName);
+              setInitials(user.displayName.substring(0, 2).toUpperCase());
+            } else if (user.email) {
+              const emailName = user.email.split('@')[0];
+              setUserName(emailName);
+              setInitials(emailName.substring(0, 2).toUpperCase());
             }
-          } else if (user.displayName) {
-             setUserName(user.displayName);
-             setInitials(user.displayName.substring(0, 2).toUpperCase());
-          } else if (user.email) {
-             const emailName = user.email.split('@')[0];
-             setUserName(emailName);
-             setInitials(emailName.substring(0, 2).toUpperCase());
+          } else {
+            // Fallback if doc doesn't exist yet
+            if (user.displayName) {
+               setUserName(user.displayName);
+               setInitials(user.displayName.substring(0, 2).toUpperCase());
+            } else if (user.email) {
+               const emailName = user.email.split('@')[0];
+               setUserName(emailName);
+               setInitials(emailName.substring(0, 2).toUpperCase());
+            }
           }
-
-        } catch (error) {
-          // Graceful fallback to Firebase Auth data
-          if (user.displayName) {
-             setUserName(user.displayName);
-             setInitials(user.displayName.substring(0, 2).toUpperCase());
-          } else if (user.email) {
-             const emailName = user.email.split('@')[0];
-             setUserName(emailName);
-             setInitials(emailName.substring(0, 2).toUpperCase());
-          }
-        }
+        }, (error) => {
+          console.error("Error fetching user data:", error);
+        });
       }
     };
+    
     fetchUserData();
+
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
   }, []);
 
   const handleLogout = async () => {
@@ -88,7 +100,6 @@ export function Dashboard({ userProjects = [], setUserProjects }: any) {
         <nav className="flex flex-1 flex-col gap-2">
           <NavItem icon={<LayoutDashboard size={18} />} label="Overview" active={activeTab === 'overview'} onClick={() => setActiveTab('overview')} />
           <NavItem icon={<FolderKanban size={18} />} label="My Projects" active={activeTab === 'projects'} onClick={() => setActiveTab('projects')} />
-          <NavItem icon={<CreditCard size={18} />} label="Past Payments" active={activeTab === 'payments'} onClick={() => setActiveTab('payments')} />
           <NavItem icon={<Settings size={18} />} label="Settings" active={activeTab === 'settings'} onClick={() => setActiveTab('settings')} />
         </nav>
         <div className="mt-auto pt-6 border-t border-[#222] flex flex-col gap-2">
@@ -133,7 +144,6 @@ export function Dashboard({ userProjects = [], setUserProjects }: any) {
             >
               {activeTab === 'overview' && <OverviewView userName={userName} initials={initials} projects={userProjects} fadeUp={fadeUp} />}
               {activeTab === 'projects' && <ProjectsView projects={userProjects} fadeUp={fadeUp} />}
-              {activeTab === 'payments' && <PaymentsView fadeUp={fadeUp} />}
               {activeTab === 'settings' && <SettingsView userName={userName} userEmail={userEmail} fadeUp={fadeUp} />}
             </motion.div>
           </AnimatePresence>
@@ -144,7 +154,6 @@ export function Dashboard({ userProjects = [], setUserProjects }: any) {
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[#050505]/90 backdrop-blur-xl border-t border-[#222] z-50 flex items-center justify-around p-3 pb-6">
         <MobileNavItem icon={<LayoutDashboard size={20} />} label="Overview" active={activeTab === 'overview'} onClick={() => setActiveTab('overview')} />
         <MobileNavItem icon={<FolderKanban size={20} />} label="Projects" active={activeTab === 'projects'} onClick={() => setActiveTab('projects')} />
-        <MobileNavItem icon={<CreditCard size={20} />} label="Payments" active={activeTab === 'payments'} onClick={() => setActiveTab('payments')} />
         <MobileNavItem icon={<Settings size={20} />} label="Settings" active={activeTab === 'settings'} onClick={() => setActiveTab('settings')} />
       </nav>
     </div>
@@ -191,73 +200,42 @@ function StatWidget({ title, value, primary }: { title: string; value: string; p
   );
 }
 
-function ProjectCard({ id, title, progress, date, status, category }: any) {
-  const [liveProgress, setLiveProgress] = useState(progress);
-
-  useEffect(() => {
-    if (!id) return;
-    const progressRef = ref(rtdb, `projects/${id}/progress`);
-    
-    // Set up real-time listener
-    const unsubscribe = onValue(progressRef, (snapshot) => {
-      if (snapshot.exists()) {
-        const val = snapshot.val();
-        // Ensure the value is a valid number, or fallback to the current liveProgress
-        if (typeof val === 'number') {
-          setLiveProgress(val);
-        }
-      }
-    }, () => {
-      // RTDB fallback to static data
-    });
-
-    // Cleanup subscription on unmount
-    return () => unsubscribe();
-  }, [id, progress]);
-
+function ProjectCard({ title, category, goal, about, instructions, contactNumber, date }: any) {
   return (
     <div className="flex flex-col rounded-[12px] border border-[#222] bg-[#0a0a0a] p-6 hover:border-primary/30 shadow-none hover:shadow-[0_0_30px_rgba(34,211,238,0.05)] transition-all duration-300">
-      <div className="mb-6">
-        <div className="flex justify-between items-start mb-1">
-          <div>
-            <h3 className="text-[16px] font-[700] tracking-tight">{title}</h3>
-            {category && <p className="text-[10px] text-zinc-500 uppercase tracking-widest mt-1">{category}</p>}
-          </div>
-          <span className={`inline-flex items-center rounded-md px-2 py-1 text-[10px] font-medium border ${status === 'Pending Review' ? 'text-primary bg-primary/10 border-primary/20 shadow-[0_0_15px_rgba(34,211,238,0.2)]' : 'text-zinc-400 bg-zinc-500/10 border-zinc-500/20'}`}>
-            {status === 'Pending Review' && (
-              <span className="relative flex h-2 w-2 mr-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-              </span>
-            )}
-            {status || "Pending Review"}
-          </span>
-        </div>
-        <p className="text-[12px] text-zinc-500 mt-2">{date}</p>
+      <div className="mb-6 border-b border-[#222] pb-6">
+        <h3 className="text-[20px] font-[800] tracking-tight text-white">{title}</h3>
+        <p className="text-[12px] text-zinc-500 mt-2">Started: {date}</p>
       </div>
       
-      <div className="mb-8">
-        <div className="flex justify-between items-end mb-2">
-          <span className="text-[10px] font-bold uppercase tracking-[1px] text-zinc-500">Progress</span>
-          <motion.span 
-            className="text-[12px] font-[800] text-primary"
-          >
-            {liveProgress}%
-          </motion.span>
+      <div className="space-y-4">
+        <div>
+          <span className="text-[11px] font-bold uppercase tracking-widest text-zinc-500 block mb-1">Category</span>
+          <span className="text-sm font-medium text-primary">{category || "N/A"}</span>
         </div>
-        <div className="h-[4px] w-full bg-zinc-900 rounded-full overflow-hidden">
-          <motion.div 
-            initial={{ width: `${progress}%` }}
-            animate={{ width: `${liveProgress}%` }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="h-full bg-primary shadow-[0_0_10px_rgba(34,211,238,0.8)]" 
-          />
+        
+        <div>
+          <span className="text-[11px] font-bold uppercase tracking-widest text-zinc-500 block mb-1">Primary Goal</span>
+          <span className="text-sm text-white">{goal || "N/A"}</span>
         </div>
+        
+        <div>
+          <span className="text-[11px] font-bold uppercase tracking-widest text-zinc-500 block mb-1">Contact Number</span>
+          <span className="text-sm text-white">{contactNumber || "N/A"}</span>
+        </div>
+        
+        <div className="pt-2">
+          <span className="text-[11px] font-bold uppercase tracking-widest text-zinc-500 block mb-1">Business Description</span>
+          <p className="text-sm text-zinc-300 leading-relaxed whitespace-pre-line">{about || "N/A"}</p>
+        </div>
+        
+        {instructions && (
+          <div className="pt-2">
+             <span className="text-[11px] font-bold uppercase tracking-widest text-zinc-500 block mb-1">Special Instructions</span>
+             <p className="text-sm text-zinc-300 leading-relaxed whitespace-pre-line">{instructions}</p>
+          </div>
+        )}
       </div>
-
-      <button className="mt-auto flex w-full items-center justify-center gap-2 rounded-[6px] border border-primary/40 bg-transparent py-[10px] text-[13px] font-bold tracking-[0.5px] text-primary transition-all duration-300 hover:bg-primary hover:text-black hover:shadow-[0_0_20px_rgba(34,211,238,0.3)]">
-        Preview Site <ArrowUpRight size={16} />
-      </button>
     </div>
   );
 }
@@ -331,63 +309,6 @@ function ProjectsView({ projects, fadeUp }: any) {
   );
 }
 
-function PaymentsView({ fadeUp }: any) {
-  const pastPayments: any[] = [];
-
-  return (
-    <motion.div variants={fadeUp} className="pb-12 space-y-8 w-full">
-      <div className="mb-8">
-        <h1 className="text-[32px] sm:text-[40px] font-extrabold tracking-[-1px] leading-tight flex flex-wrap max-w-full">Past Payments</h1>
-        <p className="mt-1 text-sm text-zinc-400">Review your billing history and download past invoices.</p>
-      </div>
-      
-      <div className="overflow-x-auto rounded-2xl border border-white/10 bg-[#0a0a0a]/60 backdrop-blur-xl shadow-[0_0_40px_rgba(0,0,0,0.5)] w-full">
-        <table className="w-full text-left text-sm text-zinc-300">
-          <thead className="border-b border-white/10 text-xs font-semibold uppercase tracking-wider text-zinc-500 bg-black/40">
-            <tr>
-              <th className="px-6 py-5">Date</th>
-              <th className="px-6 py-5">Service</th>
-              <th className="px-6 py-5">Amount</th>
-              <th className="px-6 py-5">Status</th>
-              <th className="px-6 py-5 text-right">Invoice</th>
-            </tr>
-          </thead>
-          <tbody>
-            {pastPayments.length === 0 ? (
-              <tr>
-                <td colSpan={5} className="px-6 py-12 text-center text-zinc-500">
-                  <div className="flex flex-col items-center justify-center">
-                    <FileText size={32} className="text-zinc-600 mb-4" />
-                    <p>No past payments found.</p>
-                  </div>
-                </td>
-              </tr>
-            ) : (
-              pastPayments.map(payment => (
-                <tr key={payment.id} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
-                  <td className="px-6 py-5 whitespace-nowrap">{payment.date}</td>
-                  <td className="px-6 py-5 font-medium text-white">{payment.service}</td>
-                  <td className="px-6 py-5 font-mono">{payment.amount}</td>
-                  <td className="px-6 py-5">
-                    <span className="inline-flex items-center rounded-md bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-400 border border-emerald-500/20 shadow-[0_0_10px_rgba(16,185,129,0.1)]">
-                      {payment.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-5 text-right">
-                    <button className="text-zinc-500 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-lg">
-                      <Download size={18} />
-                    </button>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
-    </motion.div>
-  );
-}
-
 function SettingsView({ userName, userEmail, fadeUp }: any) {
   const [name, setName] = useState(userName);
   const [phone, setPhone] = useState("");
@@ -399,25 +320,27 @@ function SettingsView({ userName, userEmail, fadeUp }: any) {
   const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      const user = auth.currentUser;
-      if (user) {
-        try {
-          const userDoc = await getDoc(doc(db, "users", user.uid));
-          if (userDoc.exists()) {
-            const data = userDoc.data();
-            if (data.fullName) setName(data.fullName);
-            if (data.phoneNumber) setPhone(data.phoneNumber);
-            if (data.businessName) setBName(data.businessName);
-            if (data.aboutBusiness) setAbout(data.aboutBusiness);
+    const user = auth.currentUser;
+    if (user) {
+      const unsubscribe = onSnapshot(doc(db, "users", user.uid), (userDoc) => {
+        if (userDoc.exists()) {
+          const data = userDoc.data();
+          const pName = data.fullName || data.full_name;
+          if (pName) setName(pName);
+          if (data.phoneNumber) {
+             // ensure phone starts with +91
+             setPhone(data.phoneNumber.startsWith("+91") ? data.phoneNumber : `+91 ${data.phoneNumber}`);
           }
-        } catch (error) {
-          console.error("Error fetching user config:", error);
-          setErrorMsg("Welcome! Fill out your profile below.");
+          if (data.businessName) setBName(data.businessName);
+          if (data.aboutBusiness) setAbout(data.aboutBusiness);
         }
-      }
-    };
-    fetchUserData();
+      }, (error) => {
+        console.error("Error fetching user config:", error);
+        setErrorMsg("Welcome! Fill out your profile below.");
+      });
+
+      return () => unsubscribe();
+    }
   }, []);
 
   const handleSave = async (e: FormEvent) => {
@@ -479,7 +402,21 @@ function SettingsView({ userName, userEmail, fadeUp }: any) {
               </div>
               <div>
                 <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-zinc-500">Phone Number</label>
-                <input type="tel" value={phone} onChange={e => setPhone(e.target.value)} className="w-full rounded-xl border border-zinc-800 bg-[#000] p-4 text-white placeholder-zinc-600 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-none focus:shadow-[0_0_15px_rgba(34,211,238,0.2)]" placeholder="+1 (555) 000-0000" />
+                <input 
+                  type="tel" 
+                  value={phone ? (phone.startsWith("+91 ") ? phone : `+91 `) : "+91 "} 
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    if (val.startsWith("+91 ")) {
+                      const digits = val.substring(4).replace(/\D/g, '').substring(0, 10);
+                      setPhone(`+91 ${digits}`);
+                    } else if (val === "+91") {
+                      setPhone("+91 ");
+                    }
+                  }} 
+                  className="w-full rounded-xl border border-zinc-800 bg-[#000] p-4 text-white placeholder-zinc-600 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-none focus:shadow-[0_0_15px_rgba(34,211,238,0.2)]" 
+                  placeholder="+91 0000000000" 
+                />
               </div>
             </div>
           </div>
@@ -548,7 +485,16 @@ function ProjectList({ projects }: { projects: any[] }) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {projects.map((p) => (
-        <ProjectCard key={p.id} id={p.id} title={p.title || "Untitled Project"} progress={p.progress || 0} date={p.date || "Just started"} status={p.status} category={p.category} />
+        <ProjectCard 
+          key={p.id} 
+          title={p.title || p.name || "Untitled Project"} 
+          category={p.category} 
+          goal={p.goal} 
+          about={p.about} 
+          instructions={p.instructions} 
+          contactNumber={p.contactNumber} 
+          date={p.date || "Just started"} 
+        />
       ))}
     </div>
   )
