@@ -12,11 +12,11 @@ export function Navbar({ onSignUp, isLoggedIn, onOpenContact }: NavbarProps) {
   const navigate = useNavigate();
 
   const links = [
-    { name: "Platform", path: "/" },
-    { name: "PAST WORKS", path: "/past-works" },
-    { name: "Pricing", path: "/payments" },
-    { name: "Reviews", path: "/reviews" },
-    { name: "Contact", action: onOpenContact },
+    { name: "HOME", path: "/" },
+    { name: "PORTFOLIO", path: "/past-works" },
+    { name: "PAYMENTS", path: "/payments" },
+    { name: "REVIEWS", path: "/reviews" },
+    { name: "CONTACT", action: onOpenContact },
   ];
 
   return (
@@ -30,11 +30,17 @@ export function Navbar({ onSignUp, isLoggedIn, onOpenContact }: NavbarProps) {
             <Link
               key={link.name}
               to={link.path}
+              onClick={(e) => {
+                if (link.path === '/' && location.pathname === '/') {
+                  e.preventDefault();
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+              }}
               className={cn(
-                "text-[13px] font-medium transition-opacity",
-                location.pathname === link.path || (location.pathname === '/' && link.path === '/')
-                  ? "text-white opacity-100"
-                  : "text-white opacity-70 hover:opacity-100"
+                "text-[13px] font-bold tracking-widest transition-all duration-300 uppercase",
+                location.pathname === link.path && link.path !== '/'
+                  ? "text-primary drop-shadow-[0_0_10px_rgba(34,211,238,0.8)]"
+                  : "text-white/70 hover:text-primary hover:drop-shadow-[0_0_10px_rgba(34,211,238,0.8)] hover:opacity-100"
               )}
             >
               {link.name}
@@ -43,7 +49,7 @@ export function Navbar({ onSignUp, isLoggedIn, onOpenContact }: NavbarProps) {
             <button
               key={link.name}
               onClick={link.action}
-              className="text-[13px] font-medium transition-opacity text-white opacity-70 hover:opacity-100 uppercase uppercase cursor-pointer"
+              className="text-[13px] font-bold tracking-widest transition-all duration-300 uppercase text-white/70 hover:text-primary hover:drop-shadow-[0_0_10px_rgba(34,211,238,0.8)] hover:opacity-100 cursor-pointer"
             >
               {link.name}
             </button>
@@ -54,7 +60,7 @@ export function Navbar({ onSignUp, isLoggedIn, onOpenContact }: NavbarProps) {
         onClick={isLoggedIn ? () => navigate("/profile") : onSignUp}
         className="bg-transparent border border-white text-white px-[20px] py-[8px] rounded-full text-[13px] font-bold uppercase transition-all hover:bg-white/10 hover:scale-105"
       >
-        {isLoggedIn ? "Profile" : "Sign Up"}
+        {isLoggedIn ? "PROFILE" : "Sign Up"}
       </button>
     </nav>
   );
