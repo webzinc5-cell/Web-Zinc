@@ -43,7 +43,7 @@ function AppContent() {
           const fetchedOrders = querySnapshot.docs.map(doc => ({
             id: doc.id,
             ...doc.data()
-          }));
+          })).filter((order: any) => order.isVerified !== false); // Exclude explicit false, allow legacy undefined
           
           setUserProjects(fetchedOrders);
         } catch (error) {

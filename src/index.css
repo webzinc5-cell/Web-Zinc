@@ -7,6 +7,19 @@
   --color-zinc-black: #000000;
   --color-zinc-card: #111111;
   --color-zinc-border: rgba(34, 211, 238, 0.2);
+
+  --animate-pulse-glow: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  
+  @keyframes pulse-glow {
+    0%, 100% {
+      opacity: 1;
+      box-shadow: 0 0 15px rgba(34, 211, 238, 0.4);
+    }
+    50% {
+      opacity: .9;
+      box-shadow: 0 0 35px rgba(34, 211, 238, 0.7);
+    }
+  }
 }
 
 body {
