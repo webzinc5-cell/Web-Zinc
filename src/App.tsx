@@ -12,6 +12,7 @@ import { Dashboard } from "./pages/Dashboard";
 import { ProjectFunnel } from "./pages/ProjectFunnel";
 import { CursorGlow } from "./components/CursorGlow";
 import { SignUpModal } from "./components/SignUpModal";
+import { CrystalLoader } from "./components/ui/CrystalLoader";
 
 import { PastWorksPage } from "./pages/PastWorks";
 import { PaymentsPage } from "./pages/Payments";
@@ -79,8 +80,8 @@ function AppContent() {
 
   if (!isAuthReady) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent shadow-[0_0_15px_rgba(34,211,238,0.5)]" />
+      <div className={`min-h-screen flex items-center justify-center ${theme === 'light' ? 'bg-[#F8FAFC]' : 'bg-[#000000]'}`}>
+        <CrystalLoader theme={theme} />
       </div>
     );
   }
