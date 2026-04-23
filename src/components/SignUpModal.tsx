@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "motion/react";
-import { X } from "lucide-react";
+import { X, Eye, EyeOff } from "lucide-react";
 import { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, setPersistence, browserLocalPersistence } from "firebase/auth";
@@ -15,6 +15,7 @@ export function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
   const [view, setView] = useState<'signup' | 'login'>('signup');
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [businessName, setBusinessName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -24,9 +25,10 @@ export function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
     e.preventDefault();
     setIsLoading(true);
     setErrorMsg("");
-
+    
     try {
       await setPersistence(auth, browserLocalPersistence);
+      
       if (view === 'signup') {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
@@ -38,15 +40,15 @@ export function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
             createdAt: serverTimestamp(),
           });
         } catch (err) {
-          // Could not create Firestore user doc (rules issue). Proceeding anyway.
+          // Silent catch for firestore issues (e.g. rules)
         }
       } else {
         await signInWithEmailAndPassword(auth, email, password);
       }
+      
       onClose();
       navigate("/profile");
     } catch (error: any) {
-      alert("Auth Error: " + error.code + " - " + error.message);
       setErrorMsg(error.message.replace("Firebase: ", ""));
     } finally {
       setIsLoading(false);
@@ -176,20 +178,24 @@ export function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
                           <label className="block text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-zinc-400">
                             {view === 'signup' ? 'Create Password' : 'Password'}
                           </label>
-                          {view === 'login' && (
-                            <button type="button" className="text-[10px] sm:text-xs font-medium text-primary hover:text-white transition-colors">
-                              Forgot Password?
-                            </button>
-                          )}
                         </div>
-                        <input
-                          type="password"
-                          required
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          className="w-full rounded-lg border border-zinc-700 bg-zinc-900/50 p-2.5 sm:p-3 text-sm text-white placeholder-zinc-500 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-none focus:shadow-[0_0_10px_rgba(34,211,238,0.2)]"
-                          placeholder="••••••••"
-                        />
+                        <div className="relative">
+                          <input
+                            type={showPassword ? "text" : "password"}
+                            required
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="w-full rounded-lg border border-zinc-700 bg-zinc-900/50 p-2.5 sm:p-3 pr-10 text-sm text-white placeholder-zinc-500 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-none focus:shadow-[0_0_10px_rgba(34,211,238,0.2)]"
+                            placeholder="••••••••"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white transition-colors"
+                          >
+                            {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                          </button>
+                        </div>
                       </div>
                       <button
                         type="submit"
