@@ -57,11 +57,11 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
           </motion.div>
           <motion.h1
             variants={fadeInUp}
-            className="mb-2 md:mb-3 text-[22px] sm:text-[28px] md:text-[72px] font-[800] leading-[1.1] md:leading-[1] tracking-[-1px] md:tracking-[-4px] shrink-0"
+            className="mb-2 md:mb-3 text-[22px] sm:text-[28px] md:text-[60px] font-[800] leading-[1.1] md:leading-[1] tracking-[-1px] md:tracking-[-2px] shrink-0"
           >
-            Dominate<br />
-            Your Local<br />
-            <span className="text-primary drop-shadow-[0_0_30px_rgba(34,211,238,0.4)]">Market</span>
+            Premium Website<br />
+            Development Agency<br />
+            in <span className="text-primary drop-shadow-[0_0_30px_rgba(34,211,238,0.4)]">Durgapur</span>
           </motion.h1>
           <motion.p
             variants={fadeInUp}
@@ -74,7 +74,7 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
               onClick={isLoggedIn ? () => navigate("/start") : onGetStarted}
               className="rounded-[4px] px-[24px] md:px-[36px] py-[14px] md:py-[16px] text-[12px] md:text-[14px] font-bold text-black bg-white uppercase tracking-[1px] border-none transition-all duration-300 ease-out shadow-[0_0_20px_rgba(34,211,238,0.6)] hover:shadow-[0_0_40px_rgba(34,211,238,1)] hover:scale-105 w-full sm:w-auto min-h-[48px] flex items-center justify-center cursor-pointer"
             >
-              Get Started
+              Get Started with WebZinc
             </button>
           </motion.div>
         </motion.div>
@@ -91,7 +91,7 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
           <div className="relative w-[120px] sm:w-[150px] md:w-full md:max-w-[350px]">
             <img 
               src="https://i.postimg.cc/hPVND3xM/IMG-20260422-153046.png" 
-              alt="WebZinc Core - Luminescent Digital Marketing Asset" 
+              alt="Premium Website Development Agency WebZinc Durgapur - Digital Marketing Asset" 
               width="350"
               height="350"
               loading="eager"
@@ -117,9 +117,9 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
           variants={staggerContainer}
           className="w-full flex flex-col items-start text-left"
         >
-          <motion.div variants={fadeInUp} className="mb-6 md:mb-8 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold tracking-widest text-primary uppercase border border-primary/20 glow-border w-fit text-left">
-            The Luminescent Process
-          </motion.div>
+          <motion.h2 variants={fadeInUp} className="mb-6 md:mb-8 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold tracking-widest text-primary uppercase border border-primary/20 glow-border w-fit text-left">
+            Our Expert Services
+          </motion.h2>
 
           <motion.div
             className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-8 w-full"
@@ -129,15 +129,15 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
             variants={staggerContainer}
           >
             <ProcessCard
-              title="Analysis"
+              title="E-commerce Solutions"
               description="Deep dive into your market mechanics."
             />
             <ProcessCard
-              title="Strategy"
+              title="Startup Website Design"
               description="High-contrast tactical deployment."
             />
             <ProcessCard
-              title="Scale"
+              title="Maintenance Subscriptions"
               description="Continuous glow and market growth."
             />
           </motion.div>
@@ -153,9 +153,9 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
           variants={staggerContainer}
           className="w-full flex flex-col items-start text-left"
         >
-          <motion.div variants={fadeInUp} className="mb-4 md:mb-6 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold tracking-widest text-primary uppercase border border-primary/20 glow-border w-fit">
-            Our Portfolio
-          </motion.div>
+          <motion.h2 variants={fadeInUp} className="mb-4 md:mb-6 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold tracking-widest text-primary uppercase border border-primary/20 glow-border w-fit">
+            Recent Web Projects
+          </motion.h2>
 
           <motion.div
             className="grid grid-cols-2 md:grid-cols-2 gap-2 md:gap-8 mb-12 w-full"
@@ -187,7 +187,7 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
           >
             <Link to="/past-works">
               <button className="flex min-h-[48px] items-center justify-center rounded px-8 py-4 text-[12px] font-extrabold text-[#000000] bg-[#00FFFF] border-none uppercase tracking-[2px] transition-all cursor-pointer animate-cyan-pulse hover:shadow-[0_0_35px_rgba(0,255,255,0.9)] hover:scale-105">
-                View All Portfolio
+                View Our Web Portfolio
               </button>
             </Link>
           </motion.div>
@@ -203,9 +203,9 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
           variants={staggerContainer}
           className="flex flex-col items-start text-left w-full"
         >
-          <motion.div variants={fadeInUp} className="mb-4 md:mb-6 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold tracking-widest text-primary uppercase border border-primary/20 glow-border w-fit text-left">
-            What Our Customers Say
-          </motion.div>
+          <motion.h2 variants={fadeInUp} className="mb-4 md:mb-6 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold tracking-widest text-primary uppercase border border-primary/20 glow-border w-fit text-left">
+            Client Reviews
+          </motion.h2>
           
           <motion.div 
             variants={fadeInUp} 
@@ -247,7 +247,7 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
           <motion.div variants={fadeInUp} className="flex justify-center w-full mt-6">
             <Link to="/reviews">
               <button className="flex min-h-[48px] items-center justify-center cursor-pointer rounded-[4px] px-[30px] py-[14px] text-[12px] font-bold text-black bg-primary uppercase tracking-[2px] transition-all duration-300 ease-out shadow-[0_0_20px_rgba(34,211,238,0.4)] hover:shadow-[0_0_40px_rgba(34,211,238,0.8)] hover:scale-105">
-                See All Reviews
+                Read Client Reviews
               </button>
             </Link>
           </motion.div>
@@ -263,9 +263,9 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
           variants={staggerContainer}
           className="flex flex-col items-start text-left w-full"
         >
-          <motion.div variants={fadeInUp} className="mb-6 md:mb-8 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold tracking-widest text-primary uppercase border border-primary/20 glow-border w-fit text-left">
-            About Us
-          </motion.div>
+          <motion.h2 variants={fadeInUp} className="mb-6 md:mb-8 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold tracking-widest text-primary uppercase border border-primary/20 glow-border w-fit text-left">
+            Why Choose WebZinc?
+          </motion.h2>
 
           <motion.div variants={fadeInUp} className="grid grid-cols-1 lg:grid-cols-2 gap-12 w-full items-center px-4 md:px-0">
             <div className="flex flex-col justify-center text-left">
@@ -280,7 +280,7 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
             <div className="relative w-full aspect-[4/3] rounded-[20px] overflow-hidden border border-zinc-800 shadow-[0_0_30px_rgba(34,211,238,0.15)] glow-border bg-zinc-900">
               <img 
                 src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1200" 
-                alt="WebZinc Engineering - Cutting-Edge Marketing Tech Infrastructure"
+                alt="WebZinc Engineering - Top Website Designers in Durgapur for Startups"
                 width="1200"
                 height="900"
                 loading="lazy"
@@ -303,7 +303,7 @@ function ProcessCard({ title, description }: { title: string; description: strin
       className="process-card group rounded-[12px] bg-[#111111] p-3 md:p-[30px] transition-all duration-300 border border-white/5 relative hover:bg-zinc-900 shadow-[0_0_15px_rgba(0,255,255,0.2)] hover:shadow-[0_0_25px_rgba(0,255,255,0.5)] min-h-[120px] md:min-h-0 flex flex-col justify-start"
     >
       <div className="process-dot w-1.5 h-1.5 md:w-[8px] md:h-[8px] bg-primary rounded-full mb-3 md:mb-[20px] shadow-[0_0_10px_rgba(34,211,238,1)] transition-shadow group-hover:shadow-[0_0_15px_rgba(34,211,238,1)]" />
-      <h4 className="mb-2 md:mb-[12px] text-[10px] md:text-[16px] uppercase tracking-[1px] font-bold text-white leading-tight">{title}</h4>
+      <h3 className="mb-2 md:mb-[12px] text-[10px] md:text-[16px] uppercase tracking-[1px] font-bold text-white leading-tight">{title}</h3>
       <p className="text-[9px] leading-tight md:text-[13px] md:leading-relaxed text-zinc-400">{description}</p>
     </motion.div>
   );
@@ -345,7 +345,7 @@ function PortfolioCard({ tag, title, description, link }: { tag: string; title: 
           className="block w-full"
         >
           <button className="flex w-full items-center justify-center gap-1 md:gap-2 rounded-md border border-primary/40 bg-primary/5 py-1.5 md:py-3 text-[10px] md:text-sm font-bold tracking-[0.5px] text-primary transition-all duration-300 hover:bg-primary hover:text-black hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] cursor-pointer uppercase">
-            Live <span className="hidden md:inline">Site</span> <ArrowUpRight size={14} className="md:w-[18px] md:h-[18px]" />
+            View Live <span className="hidden md:inline">Website</span> <ArrowUpRight size={14} className="md:w-[18px] md:h-[18px]" />
           </button>
         </a>
       </div>

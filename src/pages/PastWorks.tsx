@@ -137,7 +137,7 @@ export function PastWorksPage() {
                   }}
                   className="flex w-full min-h-[32px] md:min-h-[48px] items-center justify-center gap-1 md:gap-2 rounded-md md:rounded-lg border border-primary/40 bg-primary/5 py-1 px-3 md:py-3 text-[10px] md:text-sm font-bold tracking-[0.5px] text-primary transition-all duration-300 hover:bg-primary hover:text-black hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] cursor-pointer uppercase"
                 >
-                  Live <span className="hidden md:inline">Site</span> <ArrowUpRight size={14} className="md:w-[18px] md:h-[18px]" />
+                  View Live <span className="hidden md:inline">Website</span> <ArrowUpRight size={14} className="md:w-[18px] md:h-[18px]" />
                 </button>
               ) : (
                 <button className="flex w-full min-h-[32px] md:min-h-[48px] items-center justify-center gap-1 md:gap-2 rounded-md md:rounded-lg border border-zinc-800 bg-zinc-900/50 py-1 px-3 md:py-3 text-[10px] md:text-sm font-bold tracking-[0.5px] text-zinc-500 cursor-not-allowed uppercase">
