@@ -18,9 +18,10 @@ export function Footer({ onOpenContact, theme = 'dark' }: FooterProps) {
           <p className={`mt-2 text-[10px] md:text-xs transition-colors ${isLight ? 'text-slate-500' : 'text-zinc-500'}`}>
             © 2026 Web Zinc. Website Building Agency.
           </p>
-          <p className={`mt-1 text-[10px] md:text-xs transition-colors ${isLight ? 'text-slate-500' : 'text-zinc-500'}`}>
-            WebZinc | Based in Durgapur, West Bengal | Serving Startups across India.
-          </p>
+          <address itemScope itemType="https://schema.org/LocalBusiness" className={`mt-1 not-italic text-[10px] md:text-xs transition-colors ${isLight ? 'text-slate-500' : 'text-zinc-500'}`}>
+            <span itemProp="name" className="font-bold hidden">WebZinc</span>
+            WebZinc | Based in <span itemProp="address" itemScope itemType="https://schema.org/PostalAddress"><span itemProp="addressLocality">Durgapur</span>, <span itemProp="addressRegion">West Bengal</span></span> | Serving Startups across India.
+          </address>
         </div>
         <div className="flex flex-wrap gap-6 mt-4 sm:mt-0 justify-center sm:justify-start">
           <Link to="/payments" className={`text-xs font-medium uppercase tracking-wider transition-colors ${isLight ? 'text-slate-500 hover:text-slate-900' : 'text-zinc-500 hover:text-white'}`}>

@@ -56,15 +56,17 @@ export function ContactModal({ isOpen, onClose, theme }: ContactModalProps) {
                 <div className={`flex items-center justify-center gap-2 ${
                   theme === 'light' ? "text-slate-600" : "text-zinc-300"
                 }`}>
-                  <MessageCircle size={14} className="text-primary md:size-[18px]" />
+                  <MessageCircle aria-label="WhatsApp Profile" size={14} className="text-primary md:size-[18px]" />
                   <span className="font-bold tracking-wide text-xs md:text-base">WhatsApp: +91 9641553429</span>
                 </div>
-                <button 
-                  onClick={() => window.open('https://wa.me/919641553429', '_blank', 'noopener,noreferrer')}
-                  className="w-full py-2.5 md:py-4 rounded-lg bg-primary/10 border border-primary/40 text-primary font-bold tracking-widest uppercase text-[10px] md:text-sm hover:bg-primary hover:text-black transition-all shadow-[0_0_10px_rgba(34,211,238,0.1)] hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] cursor-pointer"
+                <a 
+                  href="https://wa.me/919641553429?text=Hi%20WebZinc%2C%20I%27m%20interested%20in%20a%20website."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center w-full py-2.5 md:py-4 rounded-lg bg-primary/10 border border-primary/40 text-primary font-bold tracking-widest uppercase text-[10px] md:text-sm hover:bg-primary hover:text-black transition-all shadow-[0_0_10px_rgba(34,211,238,0.1)] hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] cursor-pointer"
                 >
                   Chat Now
-                </button>
+                </a>
               </div>
 
               {/* Email */}
@@ -74,8 +76,8 @@ export function ContactModal({ isOpen, onClose, theme }: ContactModalProps) {
                 <div className={`flex items-center justify-center gap-2 ${
                   theme === 'light' ? "text-slate-600" : "text-zinc-300"
                 }`}>
-                  <MessageCircle size={14} className="text-primary md:size-[18px]" />
-                  <span className="font-bold tracking-wide text-xs md:text-base">webzinc5@gmail.com</span>
+                  <Mail aria-label="Email icon" size={14} className="text-primary md:size-[18px]" />
+                  <span className="font-bold tracking-wide text-xs md:text-base" itemProp="email">webzinc5@gmail.com</span>
                 </div>
                 <a 
                   href="mailto:webzinc5@gmail.com"
@@ -92,7 +94,7 @@ export function ContactModal({ isOpen, onClose, theme }: ContactModalProps) {
                 <div className={`flex items-center justify-center gap-2 mb-0 md:mb-1 ${
                   theme === 'light' ? "text-slate-600" : "text-zinc-300"
                 }`}>
-                  <Phone size={14} className="text-primary md:size-[18px]" />
+                  <Phone aria-label="Phone icon" size={14} className="text-primary md:size-[18px]" />
                   <span className="font-bold tracking-wide text-xs md:text-base">Mobile Numbers</span>
                 </div>
                 
@@ -107,7 +109,14 @@ export function ContactModal({ isOpen, onClose, theme }: ContactModalProps) {
                       <span className={`font-bold tracking-wide text-[11px] md:text-[13px] flex flex-col sm:flex-row items-center gap-1 sm:gap-0 ${
                         theme === 'light' ? "text-slate-500" : "text-zinc-300"
                       }`}>
-                        {item.label}: <span className={`${theme === 'light' ? 'text-slate-900' : 'text-white'} ml-0 sm:ml-1`}>{item.number}</span>
+                        {item.label}: 
+                        <a 
+                          href={`tel:+91${item.number}`} 
+                          itemProp="telephone" 
+                          className={`${theme === 'light' ? 'text-slate-900' : 'text-white'} ml-0 sm:ml-1 hover:text-primary transition-colors hover:underline`}
+                        >
+                          {item.number}
+                        </a>
                       </span>
                       <button 
                         onClick={() => handleCopy(item.number, item.id)}
@@ -120,6 +129,20 @@ export function ContactModal({ isOpen, onClose, theme }: ContactModalProps) {
                 </div>
               </div>
             </div>
+
+            {/* Local SEO Address */}
+            <address 
+              itemScope 
+              itemType="https://schema.org/LocalBusiness"
+              className={`mt-6 mb-2 not-italic text-[11px] md:text-[13px] font-medium leading-relaxed ${
+                theme === 'light' ? "text-slate-500" : "text-zinc-400"
+              }`}
+            >
+               <span itemProp="name" className="font-bold hidden">WebZinc</span>
+               Located in <span itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
+                 <span itemProp="addressLocality" className="font-bold text-primary/80">Durgapur</span>, <span itemProp="addressRegion">West Bengal</span>
+               </span>
+            </address>
 
             <button 
               onClick={onClose}
