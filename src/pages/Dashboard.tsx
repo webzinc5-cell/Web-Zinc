@@ -165,26 +165,46 @@ export function Dashboard({ userProjects = [], setUserProjects, theme = 'dark' }
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              className="flex w-[92%] md:w-full max-w-sm flex-col items-center text-center rounded-2xl border border-primary bg-[#0a0a0a] p-5 md:p-8 shadow-[0_0_30px_rgba(34,211,238,0.3)]"
+              className={`flex w-[92%] md:w-full max-w-sm flex-col items-center text-center rounded-2xl border p-5 md:p-8 transition-colors duration-300 ${
+                theme === 'light' 
+                  ? "bg-white border-[#E2E8F0] shadow-xl" 
+                  : "bg-[#0a0a0a] border-primary shadow-[0_0_30px_rgba(34,211,238,0.3)]"
+              }`}
             >
-              <div className="flex h-12 w-12 md:h-16 md:w-16 items-center justify-center rounded-full bg-primary/10 border border-primary/30 mb-4 md:mb-6 drop-shadow-[0_0_10px_rgba(34,211,238,0.2)]">
-                <LogOut className="text-primary" size={24} />
+              <div className={`flex h-12 w-12 md:h-16 md:w-16 items-center justify-center rounded-full border mb-4 md:mb-6 transition-colors ${
+                theme === 'light' 
+                  ? "bg-slate-50 border-slate-200" 
+                  : "bg-primary/10 border-primary/30 drop-shadow-[0_0_10px_rgba(34,211,238,0.2)]"
+              }`}>
+                <LogOut className={theme === 'light' ? "text-slate-600" : "text-primary"} size={24} />
               </div>
-              <h3 className="text-lg md:text-[24px] font-extrabold text-white mb-2 md:mb-3">Confirm Logout</h3>
-              <p className="text-xs md:text-[14px] text-zinc-400 leading-relaxed mb-6 md:mb-8">
+              <h3 className={`text-lg md:text-[24px] font-extrabold mb-2 md:mb-3 ${
+                theme === 'light' ? "text-slate-900" : "text-white"
+              }`}>Confirm Logout</h3>
+              <p className={`text-xs md:text-[14px] leading-relaxed mb-6 md:mb-8 ${
+                theme === 'light' ? "text-slate-500" : "text-zinc-400"
+              }`}>
                 Do you really want to logout from your account?
               </p>
               
               <div className="flex flex-col gap-2 md:gap-3 w-full">
                 <button
                   onClick={handleLogout}
-                  className="w-full flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-2.5 md:py-4 font-bold text-black transition-all hover:bg-white shadow-[0_0_10px_rgba(34,211,238,0.4)] hover:shadow-[0_0_30px_rgba(255,255,255,0.6)] uppercase tracking-widest text-[11px] md:text-[13px]"
+                  className={`w-full flex items-center justify-center gap-2 rounded-xl px-6 py-2.5 md:py-4 font-bold transition-all uppercase tracking-widest text-[11px] md:text-[13px] ${
+                    theme === 'light' 
+                      ? "bg-slate-900 text-white hover:bg-slate-800 shadow-md" 
+                      : "bg-primary text-black hover:bg-white shadow-[0_0_10px_rgba(34,211,238,0.4)]"
+                  }`}
                 >
                   Confirm Logout
                 </button>
                 <button
                   onClick={() => setShowLogoutConfirm(false)}
-                  className="w-full flex items-center justify-center gap-2 rounded-xl border border-zinc-800 bg-transparent px-6 py-2.5 md:py-4 font-bold text-zinc-400 transition-all hover:bg-zinc-900 hover:text-white uppercase tracking-widest text-[11px] md:text-[13px]"
+                  className={`w-full flex items-center justify-center gap-2 rounded-xl border px-6 py-2.5 md:py-4 font-bold transition-all uppercase tracking-widest text-[11px] md:text-[13px] ${
+                    theme === 'light' 
+                      ? "border-slate-200 bg-transparent text-slate-500 hover:bg-slate-50 hover:text-slate-900" 
+                      : "border-zinc-800 bg-transparent text-zinc-400 hover:bg-zinc-900 hover:text-white"
+                  }`}
                 >
                   Back
                 </button>

@@ -9,9 +9,10 @@ import { auth, db } from "../lib/firebase";
 interface SignUpModalProps {
   isOpen: boolean;
   onClose: () => void;
+  theme: 'dark' | 'light';
 }
 
-export function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
+export function SignUpModal({ isOpen, onClose, theme }: SignUpModalProps) {
   const [view, setView] = useState<'signup' | 'login'>('signup');
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -114,15 +115,23 @@ export function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
               animate={{ opacity: 1, scale: 1, x: "-50%", y: "-50%" }}
               exit={{ opacity: 0, scale: 0.9, x: "-50%", y: "-50%" }}
               transition={{ type: "spring", damping: 25, stiffness: 300, duration: 0.3 }}
-              className="absolute top-[50%] left-[50%] mt-2 md:mt-0 w-[92%] md:w-full max-w-none md:max-w-md pointer-events-auto flex flex-col rounded-2xl border border-primary/30 bg-zinc-950/80 p-4 md:p-8 shadow-[0_0_10px_rgba(34,211,238,0.15)] max-h-[85vh] overflow-y-auto outline-none"
+              className={`absolute top-[50%] left-[50%] mt-2 md:mt-0 w-[92%] md:w-full max-w-none md:max-w-md pointer-events-auto flex flex-col rounded-2xl border p-4 md:p-8 max-h-[85vh] overflow-y-auto outline-none transition-colors duration-300 ${
+                theme === 'light' 
+                  ? "bg-white border-[#E2E8F0] shadow-xl text-[#1E293B]" 
+                  : "bg-zinc-950/80 border-primary/30 shadow-[0_0_10px_rgba(34,211,238,0.15)] text-white"
+              }`}
             >
               <div className="mb-4 md:mb-6 flex items-center justify-between z-10 w-full shrink-0">
-                <h2 className="text-lg md:text-2xl font-bold text-white uppercase tracking-tight">
+                <h2 className={`text-lg md:text-2xl font-bold uppercase tracking-tight ${
+                  theme === 'light' ? "text-[#1E293B]" : "text-white"
+                }`}>
                   {view === 'signup' ? "Join WebZinc" : "Welcome Back"}
                 </h2>
                 <button
                   onClick={onClose}
-                  className="rounded-full p-2 text-zinc-400 hover:bg-zinc-800 hover:text-white transition-colors"
+                  className={`rounded-full p-2 transition-colors ${
+                    theme === 'light' ? "text-zinc-500 hover:bg-zinc-100" : "text-zinc-400 hover:bg-zinc-800 hover:text-white"
+                  }`}
                 >
                   <X size={20} />
                 </button>
@@ -147,7 +156,9 @@ export function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
                       )}
                       {view === 'signup' && (
                       <div>
-                          <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-zinc-400">
+                          <label className={`mb-1.5 block text-xs font-semibold uppercase tracking-wider ${
+                            theme === 'light' ? "text-zinc-500" : "text-zinc-400"
+                          }`}>
                             Business Name
                           </label>
                           <input
@@ -155,13 +166,19 @@ export function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
                             required
                             value={businessName}
                             onChange={(e) => setBusinessName(e.target.value)}
-                            className="w-full rounded-lg border border-zinc-700 bg-zinc-900/50 p-2.5 sm:p-3 text-sm text-white placeholder-zinc-500 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-none focus:shadow-[0_0_10px_rgba(34,211,238,0.2)]"
+                            className={`w-full rounded-lg border p-2.5 sm:p-3 text-sm transition-all shadow-none focus:outline-none focus:ring-2 ${
+                              theme === 'light' 
+                                ? "bg-[#F8FAFC] border-[#CBD5E1] text-[#0F172A] placeholder-zinc-400 focus:border-primary focus:ring-cyan-400/30" 
+                                : "bg-zinc-900/50 border-zinc-700 text-white placeholder-zinc-500 focus:border-primary focus:ring-primary/20"
+                            }`}
                             placeholder="Enter business name"
                           />
                         </div>
                       )}
                       <div>
-                        <label className="mb-1 block text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-zinc-400">
+                        <label className={`mb-1 block text-[10px] sm:text-xs font-semibold uppercase tracking-wider ${
+                          theme === 'light' ? "text-zinc-500" : "text-zinc-400"
+                        }`}>
                           Secure Email ID
                         </label>
                         <input
@@ -169,13 +186,19 @@ export function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
                           required
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="w-full rounded-lg border border-zinc-700 bg-zinc-900/50 p-2.5 sm:p-3 text-sm text-white placeholder-zinc-500 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-none focus:shadow-[0_0_10px_rgba(34,211,238,0.2)]"
+                          className={`w-full rounded-lg border p-2.5 sm:p-3 text-sm transition-all shadow-none focus:outline-none focus:ring-2 ${
+                            theme === 'light' 
+                              ? "bg-[#F8FAFC] border-[#CBD5E1] text-[#0F172A] placeholder-zinc-400 focus:border-primary focus:ring-cyan-400/30" 
+                              : "bg-zinc-900/50 border-zinc-700 text-white placeholder-zinc-500 focus:border-primary focus:ring-primary/20"
+                          }`}
                           placeholder="Enter secure email"
                         />
                       </div>
                       <div>
                         <div className="mb-1 flex items-center justify-between">
-                          <label className="block text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-zinc-400">
+                          <label className={`block text-[10px] sm:text-xs font-semibold uppercase tracking-wider ${
+                            theme === 'light' ? "text-zinc-500" : "text-zinc-400"
+                          }`}>
                             {view === 'signup' ? 'Create Password' : 'Password'}
                           </label>
                         </div>
@@ -185,13 +208,19 @@ export function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
                             required
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="w-full rounded-lg border border-zinc-700 bg-zinc-900/50 p-2.5 sm:p-3 pr-10 text-sm text-white placeholder-zinc-500 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-none focus:shadow-[0_0_10px_rgba(34,211,238,0.2)]"
+                            className={`w-full rounded-lg border p-2.5 sm:p-3 pr-10 text-sm transition-all shadow-none focus:outline-none focus:ring-2 ${
+                              theme === 'light' 
+                                ? "bg-[#F8FAFC] border-[#CBD5E1] text-[#0F172A] placeholder-zinc-400 focus:border-primary focus:ring-cyan-400/30" 
+                                : "bg-zinc-900/50 border-zinc-700 text-white placeholder-zinc-500 focus:border-primary focus:ring-primary/20"
+                            }`}
                             placeholder="••••••••"
                           />
                           <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white transition-colors"
+                            className={`absolute right-3 top-1/2 -translate-y-1/2 transition-colors ${
+                              theme === 'light' ? "text-zinc-400 hover:text-zinc-600" : "text-zinc-500 hover:text-white"
+                            }`}
                           >
                             {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                           </button>
@@ -206,17 +235,23 @@ export function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
                       </button>
                     </form>
 
-                    <div className="mt-4 flex items-center justify-between text-[10px] text-zinc-500">
-                      <div className="h-px flex-1 bg-zinc-800"></div>
-                      <span className="px-3 uppercase tracking-widest font-semibold">Or</span>
-                      <div className="h-px flex-1 bg-zinc-800"></div>
+                    <div className={`mt-4 flex items-center justify-between text-[10px] ${
+                      theme === 'light' ? "text-zinc-400" : "text-zinc-500"
+                    }`}>
+                      <div className={`h-px flex-1 ${theme === 'light' ? 'bg-[#E2E8F0]' : 'bg-zinc-800'}`}></div>
+                      <span className="px-3 uppercase tracking-widest font-semibold text-zinc-500">Or</span>
+                      <div className={`h-px flex-1 ${theme === 'light' ? 'bg-[#E2E8F0]' : 'bg-zinc-800'}`}></div>
                     </div>
 
                     <button
                       type="button"
                       onClick={handleGoogleSignIn}
                       disabled={isLoading}
-                      className="mt-4 border border-zinc-700 bg-zinc-900/50 hover:bg-zinc-800 flex w-full flex-wrap sm:flex-nowrap items-center justify-center rounded-lg py-2.5 md:py-3 text-[11px] sm:text-sm font-bold uppercase tracking-wider text-white transition-all shadow-none hover:shadow-[0_0_10px_rgba(255,255,255,0.1)] gap-2 disabled:opacity-50"
+                      className={`mt-4 flex w-full flex-wrap sm:flex-nowrap items-center justify-center rounded-lg py-2.5 md:py-3 text-[11px] sm:text-sm font-bold uppercase tracking-wider transition-all gap-2 disabled:opacity-50 ${
+                        theme === 'light' 
+                          ? "bg-white border border-[#CBD5E1] text-zinc-900 shadow-sm hover:bg-zinc-50" 
+                          : "bg-zinc-900/50 border border-zinc-700 text-white hover:bg-zinc-800"
+                      }`}
                     >
                       <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
                         <path
@@ -239,12 +274,14 @@ export function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
                       {isLoading ? "Authenticating..." : "Continue with Google"}
                     </button>
 
-                    <p className="mt-8 text-center text-sm text-zinc-400 pb-2">
+                    <p className={`mt-8 text-center text-sm pb-2 ${
+                      theme === 'light' ? "text-zinc-500" : "text-zinc-400"
+                    }`}>
                        {view === 'signup' ? "Already have an account?" : "Don't have an account?"}
                       <button
                         type="button"
                         onClick={() => setView(view === 'signup' ? 'login' : 'signup')}
-                        className="ml-2 font-bold text-primary hover:text-white transition-colors"
+                        className="ml-2 font-bold text-primary hover:text-zinc-900 transition-colors"
                       >
                          {view === 'signup' ? "Sign In" : "Create one"}
                       </button>

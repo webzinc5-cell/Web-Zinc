@@ -134,8 +134,8 @@ function AppContent() {
         />
       </Routes>
       
-      <SignUpModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
-      <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
+      <SignUpModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} theme={theme} />
+      <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} theme={theme} />
     </div>
   );
 }
