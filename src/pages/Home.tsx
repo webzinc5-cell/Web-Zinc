@@ -91,8 +91,12 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
           <div className="relative w-[120px] sm:w-[150px] md:w-full md:max-w-[350px]">
             <img 
               src="https://i.postimg.cc/hPVND3xM/IMG-20260422-153046.png" 
-              alt="Luminescent Cube" 
-              className="w-full h-auto relative z-10"
+              alt="WebZinc Core - Luminescent Digital Marketing Asset" 
+              width="350"
+              height="350"
+              loading="eager"
+              decoding="async"
+              className="w-full h-auto relative z-10 img-fade-in"
               style={{ filter: 'drop-shadow(0 0 30px rgba(0, 255, 255, 0.4))' }}
             />
             {/* Ambient Cyan Background Aura */}
@@ -273,11 +277,15 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
                 We engineer more than just websites—we architect high-performance, precision-driven digital ecosystems tailored to outshine competitors and establish unshakeable authority in your sector.
               </p>
             </div>
-            <div className="relative w-full aspect-[4/3] rounded-[20px] overflow-hidden border border-zinc-800 shadow-[0_0_30px_rgba(34,211,238,0.15)] glow-border">
+            <div className="relative w-full aspect-[4/3] rounded-[20px] overflow-hidden border border-zinc-800 shadow-[0_0_30px_rgba(34,211,238,0.15)] glow-border bg-zinc-900">
               <img 
                 src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1200" 
-                alt="Cutting-Edge Tech Solution"
-                className="w-full h-full object-cover opacity-80 transition-transform duration-700 hover:scale-105"
+                alt="WebZinc Engineering - Cutting-Edge Marketing Tech Infrastructure"
+                width="1200"
+                height="900"
+                loading="lazy"
+                decoding="async"
+                className="w-full h-full object-cover opacity-80 transition-transform duration-700 hover:scale-105 img-fade-in"
               />
               <div className="absolute inset-0 bg-gradient-to-tr from-[#00ffff]/20 to-transparent mix-blend-overlay pointer-events-none" />
             </div>

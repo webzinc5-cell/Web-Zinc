@@ -119,8 +119,12 @@ export function PaymentsPage({ theme = 'dark' }: { theme?: 'dark' | 'light' }) {
                 <div className="w-[150px] md:w-[180px] aspect-square rounded-xl bg-white p-2 shadow-sm border border-primary/10 transition-transform hover:scale-[1.02]">
                   <img 
                     src="https://i.postimg.cc/d0Mgg5gd/Screenshot-2026-04-20-20-26-29-08.jpg" 
-                    alt="Merchant QR" 
-                    className="w-full h-full object-cover rounded-lg" 
+                    alt="WebZinc Payment Gateway - Official Merchant QR Code" 
+                    width="180"
+                    height="180"
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover rounded-lg img-fade-in" 
                   />
                 </div>
 

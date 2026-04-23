@@ -16,6 +16,9 @@ import { CrystalLoader } from "./components/ui/CrystalLoader";
 
 import { PastWorksPage } from "./pages/PastWorks";
 import { PaymentsPage } from "./pages/Payments";
+import { DocumentationPage } from "./pages/Documentation";
+import { PrivacyPolicyPage } from "./pages/PrivacyPolicy";
+import { TermsConditionsPage } from "./pages/TermsConditions";
 import { ContactModal } from "./components/ContactModal";
 
 function AppContent() {
@@ -126,9 +129,12 @@ function AppContent() {
                   <Route path="/payments" element={<PaymentsPage theme={theme} />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/reviews" element={<Reviews theme={theme} />} />
+                  <Route path="/documentation" element={<DocumentationPage theme={theme} />} />
+                  <Route path="/privacy-policy" element={<PrivacyPolicyPage theme={theme} />} />
+                  <Route path="/terms-and-conditions" element={<TermsConditionsPage theme={theme} />} />
                 </Routes>
               </main>
-              <Footer onOpenContact={() => setIsContactOpen(true)} />
+              <Footer onOpenContact={() => setIsContactOpen(true)} theme={theme} />
             </>
           }
         />

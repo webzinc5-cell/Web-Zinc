@@ -217,3 +217,12 @@ html.light .shadow-\[-10px_0_30px_rgba\(34\,211\,238\,0\.1\)\] {
   background-color: var(--color-primary);
   color: #000000;
 }
+
+.img-fade-in {
+  animation: fadeIn 0.8s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
