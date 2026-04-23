@@ -17,7 +17,7 @@ function getSentimentLabel(rating: number) {
   }
 }
 
-export function Reviews() {
+export function Reviews({ theme = 'dark' }: { theme?: 'dark' | 'light' }) {
   const [reviews, setReviews] = useState<any[]>([]);
   const [rating, setRating] = useState(5);
   const [hoverRating, setHoverRating] = useState(0);
@@ -89,7 +89,9 @@ export function Reviews() {
   };
 
   return (
-    <div className="flex w-full flex-col pt-16 md:pt-20 text-white pb-12 md:pb-24">
+    <div className={`flex w-full flex-col pt-16 md:pt-20 pb-12 md:pb-24 transition-colors duration-300 ${
+      theme === 'light' ? 'bg-[#F8FAFC]' : 'text-white'
+    }`}>
       <div className="mx-auto w-full max-w-7xl px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -97,10 +99,14 @@ export function Reviews() {
           transition={{ duration: 0.6 }}
           className="text-center mb-4 md:mb-8"
         >
-          <h1 className="mb-6 text-4xl font-extrabold tracking-tight md:text-5xl">
+          <h1 className={`mb-6 text-4xl font-extrabold tracking-tight md:text-5xl ${
+            theme === 'light' ? 'text-slate-900' : 'text-white'
+          }`}>
             Client <span className="text-primary glow-text">Proof</span>
           </h1>
-          <p className="mx-auto max-w-2xl text-lg text-zinc-400">
+          <p className={`mx-auto max-w-2xl text-lg ${
+            theme === 'light' ? 'text-slate-500' : 'text-zinc-400'
+          }`}>
             Real outcomes from market leaders who deployed our infrastructure.
           </p>
         </motion.div>
@@ -110,12 +116,20 @@ export function Reviews() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="mb-4 md:mb-8 mx-auto w-[95%] max-w-2xl rounded-xl border border-primary/30 bg-[#0a0a0a] p-4 md:p-8 shadow-[0_0_20px_rgba(34,211,238,0.15)]"
+          className={`mb-4 md:mb-8 mx-auto w-[95%] max-w-2xl rounded-xl border p-4 md:p-8 transition-all ${
+            theme === 'light' 
+              ? 'bg-white border-[#E2E8F0] shadow-xl' 
+              : 'border-primary/30 bg-[#0a0a0a] shadow-[0_0_20px_rgba(34,211,238,0.15)]'
+          }`}
         >
-          <h2 className="mb-4 md:mb-6 text-xl md:text-2xl font-bold tracking-tight text-white">Leave a Review</h2>
+          <h2 className={`mb-4 md:mb-6 text-xl md:text-2xl font-bold tracking-tight ${
+            theme === 'light' ? 'text-[#1E293B]' : 'text-white'
+          }`}>Leave a Review</h2>
           <form onSubmit={handleSubmit} className="flex flex-col gap-3 md:gap-4">
             <div>
-              <label className="mb-1 md:mb-2 block text-xs md:text-sm font-medium text-zinc-400">Your Rating</label>
+              <label className={`mb-1 md:mb-2 block text-xs md:text-sm font-medium ${
+                theme === 'light' ? 'text-slate-500' : 'text-zinc-400'
+              }`}>Your Rating</label>
               <div className="flex gap-1 md:gap-2">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
@@ -130,7 +144,7 @@ export function Reviews() {
                       className={`h-6 w-6 md:h-8 md:w-8 transition-colors ${
                         star <= (hoverRating || rating) 
                           ? "fill-primary text-primary drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]" 
-                          : "text-zinc-600"
+                          : theme === 'light' ? "text-slate-200" : "text-zinc-600"
                       }`} 
                     />
                   </button>
@@ -139,27 +153,39 @@ export function Reviews() {
             </div>
             
             <div className="flex flex-col gap-1 md:gap-2">
-              <label className="text-xs md:text-sm font-medium text-zinc-400">Your Name</label>
+              <label className={`text-xs md:text-sm font-medium ${
+                theme === 'light' ? 'text-slate-500' : 'text-zinc-400'
+              }`}>Your Name</label>
               <input 
                 type="text" 
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="John Doe"
                 disabled={!user}
-                className="w-full rounded-md border border-zinc-800 bg-zinc-900/50 p-2 md:p-3 text-sm md:text-base text-white placeholder-zinc-500 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className={`w-full rounded-md border p-2 md:p-3 text-sm md:text-base transition-all disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-1 focus:ring-primary ${
+                  theme === 'light' 
+                    ? 'border-slate-200 bg-slate-50 text-[#0F172A] placeholder-slate-400 focus:border-primary' 
+                    : 'border-zinc-800 bg-zinc-900/50 text-white placeholder-zinc-500 focus:border-primary'
+                }`}
                 required
               />
             </div>
 
             <div className="flex flex-col gap-1 md:gap-2">
-              <label className="text-xs md:text-sm font-medium text-zinc-400">Your Experience</label>
+              <label className={`text-xs md:text-sm font-medium ${
+                theme === 'light' ? 'text-slate-500' : 'text-zinc-400'
+              }`}>Your Experience</label>
               <textarea 
                 value={experience}
                 onChange={(e) => setExperience(e.target.value)}
                 placeholder="Share your results..."
                 rows={3}
                 disabled={!user}
-                className="w-full resize-none rounded-md border border-zinc-800 bg-zinc-900/50 p-2 md:p-3 text-sm md:text-base text-white placeholder-zinc-500 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className={`w-full resize-none rounded-md border p-2 md:p-3 text-sm md:text-base transition-all disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-1 focus:ring-primary ${
+                  theme === 'light' 
+                    ? 'border-slate-200 bg-slate-50 text-[#0F172A] placeholder-slate-400 focus:border-primary' 
+                    : 'border-zinc-800 bg-zinc-900/50 text-white placeholder-zinc-500 focus:border-primary'
+                }`}
                 required
               />
             </div>
@@ -198,27 +224,40 @@ export function Reviews() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: (i % 4) * 0.1, duration: 0.5 }}
-              className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-3 md:p-8 shadow-lg backdrop-blur-sm transition-all hover:border-zinc-700 min-h-[140px] md:min-h-0 flex flex-col justify-between"
+              className={`rounded-xl border p-3 md:p-8 flex flex-col justify-between transition-all duration-300 h-auto min-h-[120px] overflow-visible ${
+                theme === 'light' 
+                  ? 'bg-white border-[#E2E8F0] shadow-md hover:shadow-lg' 
+                  : 'bg-zinc-900/40 border-zinc-800 backdrop-blur-sm hover:border-zinc-700 shadow-lg'
+              }`}
             >
               <div className="mb-2 md:mb-4 flex items-center justify-between flex-wrap gap-1">
                 <div className="flex space-x-0.5 md:space-x-1">
                   {[...Array(5)].map((_, j) => (
                     <Star 
                       key={j} 
-                      className={`h-3 w-3 md:h-4 md:w-4 ${j < review.rating ? "fill-primary text-primary drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]" : "text-zinc-700"}`} 
+                      className={`h-3 w-3 md:h-4 md:w-4 ${
+                        j < review.rating 
+                          ? "fill-primary text-primary drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]" 
+                          : theme === 'light' ? "text-slate-100" : "text-zinc-700"}`} 
                     />
                   ))}
                 </div>
                 {/* AI Sentiment Label */}
-                <span className="text-[8px] md:text-xs font-bold uppercase tracking-wider text-primary shadow-primary drop-shadow-[0_0_5px_rgba(34,211,238,0.3)]">
+                <span className={`text-[8px] md:text-xs font-bold uppercase tracking-wider ${
+                  theme === 'light' ? 'text-primary' : 'text-primary drop-shadow-[0_0_5px_rgba(34,211,238,0.3)]'
+                }`}>
                   {review.sentiment || getSentimentLabel(review.rating)}
                 </span>
               </div>
-              <p className="mb-3 md:mb-6 text-[10px] md:text-lg italic text-zinc-300 leading-relaxed line-clamp-3 md:line-clamp-none">
+              <p className={`mb-3 md:mb-6 text-[10px] md:text-lg italic leading-relaxed ${
+                theme === 'light' ? 'text-[#1E293B]' : 'text-zinc-300'
+              }`}>
                 "{review.experience || review.content}"
               </p>
               <div>
-                <p className="font-bold text-white text-xs md:text-base flex items-center gap-1.5">
+                <p className={`font-bold text-xs md:text-base flex items-center gap-1.5 ${
+                  theme === 'light' ? 'text-[#0F172A]' : 'text-white'
+                }`}>
                   <span className="md:hidden w-1 h-1 bg-primary rounded-full" />
                   <span className="truncate">{review.name}</span>
                 </p>

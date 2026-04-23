@@ -123,9 +123,9 @@ function AppContent() {
                 <Routes>
                   <Route path="/" element={<Home onGetStarted={() => setIsAuthModalOpen(true)} isLoggedIn={isLoggedIn} />} />
                   <Route path="/past-works" element={<PastWorksPage />} />
-                  <Route path="/payments" element={<PaymentsPage />} />
+                  <Route path="/payments" element={<PaymentsPage theme={theme} />} />
                   <Route path="/about" element={<About />} />
-                  <Route path="/reviews" element={<Reviews />} />
+                  <Route path="/reviews" element={<Reviews theme={theme} />} />
                 </Routes>
               </main>
               <Footer onOpenContact={() => setIsContactOpen(true)} />

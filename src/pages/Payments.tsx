@@ -1,23 +1,25 @@
 import { motion } from "motion/react";
-import { ArrowLeft, CheckCircle2, ShieldCheck, Copy, Check } from "lucide-react";
+import { ArrowLeft, CheckCircle2, ShieldCheck, Copy, Check, Info } from "lucide-react";
 import { useState } from "react";
 
-export function PaymentsPage() {
+export function PaymentsPage({ theme = 'dark' }: { theme?: 'dark' | 'light' }) {
   const [copiedField, setCopiedField] = useState<string | null>(null);
 
   const containerVariants = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
+      y: 0,
       transition: {
-        staggerChildren: 0.15
+        staggerChildren: 0.1,
+        duration: 0.5
       }
     }
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+    hidden: { opacity: 0, scale: 0.95 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.4 } }
   };
 
   const handleCopy = (text: string, field: string) => {
@@ -26,153 +28,163 @@ export function PaymentsPage() {
     setTimeout(() => setCopiedField(null), 2000);
   };
 
-  const glowStyle = {
-    border: '1px solid rgba(34, 211, 238, 0.2)',
-    boxShadow: '0 0 15px rgba(34, 211, 238, 0.1)'
-  };
-
-  const hoverGlowStyle = {
-    boxShadow: '0 0 25px rgba(34, 211, 238, 0.4)'
-  };
+  const isLight = theme === 'light';
 
   return (
-    <div className="min-h-screen pt-16 md:pt-20 pb-12 md:pb-24 px-6 md:px-12 w-full max-w-4xl mx-auto flex flex-col items-center">
-      <div className="w-full mb-4">
-        <button 
-          onClick={() => window.location.hash = '#/'}
-          className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors text-[13px] font-bold tracking-widest uppercase cursor-pointer"
-        >
-          <ArrowLeft size={16} />
-          Back to Home
-        </button>
-      </div>
-
-      <motion.div 
-        initial="hidden"
-        animate="visible"
-        variants={itemVariants}
-        className="text-center w-full mb-6"
-      >
-        <h1 className="text-4xl md:text-5xl font-[900] tracking-tighter uppercase mb-4 drop-shadow-[0_0_15px_rgba(34,211,238,0.2)] text-white">
-          Secure Payment
-        </h1>
-        <p className="text-zinc-400 text-lg font-medium tracking-wide max-w-2xl mx-auto">
-          Complete your transaction using one of our verified banking gateways below.
-        </p>
-      </motion.div>
-
-      <motion.div 
-        initial="hidden"
-        animate="visible"
-        variants={containerVariants}
-        className="w-full grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8"
-      >
-        {/* Bank Transfer Section */}
-        <motion.div 
-          variants={itemVariants}
-          className="flex flex-col p-8 rounded-[20px] bg-[#050505] transition-all duration-500"
-          style={glowStyle}
-          onMouseOver={(e) => e.currentTarget.style.boxShadow = hoverGlowStyle.boxShadow}
-          onMouseOut={(e) => e.currentTarget.style.boxShadow = glowStyle.boxShadow}
-        >
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center border border-primary/30 shadow-[0_0_10px_rgba(34,211,238,0.2)]">
-              <ShieldCheck size={20} className="text-primary" />
-            </div>
-            <h2 className="text-2xl font-bold tracking-tight text-white">Bank Transfer</h2>
+    <div className={`min-h-screen pt-16 md:pt-24 pb-12 transition-colors duration-300 ${isLight ? 'bg-[#F8FAFC]' : 'bg-[#000000] text-white'}`}>
+      <div className="mx-auto w-full max-w-[92%] md:max-w-4xl px-2 md:px-6">
+        {/* Navigation Header */}
+        <div className="mb-4 md:mb-8 flex items-center justify-between">
+          <button 
+            onClick={() => window.location.hash = '#/'}
+            className={`flex items-center gap-2 transition-colors text-[11px] md:text-[13px] font-bold tracking-widest uppercase cursor-pointer ${isLight ? 'text-slate-500 hover:text-slate-900' : 'text-zinc-400 hover:text-white'}`}
+          >
+            <ArrowLeft size={16} />
+            Home
+          </button>
+          <div className="flex items-center gap-2 text-primary font-bold text-[10px] md:text-xs tracking-widest uppercase bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20">
+            <ShieldCheck size={14} />
+            Verified Terminal
           </div>
-          
-          <div className="space-y-5 flex-1">
-            {[
-              { label: 'Bank Name', value: 'Canara Bank', id: 'bank' },
-              { label: 'Account Holder', value: 'Indra Tantubay', id: 'name' },
-              { label: 'Account Number', value: '110037366980', id: 'acc' },
-              { label: 'IFSC Code', value: 'CNRB0019529', id: 'ifsc' },
-              { label: 'Mobile', value: '9641553429', id: 'phone' }
-            ].map((detail) => (
-              <div key={detail.id} className="flex flex-col gap-1 pb-3 border-b border-white/5 last:border-0 last:pb-0">
-                <span className="text-[11px] font-bold tracking-widest uppercase text-zinc-500">{detail.label}</span>
-                <div className="flex items-center justify-between">
-                  <span className="text-zinc-200 font-medium text-[15px]">{detail.value}</span>
-                  <button 
-                    onClick={() => handleCopy(detail.value, detail.id)}
-                    className="p-1.5 rounded-md hover:bg-white/5 transition-colors text-zinc-400 hover:text-primary"
-                    title="Copy to clipboard"
-                  >
-                    {copiedField === detail.id ? <Check size={14} className="text-primary" /> : <Copy size={14} />}
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* UPI Section */}
-        <motion.div 
-          variants={itemVariants}
-          className="flex flex-col p-8 rounded-[20px] bg-[#050505] transition-all duration-500"
-          style={glowStyle}
-          onMouseOver={(e) => e.currentTarget.style.boxShadow = hoverGlowStyle.boxShadow}
-          onMouseOut={(e) => e.currentTarget.style.boxShadow = glowStyle.boxShadow}
-        >
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center border border-primary/30 shadow-[0_0_10px_rgba(34,211,238,0.2)]">
-              <CheckCircle2 size={20} className="text-primary" />
-            </div>
-            <h2 className="text-2xl font-bold tracking-tight text-white">UPI Payment</h2>
-          </div>
-          
-          <div className="flex flex-col items-center justify-center flex-1 py-4">
-            {/* QR Code Graphic */}
-            <div className="w-40 h-40 rounded-lg flex items-center justify-center mb-6 overflow-hidden relative group drop-shadow-[0_0_10px_rgba(34,211,238,0.3)] border border-primary/20">
-              <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <img 
-                src="https://i.postimg.cc/d0Mgg5gd/Screenshot-2026-04-20-20-26-29-08.jpg" 
-                alt="UPI QR Code" 
-                className="w-full h-full object-cover rounded-[8px]"
-                referrerPolicy="no-referrer"
-              />
-            </div>
-
-            <div className="w-full flex flex-col gap-1 pt-4 border-t border-white/5 text-center px-4">
-              <span className="text-[11px] font-bold tracking-widest uppercase text-zinc-500 mb-1">Scan or Pay to UPI ID</span>
-              <div className="flex items-center justify-center gap-3 bg-zinc-900/50 py-3 px-4 rounded-lg border border-white/5">
-                <span className="text-zinc-200 font-medium text-[14px]">tantubayatindra2@okicici</span>
-                <button 
-                  onClick={() => handleCopy('tantubayatindra2@okicici', 'upi')}
-                  className="p-1 rounded-md hover:bg-white/10 transition-colors text-zinc-400 hover:text-primary"
-                  title="Copy UPI ID"
-                >
-                  {copiedField === 'upi' ? <Check size={14} className="text-primary" /> : <Copy size={14} />}
-                </button>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      </motion.div>
-
-      {/* Security & Action Section */}
-      <motion.div 
-        initial="hidden"
-        animate="visible"
-        variants={itemVariants}
-        className="w-full mt-6 flex flex-col items-center"
-      >
-        <div className="bg-primary/5 border border-primary/20 rounded-[15px] p-6 w-full text-center mb-4 relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
-          <p className="text-zinc-300 text-[13px] leading-relaxed flex flex-col sm:flex-row items-center justify-center gap-2">
-            <ShieldCheck size={16} className="text-primary hidden sm:block" />
-            <span className="font-semibold text-white">Security Notice:</span> All payments are processed through encrypted banking channels. WebZinc does not store your banking credentials.
-          </p>
         </div>
 
-        <a 
-          href="mailto:webzinc5@gmail.com?subject=Payment%20Screenshot&body=Please%20attach%20your%20transaction%20screenshot%20here."
-          className="flex w-full md:w-auto md:min-w-[320px] items-center justify-center gap-2 rounded-lg border border-primary/40 bg-primary/10 px-8 py-5 text-[15px] font-bold tracking-[1px] text-primary transition-all duration-300 hover:bg-primary hover:text-black hover:shadow-[0_0_25px_rgba(34,211,238,0.5)] cursor-pointer uppercase"
+        <motion.div 
+          initial="hidden"
+          animate="visible"
+          variants={containerVariants}
+          className="flex flex-col gap-6 md:gap-8"
         >
-          Confirm Payment (Send Screenshot) <CheckCircle2 size={20} />
-        </a>
-      </motion.div>
+          {/* Two-Column Grid for Gateways */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+            
+            {/* BOX 1: Bank Transfer */}
+            <motion.div 
+              variants={itemVariants}
+              className={`rounded-2xl border p-4 md:p-6 transition-all duration-300 flex flex-col ${
+                isLight 
+                  ? 'bg-white border-[#E2E8F0] shadow-xl' 
+                  : 'bg-zinc-950/80 border-primary/30 shadow-[0_0_20px_rgba(34,211,238,0.1)]'
+              }`}
+            >
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20">
+                  <ShieldCheck size={16} className="text-primary" />
+                </div>
+                <span className={`text-xs md:text-sm font-black uppercase tracking-widest ${isLight ? 'text-slate-900' : 'text-white'}`}>Bank Transfer</span>
+              </div>
+
+              <div className="space-y-4 flex-1">
+                {[
+                  { label: 'Bank Name', value: 'Canara Bank', id: 'bank' },
+                  { label: 'Account Holder', value: 'Indra Tantubay', id: 'holder' },
+                  { label: 'Account Number', value: '110037366980', id: 'acc' },
+                  { label: 'IFSC Code', value: 'CNRB0019529', id: 'ifsc' },
+                  { label: 'Mobile Number', value: '+91 9641553429', id: 'mobile' }
+                ].map((detail) => (
+                  <div key={detail.id} className="flex flex-col gap-0.5">
+                    <span className={`text-[10px] font-bold uppercase tracking-wider ${isLight ? 'text-slate-400' : 'text-zinc-500'}`}>{detail.label}</span>
+                    <div className="flex items-center justify-between gap-2">
+                      <span className={`text-sm font-extrabold ${isLight ? 'text-slate-900' : 'text-zinc-100'}`}>{detail.value}</span>
+                      {(detail.id === 'acc' || detail.id === 'ifsc' || detail.id === 'mobile') && (
+                        <button 
+                          onClick={() => handleCopy(detail.value, detail.id)}
+                          className={`p-1.5 rounded hover:bg-primary/10 transition-colors ${isLight ? 'text-slate-300 hover:text-primary' : 'text-zinc-600 hover:text-primary'}`}
+                        >
+                          {copiedField === detail.id ? <Check size={14} className="text-primary" /> : <Copy size={14} />}
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* BOX 2: UPI Payment */}
+            <motion.div 
+              variants={itemVariants}
+              className={`rounded-2xl border p-4 md:p-6 transition-all duration-300 flex flex-col items-center text-center ${
+                isLight 
+                  ? 'bg-white border-[#E2E8F0] shadow-xl' 
+                  : 'bg-zinc-950/80 border-primary/30 shadow-[0_0_20px_rgba(34,211,238,0.1)]'
+              }`}
+            >
+              <div className="flex items-center gap-2 mb-6 w-full justify-center md:justify-start">
+                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20">
+                  <CheckCircle2 size={16} className="text-primary" />
+                </div>
+                <span className={`text-xs md:text-sm font-black uppercase tracking-widest ${isLight ? 'text-slate-900' : 'text-white'}`}>UPI Gateway</span>
+              </div>
+
+              <div className="flex flex-col items-center gap-6 w-full">
+                <div className="w-[150px] md:w-[180px] aspect-square rounded-xl bg-white p-2 shadow-sm border border-primary/10 transition-transform hover:scale-[1.02]">
+                  <img 
+                    src="https://i.postimg.cc/d0Mgg5gd/Screenshot-2026-04-20-20-26-29-08.jpg" 
+                    alt="Merchant QR" 
+                    className="w-full h-full object-cover rounded-lg" 
+                  />
+                </div>
+
+                <div className="w-full space-y-2">
+                  <span className={`text-[10px] font-bold uppercase tracking-wider block ${isLight ? 'text-slate-400' : 'text-zinc-500'}`}>SCAN OR PAY TO UPI ID</span>
+                  <div className={`flex items-center justify-center gap-3 p-3 rounded-xl border text-sm font-bold transition-all ${
+                    isLight ? 'bg-slate-50 border-slate-200 text-slate-700' : 'bg-black/50 border-white/10 text-white'
+                  }`}>
+                    <span className="truncate">tantubayatindra2@okicici</span>
+                    <button 
+                      onClick={() => handleCopy('tantubayatindra2@okicici', 'upi')}
+                      className="shrink-0 hover:text-primary transition-colors p-1"
+                    >
+                      {copiedField === 'upi' ? <Check size={16} strokeWidth={3} className="text-primary" /> : <Copy size={16} />}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+          </div>
+
+          {/* Action Button Section */}
+          <motion.div variants={itemVariants} className="w-full space-y-6">
+            <div className={`flex items-center gap-4 p-4 rounded-2xl border transition-all ${
+              isLight ? 'bg-indigo-50 border-indigo-100' : 'bg-primary/5 border border-primary/10'
+            }`}>
+               <Info size={20} className="text-primary shrink-0" />
+               <p className={`text-xs md:text-sm font-medium leading-relaxed ${isLight ? 'text-indigo-900' : 'text-zinc-300'}`}>
+                 Verification process: After completing the transfer, click the button below to send your payment screenshot via WhatsApp.
+               </p>
+            </div>
+
+            <button 
+              onClick={() => {
+                const message = encodeURIComponent("Hello WebZinc, I have completed the payment and I'm sending the screenshot for verification.");
+                window.open(`https://wa.me/919641553429?text=${message}`, '_blank');
+              }}
+              className={`flex items-center justify-center gap-3 w-full py-4 md:py-6 rounded-2xl text-xs md:text-sm font-black uppercase tracking-[3px] transition-all ${
+                isLight 
+                  ? 'bg-slate-900 text-white hover:bg-slate-800 shadow-lg' 
+                  : 'bg-primary text-black hover:scale-[1.01] active:scale-[0.98] shadow-[0_0_30px_rgba(34,211,238,0.4)] hover:shadow-[0_0_50px_rgba(34,211,238,0.7)]'
+              }`}
+            >
+              Confirm Payment (WhatsApp)
+              <CheckCircle2 size={20} />
+            </button>
+          </motion.div>
+
+          {/* Security Footer Details */}
+          <div className="flex flex-col items-center gap-2 text-center px-4">
+             <div className="flex items-center gap-4">
+                <div className={`h-[1px] w-12 md:w-20 ${isLight ? 'bg-slate-200' : 'bg-zinc-800'}`} />
+                <span className={`text-[9px] font-black uppercase tracking-[3px] ${isLight ? 'text-slate-400' : 'text-zinc-600'}`}>Verified Node</span>
+                <div className={`h-[1px] w-12 md:w-20 ${isLight ? 'bg-slate-200' : 'bg-zinc-800'}`} />
+             </div>
+             <p className={`text-[10px] md:text-xs font-semibold leading-relaxed max-w-lg ${isLight ? 'text-slate-400' : 'text-zinc-600'}`}>
+               All transactions are processed through encrypted gateways. 
+               <br className="hidden md:block" /> 
+               WebZinc infrastructure deployment begins instantly upon verification.
+             </p>
+          </div>
+        </motion.div>
+      </div>
     </div>
   );
 }
