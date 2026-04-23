@@ -168,7 +168,7 @@ export function Navbar({ onSignUp, isLoggedIn, onOpenContact, theme = 'dark', to
                 })}
               </div>
 
-              <div className="mt-auto mb-8">
+              <div className="mt-auto mb-4">
                 <button
                   onClick={() => {
                     setIsMobileMenuOpen(false);

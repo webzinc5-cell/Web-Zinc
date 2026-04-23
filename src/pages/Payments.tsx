@@ -36,8 +36,8 @@ export function PaymentsPage() {
   };
 
   return (
-    <div className="min-h-screen pt-32 pb-24 px-6 md:px-12 w-full max-w-4xl mx-auto flex flex-col items-center">
-      <div className="w-full mb-8">
+    <div className="min-h-screen pt-16 md:pt-20 pb-12 md:pb-24 px-6 md:px-12 w-full max-w-4xl mx-auto flex flex-col items-center">
+      <div className="w-full mb-4">
         <button 
           onClick={() => window.location.hash = '#/'}
           className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors text-[13px] font-bold tracking-widest uppercase cursor-pointer"
@@ -51,7 +51,7 @@ export function PaymentsPage() {
         initial="hidden"
         animate="visible"
         variants={itemVariants}
-        className="text-center w-full mb-12"
+        className="text-center w-full mb-6"
       >
         <h1 className="text-4xl md:text-5xl font-[900] tracking-tighter uppercase mb-4 drop-shadow-[0_0_15px_rgba(34,211,238,0.2)] text-white">
           Secure Payment
@@ -65,7 +65,7 @@ export function PaymentsPage() {
         initial="hidden"
         animate="visible"
         variants={containerVariants}
-        className="w-full grid grid-cols-1 md:grid-cols-2 gap-8"
+        className="w-full grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8"
       >
         {/* Bank Transfer Section */}
         <motion.div 
@@ -156,9 +156,9 @@ export function PaymentsPage() {
         initial="hidden"
         animate="visible"
         variants={itemVariants}
-        className="w-full mt-12 flex flex-col items-center"
+        className="w-full mt-6 flex flex-col items-center"
       >
-        <div className="bg-primary/5 border border-primary/20 rounded-[15px] p-6 w-full text-center mb-8 relative overflow-hidden">
+        <div className="bg-primary/5 border border-primary/20 rounded-[15px] p-6 w-full text-center mb-4 relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
           <p className="text-zinc-300 text-[13px] leading-relaxed flex flex-col sm:flex-row items-center justify-center gap-2">
             <ShieldCheck size={16} className="text-primary hidden sm:block" />

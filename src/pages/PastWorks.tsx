@@ -71,8 +71,8 @@ export function PastWorksPage() {
   };
 
   return (
-    <div className="min-h-screen pt-32 pb-24 px-6 md:px-12 w-full max-w-7xl mx-auto flex flex-col items-center">
-      <div className="w-full mb-8">
+    <div className="min-h-screen pt-16 md:pt-20 pb-12 md:pb-24 px-6 md:px-12 w-full max-w-7xl mx-auto flex flex-col items-center">
+      <div className="w-full mb-4">
         <button 
           onClick={() => window.location.hash = '#/'}
           className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors text-[13px] font-bold tracking-widest uppercase cursor-pointer"
@@ -86,7 +86,7 @@ export function PastWorksPage() {
         initial="hidden"
         animate="visible"
         variants={fadeUp}
-        className="text-center max-w-3xl mb-20"
+        className="text-center max-w-3xl mb-6 md:mb-10"
       >
         <h1 className="text-4xl md:text-6xl font-[900] tracking-tighter uppercase mb-6 drop-shadow-[0_0_15px_rgba(34,211,238,0.2)]">
           PORTFOLIO
@@ -100,15 +100,15 @@ export function PastWorksPage() {
         initial="hidden"
         animate="visible"
         variants={staggerContainer}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full"
+        className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8 w-full px-2 md:px-0"
       >
         {portfolioItems.map((item) => (
           <motion.div 
             key={item.id}
             variants={fadeUp}
-            className="group flex flex-col justify-between p-8 rounded-[20px] bg-[#050505] transition-all duration-500 hover:-translate-y-2"
+            className="group flex flex-col justify-between p-4 md:p-8 rounded-[12px] md:rounded-[20px] bg-[#050505] transition-all duration-500 hover:-translate-y-2"
             style={{
-              minHeight: '260px',
+              minHeight: '160px',
               border: '1px solid rgba(34, 211, 238, 0.2)',
               boxShadow: '0 0 15px rgba(34, 211, 238, 0.1)'
             }}
@@ -116,13 +116,13 @@ export function PastWorksPage() {
             onMouseOut={(e) => e.currentTarget.style.boxShadow = '0 0 15px rgba(34, 211, 238, 0.1)'}
           >
             <div>
-              <h3 className="text-2xl font-bold tracking-tight text-white mb-2">{item.title}</h3>
+              <h3 className="text-xs md:text-2xl font-bold tracking-tight text-white mb-1 md:mb-2 line-clamp-1">{item.title}</h3>
               {item.category && (
-                <span className="text-primary text-[11px] font-bold tracking-widest uppercase mb-4 block">
+                <span className="text-primary text-[9px] md:text-[11px] font-bold tracking-widest uppercase mb-2 md:mb-4 block line-clamp-1">
                   {item.category}
                 </span>
               )}
-              <p className="text-zinc-400 text-[14px] font-medium mb-8 leading-relaxed">
+              <p className="text-zinc-400 text-[10px] md:text-[14px] font-medium mb-4 md:mb-8 leading-tight md:leading-relaxed line-clamp-2 md:line-clamp-none">
                 {item.description}
               </p>
             </div>
@@ -135,13 +135,13 @@ export function PastWorksPage() {
                     e.stopPropagation();
                     setSelectedProject(item);
                   }}
-                  className="flex w-full min-h-[48px] items-center justify-center gap-2 rounded-lg border border-primary/40 bg-primary/5 py-3 text-sm font-bold tracking-[0.5px] text-primary transition-all duration-300 hover:bg-primary hover:text-black hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] cursor-pointer uppercase"
+                  className="flex w-full min-h-[32px] md:min-h-[48px] items-center justify-center gap-1 md:gap-2 rounded-md md:rounded-lg border border-primary/40 bg-primary/5 py-1 px-3 md:py-3 text-[10px] md:text-sm font-bold tracking-[0.5px] text-primary transition-all duration-300 hover:bg-primary hover:text-black hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] cursor-pointer uppercase"
                 >
-                  Live Site <ArrowUpRight size={18} />
+                  Live <span className="hidden md:inline">Site</span> <ArrowUpRight size={14} className="md:w-[18px] md:h-[18px]" />
                 </button>
               ) : (
-                <button className="flex w-full min-h-[48px] items-center justify-center gap-2 rounded-lg border border-zinc-800 bg-zinc-900/50 py-3 text-sm font-bold tracking-[0.5px] text-zinc-500 cursor-not-allowed uppercase">
-                  Coming Soon
+                <button className="flex w-full min-h-[32px] md:min-h-[48px] items-center justify-center gap-1 md:gap-2 rounded-md md:rounded-lg border border-zinc-800 bg-zinc-900/50 py-1 px-3 md:py-3 text-[10px] md:text-sm font-bold tracking-[0.5px] text-zinc-500 cursor-not-allowed uppercase">
+                  Soon
                 </button>
               )}
             </div>

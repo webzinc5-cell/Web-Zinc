@@ -3,20 +3,20 @@ import { Users, Target, ShieldCheck } from "lucide-react";
 
 export function About() {
   return (
-    <div className="flex w-full flex-col pt-32 text-white pb-24">
+    <div className="flex w-full flex-col pt-16 md:pt-20 text-white pb-12 md:pb-24">
       <div className="mx-auto w-full max-w-7xl px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <div className="mb-6 inline-flex rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold tracking-widest text-primary uppercase border border-primary/20 glow-border">
+          <div className="mb-4 md:mb-6 inline-flex rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold tracking-widest text-primary uppercase border border-primary/20 glow-border">
             Our Mission
           </div>
-          <h1 className="mb-8 text-5xl font-extrabold tracking-tight md:text-6xl">
+          <h1 className="mb-4 md:mb-8 text-5xl font-extrabold tracking-tight md:text-6xl">
             Architecting <span className="text-primary glow-text">Dominance</span>
           </h1>
-          <p className="mb-16 max-w-2xl text-xl text-zinc-400 leading-relaxed">
+          <p className="mb-8 md:mb-16 max-w-2xl text-xl text-zinc-400 leading-relaxed">
             We are a collective of digital architects, data scientists, and conversion experts. 
             We do not build websites; we engineer high-performance conversion infrastructures 
             designed to systematically capture local market share.

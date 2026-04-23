@@ -174,21 +174,21 @@ export function ProjectFunnel({ userProjects = [], setUserProjects }: any) {
   };
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-[#000] text-white pt-24 px-6 md:px-12 relative overflow-hidden">
+    <div className="flex min-h-screen w-full flex-col bg-[#000] text-white pt-16 md:pt-20 px-6 md:px-12 relative overflow-hidden">
       <div className="absolute top-[-20%] left-[-10%] w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(34,211,238,0.05)_0%,transparent_60%)] z-0 pointer-events-none" />
       
-      <motion.div initial="hidden" animate="visible" variants={fadeUp} className="mx-auto w-full max-w-3xl relative z-10 z-10 pb-24">
+      <motion.div initial="hidden" animate="visible" variants={fadeUp} className="mx-auto w-full max-w-3xl relative z-10 z-10 pb-12">
         
         <button 
           onClick={() => step === 'review' ? setStep('fill-form') : navigate("/")}
-          className="mb-8 flex items-center gap-2 text-zinc-400 hover:text-white transition-colors text-[13px] font-bold tracking-widest uppercase"
+          className="mb-4 flex items-center gap-2 text-zinc-400 hover:text-white transition-colors text-[13px] font-bold tracking-widest uppercase"
         >
           <ArrowLeft size={16} />
           {step === 'review' ? "Edit Details" : "Back to Home"}
         </button>
 
         {step === 'fill-form' ? (
-          <div className="space-y-8">
+          <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-[32px] sm:text-[40px] font-extrabold tracking-[-1px] leading-tight flex flex-wrap max-w-full">
@@ -207,7 +207,7 @@ export function ProjectFunnel({ userProjects = [], setUserProjects }: any) {
               </div>
             </div>
             
-            <form onSubmit={handleNext} className="space-y-6 rounded-2xl border border-zinc-800 bg-[#0a0a0a]/50 p-6 sm:p-8 backdrop-blur-xl">
+            <form onSubmit={handleNext} className="space-y-6 rounded-2xl border border-zinc-800 bg-[#0a0a0a]/50 p-4 sm:p-6 backdrop-blur-xl">
               <div>
                 <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-zinc-400">Website/Brand Name</label>
                 <input 
@@ -288,7 +288,7 @@ export function ProjectFunnel({ userProjects = [], setUserProjects }: any) {
             </form>
           </div>
         ) : step === 'review' ? (
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-8">
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-[32px] sm:text-[40px] font-extrabold tracking-[-1px] leading-tight flex flex-wrap max-w-full">

@@ -36,10 +36,10 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
   }, []);
 
   return (
-    <div className="flex w-full flex-col pt-24 text-white relative">
+    <div className="flex w-full flex-col pt-16 md:pt-20 text-white relative">
       <div className="absolute top-[-100px] right-[-100px] w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(34,211,238,0.08)_0%,transparent_70%)] z-0 pointer-events-none" />
       {/* Hero Section */}
-      <section className="mx-auto flex w-full max-w-7xl flex-row justify-between items-start gap-4 md:gap-12 px-4 md:px-6 pt-[40px] md:pt-[80px] pb-24 md:pb-40 relative z-10">
+      <section className="mx-auto flex w-full max-w-7xl flex-row justify-between items-start gap-4 md:gap-12 px-4 md:px-6 pt-[20px] md:pt-[40px] pb-12 md:pb-20 relative z-10">
         
         {/* Left Column (Content) */}
         <motion.div
@@ -51,13 +51,13 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
         >
           <motion.div
             variants={fadeInUp}
-            className="mb-4 md:mb-8 rounded-full bg-primary/10 px-3 md:px-4 py-1 flex items-center justify-center md:py-1.5 text-[8px] md:text-xs font-bold tracking-widest text-primary uppercase border border-primary/20 glow-border w-max max-w-full truncate"
+            className="mb-2 md:mb-4 rounded-full bg-primary/10 px-3 md:px-4 py-1 flex items-center justify-center md:py-1.5 text-[8px] md:text-xs font-bold tracking-widest text-primary uppercase border border-primary/20 glow-border w-max max-w-full truncate"
           >
             Website Building Agency
           </motion.div>
           <motion.h1
             variants={fadeInUp}
-            className="mb-4 md:mb-6 text-[22px] sm:text-[28px] md:text-[72px] font-[800] leading-[1.1] md:leading-[1] tracking-[-1px] md:tracking-[-4px] shrink-0"
+            className="mb-2 md:mb-3 text-[22px] sm:text-[28px] md:text-[72px] font-[800] leading-[1.1] md:leading-[1] tracking-[-1px] md:tracking-[-4px] shrink-0"
           >
             Dominate<br />
             Your Local<br />
@@ -105,7 +105,7 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
       </section>
 
       {/* Process Section */}
-      <section className="mx-auto flex w-full max-w-7xl flex-col items-start px-6 py-10 md:py-[100px] lg:px-20 border-t border-white/5">
+      <section className="mx-auto flex w-full max-w-7xl flex-col items-start px-6 py-8 md:py-[60px] lg:px-20 border-t border-white/5">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -113,12 +113,12 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
           variants={staggerContainer}
           className="w-full flex flex-col items-start text-left"
         >
-          <motion.div variants={fadeInUp} className="mb-10 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold tracking-widest text-primary uppercase border border-primary/20 glow-border w-fit text-left">
+          <motion.div variants={fadeInUp} className="mb-6 md:mb-8 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold tracking-widest text-primary uppercase border border-primary/20 glow-border w-fit text-left">
             The Luminescent Process
           </motion.div>
 
           <motion.div
-            className="grid grid-cols-1 sm:grid-cols-3 gap-8 w-full px-4 md:px-0"
+            className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-8 w-full"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
@@ -141,7 +141,7 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
       </section>
 
       {/* Portfolio Section */}
-      <section className="mx-auto flex w-full max-w-7xl flex-col items-start px-6 py-10 md:py-[100px] lg:px-20 border-t border-white/5">
+      <section className="mx-auto flex w-full max-w-7xl flex-col items-start px-2 md:px-6 py-8 md:py-[60px] lg:px-20 border-t border-white/5">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -149,12 +149,12 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
           variants={staggerContainer}
           className="w-full flex flex-col items-start text-left"
         >
-          <motion.div variants={fadeInUp} className="mb-10 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold tracking-widest text-primary uppercase border border-primary/20 glow-border w-fit">
+          <motion.div variants={fadeInUp} className="mb-4 md:mb-6 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold tracking-widest text-primary uppercase border border-primary/20 glow-border w-fit">
             Our Portfolio
           </motion.div>
 
           <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 w-full px-4 md:px-0"
+            className="grid grid-cols-2 md:grid-cols-2 gap-2 md:gap-8 mb-12 w-full"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
@@ -191,7 +191,7 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
       </section>
 
       {/* Testimonials Section */}
-      <section className="mx-auto flex w-full max-w-7xl flex-col items-start text-left px-6 py-10 md:py-[100px] lg:px-20 relative z-10 border-t border-white/5 bg-[#050505]">
+      <section className="mx-auto flex w-full max-w-7xl flex-col items-start text-left px-2 md:px-6 py-8 md:py-[60px] lg:px-20 relative z-10 border-t border-white/5 bg-[#050505]">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -199,39 +199,42 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
           variants={staggerContainer}
           className="flex flex-col items-start text-left w-full"
         >
-          <motion.div variants={fadeInUp} className="mb-10 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold tracking-widest text-primary uppercase border border-primary/20 glow-border w-fit text-left">
+          <motion.div variants={fadeInUp} className="mb-4 md:mb-6 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold tracking-widest text-primary uppercase border border-primary/20 glow-border w-fit text-left">
             What Our Customers Say
           </motion.div>
           
-          <motion.div variants={fadeInUp} className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mt-2 mb-12 px-4 md:px-0">
+          <motion.div 
+            variants={fadeInUp} 
+            className="flex overflow-x-auto snap-x snap-mandatory gap-4 w-full mt-2 mb-12 no-scrollbar md:grid md:grid-cols-3 md:gap-6 pb-4"
+          >
             {latestReviews.map((review, idx) => (
               <div 
                 key={review.id || idx}
-                className="flex flex-col justify-between rounded-xl border border-zinc-800 bg-zinc-900/40 p-6 shadow-lg backdrop-blur-md transition-all hover:border-primary/50 hover:shadow-[0_0_20px_rgba(34,211,238,0.15)] group"
+                className="flex flex-col justify-between rounded-xl border border-zinc-800 bg-zinc-900/40 p-4 md:p-6 shadow-lg backdrop-blur-md transition-all hover:border-primary/50 hover:shadow-[0_0_20px_rgba(34,211,238,0.15)] group w-[80vw] shrink-0 snap-center md:w-auto"
               >
                 <div>
-                  <div className="mb-4 flex space-x-1">
+                  <div className="mb-3 md:mb-4 flex space-x-1">
                     {[...Array(5)].map((_, i) => (
                       <Star 
                         key={i} 
-                        className={`h-4 w-4 ${i < (review.rating || 5) ? "fill-primary text-primary transition-all group-hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]" : "text-zinc-700"}`} 
+                        className={`h-3 w-3 md:h-4 md:w-4 ${i < (review.rating || 5) ? "fill-primary text-primary transition-all group-hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]" : "text-zinc-700"}`} 
                       />
                     ))}
                   </div>
-                  <p className="mb-6 text-[15px] italic text-zinc-400 leading-relaxed line-clamp-4">
+                  <p className="mb-4 md:mb-6 text-[10px] md:text-[15px] italic text-zinc-400 leading-relaxed line-clamp-4">
                     "{review.experience || review.content}"
                   </p>
                 </div>
                 <div>
-                  <p className="font-bold text-white text-[14px]">{review.name}</p>
+                  <p className="font-bold text-white text-[12px] md:text-[14px]">{review.name}</p>
                   {review.sentiment && (
-                    <p className="text-[10px] uppercase tracking-widest text-primary/70 mt-1">{review.sentiment}</p>
+                    <p className="text-[9px] md:text-[10px] uppercase tracking-widest text-primary/70 mt-1">{review.sentiment}</p>
                   )}
                 </div>
               </div>
             ))}
             {latestReviews.length === 0 && (
-              <div className="col-span-full py-12 text-center text-zinc-500">
+              <div className="col-span-full py-12 text-center text-zinc-500 w-full">
                 Loading reviews...
               </div>
             )}
@@ -248,7 +251,7 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
       </section>
 
       {/* About Us Section */}
-      <section className="mx-auto flex w-full max-w-7xl flex-col items-start px-6 py-10 md:py-[100px] lg:px-20 relative z-10 border-t border-white/5">
+      <section className="mx-auto flex w-full max-w-7xl flex-col items-start px-6 py-8 md:py-[60px] lg:px-20 relative z-10 border-t border-white/5">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -256,7 +259,7 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
           variants={staggerContainer}
           className="flex flex-col items-start text-left w-full"
         >
-          <motion.div variants={fadeInUp} className="mb-10 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold tracking-widest text-primary uppercase border border-primary/20 glow-border w-fit text-left">
+          <motion.div variants={fadeInUp} className="mb-6 md:mb-8 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold tracking-widest text-primary uppercase border border-primary/20 glow-border w-fit text-left">
             About Us
           </motion.div>
 
@@ -289,11 +292,11 @@ function ProcessCard({ title, description }: { title: string; description: strin
   return (
     <motion.div
       variants={fadeInUp}
-      className="process-card group rounded-[12px] bg-[#111111] p-[30px] transition-all duration-300 border border-white/5 relative hover:bg-zinc-900 shadow-[0_0_15px_rgba(0,255,255,0.2)] hover:shadow-[0_0_25px_rgba(0,255,255,0.5)]"
+      className="process-card group rounded-[12px] bg-[#111111] p-3 md:p-[30px] transition-all duration-300 border border-white/5 relative hover:bg-zinc-900 shadow-[0_0_15px_rgba(0,255,255,0.2)] hover:shadow-[0_0_25px_rgba(0,255,255,0.5)] min-h-[120px] md:min-h-0 flex flex-col justify-start"
     >
-      <div className="process-dot w-[8px] h-[8px] bg-primary rounded-full mb-[20px] shadow-[0_0_10px_rgba(34,211,238,1)] transition-shadow group-hover:shadow-[0_0_15px_rgba(34,211,238,1)]" />
-      <h4 className="mb-[12px] text-[16px] uppercase tracking-[1px] font-bold text-white">{title}</h4>
-      <p className="text-[13px] leading-relaxed text-zinc-400">{description}</p>
+      <div className="process-dot w-1.5 h-1.5 md:w-[8px] md:h-[8px] bg-primary rounded-full mb-3 md:mb-[20px] shadow-[0_0_10px_rgba(34,211,238,1)] transition-shadow group-hover:shadow-[0_0_15px_rgba(34,211,238,1)]" />
+      <h4 className="mb-2 md:mb-[12px] text-[10px] md:text-[16px] uppercase tracking-[1px] font-bold text-white leading-tight">{title}</h4>
+      <p className="text-[9px] leading-tight md:text-[13px] md:leading-relaxed text-zinc-400">{description}</p>
     </motion.div>
   );
 }
@@ -302,9 +305,9 @@ function PortfolioCard({ tag, title, description, link }: { tag: string; title: 
   return (
     <motion.div
       variants={fadeInUp}
-      className="group flex flex-col justify-between p-8 rounded-[20px] bg-[#050505] transition-all duration-500 hover:-translate-y-2"
+      className="group flex flex-col justify-between p-4 md:p-8 rounded-[12px] md:rounded-[20px] bg-[#050505] transition-all duration-500 hover:-translate-y-2"
       style={{
-        minHeight: '260px',
+        minHeight: '180px',
         border: '1px solid rgba(34, 211, 238, 0.2)',
         boxShadow: '0 0 15px rgba(34, 211, 238, 0.1)'
       }}
@@ -312,14 +315,14 @@ function PortfolioCard({ tag, title, description, link }: { tag: string; title: 
       onMouseOut={(e) => e.currentTarget.style.boxShadow = '0 0 15px rgba(34, 211, 238, 0.1)'}
     >
       <div>
-        <h3 className="text-2xl font-bold tracking-tight text-white mb-2">{title}</h3>
+        <h3 className="text-sm md:text-2xl font-bold tracking-tight text-white mb-1 md:mb-2 line-clamp-1">{title}</h3>
         {tag && (
-          <span className="text-primary text-[11px] font-bold tracking-widest uppercase mb-4 block">
+          <span className="text-primary text-[8px] md:text-[11px] font-bold tracking-widest uppercase mb-2 md:mb-4 block line-clamp-1">
             {tag}
           </span>
         )}
         {description && (
-          <p className="text-zinc-400 text-[14px] font-medium mb-8 leading-relaxed">
+          <p className="text-zinc-400 text-[10px] md:text-[14px] font-medium mb-4 md:mb-8 leading-tight md:leading-relaxed line-clamp-2 md:line-clamp-none">
             {description}
           </p>
         )}
@@ -331,9 +334,10 @@ function PortfolioCard({ tag, title, description, link }: { tag: string; title: 
           href={link}
           target="_blank"
           rel="noopener noreferrer"
+          className="block w-full"
         >
-          <button className="flex w-full items-center justify-center gap-2 rounded-lg border border-primary/40 bg-primary/5 py-3 text-sm font-bold tracking-[0.5px] text-primary transition-all duration-300 hover:bg-primary hover:text-black hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] cursor-pointer uppercase">
-            Live Site <ArrowUpRight size={18} />
+          <button className="flex w-full items-center justify-center gap-1 md:gap-2 rounded-md border border-primary/40 bg-primary/5 py-1.5 md:py-3 text-[10px] md:text-sm font-bold tracking-[0.5px] text-primary transition-all duration-300 hover:bg-primary hover:text-black hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] cursor-pointer uppercase">
+            Live <span className="hidden md:inline">Site</span> <ArrowUpRight size={14} className="md:w-[18px] md:h-[18px]" />
           </button>
         </a>
       </div>

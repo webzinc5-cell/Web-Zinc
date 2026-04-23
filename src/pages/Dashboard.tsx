@@ -95,7 +95,7 @@ export function Dashboard({ userProjects = [], setUserProjects, theme = 'dark' }
     <div className={`flex min-h-screen w-full ${theme === 'light' ? 'bg-white text-slate-900' : 'bg-[#000000] text-white'}`}>
       {/* Desktop Side Nav */}
       <aside className={`w-64 border-r p-6 hidden md:flex flex-col fixed h-screen z-20 ${theme === 'light' ? 'bg-white border-slate-200' : 'bg-[#050505] border-[#222]'}`}>
-        <div className={`mb-10 px-2 text-[10px] font-bold uppercase tracking-[2px] ${theme === 'light' ? 'text-slate-500' : 'text-zinc-500'}`}>
+        <div className={`mb-5 px-2 text-[10px] font-bold uppercase tracking-[2px] ${theme === 'light' ? 'text-slate-500' : 'text-zinc-500'}`}>
           User Controls
         </div>
         <nav className="flex flex-1 flex-col gap-2">
@@ -107,7 +107,7 @@ export function Dashboard({ userProjects = [], setUserProjects, theme = 'dark' }
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-6 md:p-12 md:ml-64 pb-24 md:pb-12 min-h-screen">
+      <main className="flex-1 p-4 md:p-8 md:ml-64 pb-20 md:pb-8 min-h-screen">
         <motion.div
           initial="hidden"
           animate="visible"
@@ -118,7 +118,7 @@ export function Dashboard({ userProjects = [], setUserProjects, theme = 'dark' }
           <motion.button 
             variants={fadeUp}
             onClick={() => window.location.href = "/"}
-            className="mb-8 flex items-center gap-2 text-zinc-400 hover:text-white transition-colors text-[13px] font-bold tracking-widest uppercase cursor-pointer"
+            className="mb-4 flex items-center gap-2 text-zinc-400 hover:text-white transition-colors text-[13px] font-bold tracking-widest uppercase cursor-pointer"
           >
             <ArrowLeft size={16} />
             Back to Home
@@ -165,26 +165,26 @@ export function Dashboard({ userProjects = [], setUserProjects, theme = 'dark' }
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              className="flex w-full max-w-sm flex-col items-center text-center rounded-2xl border border-primary bg-[#0a0a0a] p-8 shadow-[0_0_50px_rgba(34,211,238,0.5)]"
+              className="flex w-[92%] md:w-full max-w-sm flex-col items-center text-center rounded-2xl border border-primary bg-[#0a0a0a] p-5 md:p-8 shadow-[0_0_30px_rgba(34,211,238,0.3)]"
             >
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 border border-primary/30 mb-6 drop-shadow-[0_0_15px_rgba(34,211,238,0.3)]">
-                <LogOut className="text-primary" size={28} />
+              <div className="flex h-12 w-12 md:h-16 md:w-16 items-center justify-center rounded-full bg-primary/10 border border-primary/30 mb-4 md:mb-6 drop-shadow-[0_0_10px_rgba(34,211,238,0.2)]">
+                <LogOut className="text-primary" size={24} />
               </div>
-              <h3 className="text-[24px] font-extrabold text-white mb-3">Confirm Logout</h3>
-              <p className="text-[14px] text-zinc-400 leading-relaxed mb-8">
+              <h3 className="text-lg md:text-[24px] font-extrabold text-white mb-2 md:mb-3">Confirm Logout</h3>
+              <p className="text-xs md:text-[14px] text-zinc-400 leading-relaxed mb-6 md:mb-8">
                 Do you really want to logout from your account?
               </p>
               
-              <div className="flex flex-col gap-3 w-full">
+              <div className="flex flex-col gap-2 md:gap-3 w-full">
                 <button
                   onClick={handleLogout}
-                  className="w-full flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-4 font-bold text-black transition-all hover:bg-white shadow-[0_0_20px_rgba(34,211,238,0.4)] hover:shadow-[0_0_40px_rgba(255,255,255,0.6)] uppercase tracking-widest text-[13px]"
+                  className="w-full flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-2.5 md:py-4 font-bold text-black transition-all hover:bg-white shadow-[0_0_10px_rgba(34,211,238,0.4)] hover:shadow-[0_0_30px_rgba(255,255,255,0.6)] uppercase tracking-widest text-[11px] md:text-[13px]"
                 >
                   Confirm Logout
                 </button>
                 <button
                   onClick={() => setShowLogoutConfirm(false)}
-                  className="w-full flex items-center justify-center gap-2 rounded-xl border border-zinc-800 bg-transparent px-6 py-4 font-bold text-zinc-400 transition-all hover:bg-zinc-900 hover:text-white uppercase tracking-widest text-[13px]"
+                  className="w-full flex items-center justify-center gap-2 rounded-xl border border-zinc-800 bg-transparent px-6 py-2.5 md:py-4 font-bold text-zinc-400 transition-all hover:bg-zinc-900 hover:text-white uppercase tracking-widest text-[11px] md:text-[13px]"
                 >
                   Back
                 </button>
@@ -225,9 +225,9 @@ function MobileNavItem({ icon, label, active, onClick, theme }: { icon: ReactNod
 
 function StatWidget({ title, value, primary, theme }: { title: string; value: string; primary?: boolean; theme?: string }) {
   return (
-    <div className={`relative overflow-hidden rounded-[12px] p-6 transition-colors ${theme === 'light' ? 'bg-white border-[#E2E8F0] shadow-[0_4px_20px_rgba(0,255,255,0.05)] text-slate-900 border' : 'bg-[#0a0a0a] border-[#222] hover:border-[#333] border'}`}>
-      <h3 className={`text-[11px] font-bold uppercase tracking-[2px] mb-2 ${theme === 'light' ? 'text-slate-500' : 'text-zinc-500'}`}>{title}</h3>
-      <div className={`text-[28px] font-[800] tracking-[-1px] ${primary ? (theme === 'light' ? 'text-primary' : 'text-primary drop-shadow-[0_0_15px_rgba(34,211,238,0.3)]') : (theme === 'light' ? 'text-slate-900' : 'text-white')}`}>
+    <div className={`relative overflow-hidden rounded-[10px] p-3 md:p-6 transition-colors ${theme === 'light' ? 'bg-white border-[#E2E8F0] shadow-[0_4px_10px_rgba(0,255,255,0.05)] text-slate-900 border' : 'bg-[#0a0a0a] border-[#222] hover:border-[#333] border'}`}>
+      <h3 className={`text-[10px] md:text-[11px] font-bold uppercase tracking-[2px] mb-1 md:mb-2 ${theme === 'light' ? 'text-slate-500' : 'text-zinc-500'}`}>{title}</h3>
+      <div className={`text-[20px] md:text-[28px] font-[800] tracking-[-1px] ${primary ? (theme === 'light' ? 'text-primary' : 'text-primary drop-shadow-[0_0_10px_rgba(34,211,238,0.3)]') : (theme === 'light' ? 'text-slate-900' : 'text-white')}`}>
         {value}
       </div>
       {primary && (
@@ -239,37 +239,37 @@ function StatWidget({ title, value, primary, theme }: { title: string; value: st
 
 function ProjectCard({ title, category, goal, about, instructions, contactNumber, date, theme }: any) {
   return (
-    <div className={`flex flex-col rounded-[12px] border p-6 transition-all duration-300 ${theme === 'light' ? 'bg-white border-[#E2E8F0] shadow-[0_4px_20px_rgba(0,255,255,0.05)] text-slate-900' : 'bg-[#0a0a0a] border-[#222] hover:border-primary/30 shadow-none hover:shadow-[0_0_30px_rgba(34,211,238,0.05)]'}`}>
-      <div className={`mb-6 border-b pb-6 ${theme === 'light' ? 'border-[#E2E8F0]' : 'border-[#222]'}`}>
-        <h3 className={`text-[20px] font-[800] tracking-tight ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>{title}</h3>
-        <p className={`text-[12px] mt-2 ${theme === 'light' ? 'text-slate-500' : 'text-zinc-500'}`}>Started: {date}</p>
+    <div className={`flex flex-col rounded-[10px] border p-3 md:p-6 transition-all duration-300 ${theme === 'light' ? 'bg-white border-[#E2E8F0] shadow-[0_4px_10px_rgba(0,255,255,0.05)] text-slate-900' : 'bg-[#0a0a0a] border-[#222] hover:border-primary/30 shadow-none hover:shadow-[0_0_10px_rgba(34,211,238,0.05)]'}`}>
+      <div className={`mb-3 md:mb-6 border-b pb-3 md:pb-6 ${theme === 'light' ? 'border-[#E2E8F0]' : 'border-[#222]'}`}>
+        <h3 className={`text-sm md:text-[20px] font-[800] tracking-tight ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>{title}</h3>
+        <p className={`text-[10px] md:text-[12px] mt-1 ${theme === 'light' ? 'text-slate-500' : 'text-zinc-500'}`}>Started: {date}</p>
       </div>
       
-      <div className="space-y-4">
+      <div className="space-y-2 md:space-y-4">
         <div>
-          <span className={`text-[11px] font-bold uppercase tracking-widest block mb-1 ${theme === 'light' ? 'text-slate-500' : 'text-zinc-500'}`}>Category</span>
-          <span className="text-sm font-medium text-primary">{category || "N/A"}</span>
+          <span className={`text-[9px] md:text-[11px] font-bold uppercase tracking-widest block mb-0.5 md:mb-1 ${theme === 'light' ? 'text-slate-500' : 'text-zinc-500'}`}>Category</span>
+          <span className="text-xs md:text-sm font-medium text-primary">{category || "N/A"}</span>
         </div>
         
         <div>
-          <span className={`text-[11px] font-bold uppercase tracking-widest block mb-1 ${theme === 'light' ? 'text-slate-500' : 'text-zinc-500'}`}>Primary Goal</span>
-          <span className={`text-sm ${theme === 'light' ? 'text-slate-700' : 'text-white'}`}>{goal || "N/A"}</span>
+          <span className={`text-[9px] md:text-[11px] font-bold uppercase tracking-widest block mb-0.5 md:mb-1 ${theme === 'light' ? 'text-slate-500' : 'text-zinc-500'}`}>Primary Goal</span>
+          <span className={`text-xs md:text-sm ${theme === 'light' ? 'text-slate-700' : 'text-white'}`}>{goal || "N/A"}</span>
         </div>
         
         <div>
-          <span className={`text-[11px] font-bold uppercase tracking-widest block mb-1 ${theme === 'light' ? 'text-slate-500' : 'text-zinc-500'}`}>Contact Number</span>
-          <span className={`text-sm ${theme === 'light' ? 'text-slate-700' : 'text-white'}`}>{contactNumber || "N/A"}</span>
+          <span className={`text-[9px] md:text-[11px] font-bold uppercase tracking-widest block mb-0.5 md:mb-1 ${theme === 'light' ? 'text-slate-500' : 'text-zinc-500'}`}>Contact Number</span>
+          <span className={`text-xs md:text-sm ${theme === 'light' ? 'text-slate-700' : 'text-white'}`}>{contactNumber || "N/A"}</span>
         </div>
         
-        <div className="pt-2">
-          <span className={`text-[11px] font-bold uppercase tracking-widest block mb-1 ${theme === 'light' ? 'text-slate-500' : 'text-zinc-500'}`}>Business Description</span>
-          <p className={`text-sm leading-relaxed whitespace-pre-line ${theme === 'light' ? 'text-slate-700' : 'text-zinc-300'}`}>{about || "N/A"}</p>
+        <div className="pt-1 md:pt-2">
+          <span className={`text-[9px] md:text-[11px] font-bold uppercase tracking-widest block mb-0.5 md:mb-1 ${theme === 'light' ? 'text-slate-500' : 'text-zinc-500'}`}>Business Description</span>
+          <p className={`text-[11px] md:text-sm leading-relaxed whitespace-pre-line ${theme === 'light' ? 'text-slate-700' : 'text-zinc-300'}`}>{about || "N/A"}</p>
         </div>
         
         {instructions && (
-          <div className="pt-2">
-             <span className={`text-[11px] font-bold uppercase tracking-widest block mb-1 ${theme === 'light' ? 'text-slate-500' : 'text-zinc-500'}`}>Special Instructions</span>
-             <p className={`text-sm leading-relaxed whitespace-pre-line ${theme === 'light' ? 'text-slate-700' : 'text-zinc-300'}`}>{instructions}</p>
+          <div className="pt-1 md:pt-2">
+             <span className={`text-[9px] md:text-[11px] font-bold uppercase tracking-widest block mb-0.5 md:mb-1 ${theme === 'light' ? 'text-slate-500' : 'text-zinc-500'}`}>Special Instructions</span>
+             <p className={`text-[11px] md:text-sm leading-relaxed whitespace-pre-line ${theme === 'light' ? 'text-slate-700' : 'text-zinc-300'}`}>{instructions}</p>
           </div>
         )}
       </div>
@@ -282,25 +282,25 @@ function ProjectCard({ title, category, goal, about, instructions, contactNumber
 function OverviewView({ userName, initials, projects, fadeUp, theme }: any) {
   return (
     <div className="w-full">
-      <motion.div variants={fadeUp} className="mb-10 flex items-center justify-between">
+      <motion.div variants={fadeUp} className="mb-4 flex items-center justify-between">
         <div>
           <h1 className="text-[32px] sm:text-[40px] font-extrabold tracking-[-1px] leading-tight flex flex-wrap max-w-full">
             Welcome back, {userName}!
           </h1>
           <p className={`mt-1 text-sm ${theme === 'light' ? 'text-slate-500' : 'text-zinc-400'}`}>Here's your structural overview today.</p>
         </div>
-        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 border border-primary/20 shadow-[0_0_20px_rgba(34,211,238,0.3)] text-primary font-bold overflow-hidden cursor-pointer hover:shadow-[0_0_30px_rgba(34,211,238,0.5)] transition-shadow whitespace-nowrap shrink-0 ml-4">
+        <div className="flex h-10 w-10 md:h-14 md:w-14 items-center justify-center rounded-full bg-primary/10 border border-primary/20 shadow-[0_0_10px_rgba(34,211,238,0.3)] text-primary font-bold overflow-hidden cursor-pointer hover:shadow-[0_0_20px_rgba(34,211,238,0.5)] transition-shadow whitespace-nowrap shrink-0 ml-4">
           {initials}
         </div>
       </motion.div>
 
-      <motion.div variants={fadeUp} className="grid grid-cols-1 mb-12">
+      <motion.div variants={fadeUp} className="grid grid-cols-1 mb-3 md:mb-6">
         <StatWidget title="Total Websites" value={projects?.length?.toString() || "0"} theme={theme} />
       </motion.div>
 
       <motion.div variants={fadeUp}>
-        <div className="mb-6 flex items-center justify-between">
-          <h2 className="text-xl font-bold tracking-tight">Active Projects</h2>
+        <div className="mb-2 md:mb-3 flex items-center justify-between">
+          <h2 className="text-sm md:text-xl font-bold tracking-tight">Active Projects</h2>
         </div>
         
         {(!projects || projects.length === 0) ? (
@@ -324,8 +324,8 @@ function OverviewView({ userName, initials, projects, fadeUp, theme }: any) {
 
 function ProjectsView({ projects, fadeUp, theme }: any) {
   return (
-    <motion.div variants={fadeUp} className="pb-12 w-full">
-      <div className="mb-8">
+    <motion.div variants={fadeUp} className="pb-8 w-full">
+      <div className="mb-4">
         <h1 className="text-[32px] sm:text-[40px] font-extrabold tracking-[-1px] leading-tight flex flex-wrap max-w-full">My Projects</h1>
         <p className={`mt-1 text-sm ${theme === 'light' ? 'text-slate-500' : 'text-zinc-400'}`}>Manage and track your active web builds directly.</p>
       </div>
@@ -407,13 +407,13 @@ function SettingsView({ userName, userEmail, fadeUp, theme }: any) {
   }
 
   return (
-    <motion.div variants={fadeUp} className="pb-12 w-full max-w-5xl">
-      <div className="mb-10">
+    <motion.div variants={fadeUp} className="pb-8 w-full max-w-5xl">
+      <div className="mb-5">
         <h1 className="text-[32px] sm:text-[40px] font-extrabold tracking-[-1px] leading-tight flex flex-wrap max-w-full">Account Settings</h1>
         <p className={`mt-1 text-sm ${theme === 'light' ? 'text-slate-500' : 'text-zinc-400'}`}>Safely update your business details and security credentials.</p>
       </div>
       
-      <form onSubmit={handleSave} className="space-y-8">
+      <form onSubmit={handleSave} className="space-y-4">
         {successMsg && (
           <div className="mb-6 rounded-md bg-primary/20 p-4 border border-primary/50 text-primary text-center font-bold tracking-wide">
             {successMsg}
@@ -428,17 +428,17 @@ function SettingsView({ userName, userEmail, fadeUp, theme }: any) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           
           {/* Column 1: Account */}
-          <div className={`space-y-6 rounded-2xl p-6 md:p-8 backdrop-blur-md border ${theme === 'light' ? 'bg-white border-[#E2E8F0] shadow-[0_4px_20px_rgba(0,255,255,0.05)]' : 'bg-[#0a0a0a]/50 border-zinc-800/80'}`}>
-            <h3 className="text-xs font-bold text-primary tracking-widest uppercase flex items-center gap-2 mb-2">
-              <User size={16} /> Personal Information
+          <div className={`space-y-3 rounded-2xl p-3 md:p-6 backdrop-blur-md border ${theme === 'light' ? 'bg-white border-[#E2E8F0] shadow-[0_4px_10px_rgba(0,255,255,0.05)]' : 'bg-[#0a0a0a]/50 border-zinc-800/80'}`}>
+            <h3 className="text-sm font-bold text-primary tracking-widest uppercase flex items-center gap-2 mb-1">
+              <User size={14} className="md:size-[16px]" /> Personal Information
             </h3>
-            <div className="space-y-5">
-              <div>
-                <label className={`mb-2 block text-xs font-semibold uppercase tracking-wider ${theme === 'light' ? 'text-slate-700' : 'text-zinc-500'}`}>Full Name</label>
-                <input type="text" value={name} onChange={e => setName(e.target.value)} className={`w-full rounded-xl border p-4 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-none focus:shadow-[0_0_15px_rgba(34,211,238,0.2)] ${theme === 'light' ? 'bg-[#F8FAFC] border-slate-300 text-slate-900 placeholder-slate-400' : 'bg-[#000] border-zinc-800 text-white placeholder-zinc-600'}`} placeholder="John Doe" />
+            <div className="grid grid-cols-1 gap-3">
+              <div className="flex flex-col gap-1">
+                <label className={`block text-xs font-semibold uppercase tracking-wider ${theme === 'light' ? 'text-slate-700' : 'text-zinc-500'}`}>Full Name</label>
+                <input type="text" value={name} onChange={e => setName(e.target.value)} className={`w-full rounded-xl border p-3 md:p-4 text-xs md:text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-none focus:shadow-[0_0_10px_rgba(34,211,238,0.2)] ${theme === 'light' ? 'bg-[#F8FAFC] border-slate-300 text-slate-900 placeholder-slate-400' : 'bg-[#000] border-zinc-800 text-white placeholder-zinc-600'}`} placeholder="John Doe" />
               </div>
-              <div>
-                <label className={`mb-2 block text-xs font-semibold uppercase tracking-wider ${theme === 'light' ? 'text-slate-700' : 'text-zinc-500'}`}>Phone Number</label>
+              <div className="flex flex-col gap-1">
+                <label className={`block text-xs font-semibold uppercase tracking-wider ${theme === 'light' ? 'text-slate-700' : 'text-zinc-500'}`}>Phone Number</label>
                 <input 
                   type="tel" 
                   value={phone ? (phone.startsWith("+91 ") ? phone : `+91 `) : "+91 "} 
@@ -451,7 +451,7 @@ function SettingsView({ userName, userEmail, fadeUp, theme }: any) {
                       setPhone("+91 ");
                     }
                   }} 
-                  className={`w-full rounded-xl border p-4 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-none focus:shadow-[0_0_15px_rgba(34,211,238,0.2)] ${theme === 'light' ? 'bg-[#F8FAFC] border-slate-300 text-slate-900 placeholder-slate-400' : 'bg-[#000] border-zinc-800 text-white placeholder-zinc-600'}`} 
+                  className={`w-full rounded-xl border p-3 md:p-4 text-xs md:text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-none focus:shadow-[0_0_10px_rgba(34,211,238,0.2)] ${theme === 'light' ? 'bg-[#F8FAFC] border-slate-300 text-slate-900 placeholder-slate-400' : 'bg-[#000] border-zinc-800 text-white placeholder-zinc-600'}`} 
                   placeholder="+91 0000000000" 
                 />
               </div>
@@ -459,42 +459,42 @@ function SettingsView({ userName, userEmail, fadeUp, theme }: any) {
           </div>
 
           {/* Column 2: Business */}
-          <div className={`space-y-6 rounded-2xl p-6 md:p-8 backdrop-blur-md border ${theme === 'light' ? 'bg-white border-[#E2E8F0] shadow-[0_4px_20px_rgba(0,255,255,0.05)]' : 'bg-[#0a0a0a]/50 border-zinc-800/80'}`}>
-            <h3 className="text-xs font-bold text-primary tracking-widest uppercase flex items-center gap-2 mb-2">
-              <Briefcase size={16} /> Business Details
+          <div className={`space-y-3 rounded-2xl p-3 md:p-6 backdrop-blur-md border ${theme === 'light' ? 'bg-white border-[#E2E8F0] shadow-[0_4px_10px_rgba(0,255,255,0.05)]' : 'bg-[#0a0a0a]/50 border-zinc-800/80'}`}>
+            <h3 className="text-sm font-bold text-primary tracking-widest uppercase flex items-center gap-2 mb-1">
+              <Briefcase size={14} className="md:size-[16px]" /> Business Details
             </h3>
-            <div className="space-y-5">
-              <div>
-                <label className={`mb-2 block text-xs font-semibold uppercase tracking-wider ${theme === 'light' ? 'text-slate-700' : 'text-zinc-500'}`}>Business Name</label>
-                <input type="text" value={bName} onChange={e => setBName(e.target.value)} className={`w-full rounded-xl border p-4 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-none focus:shadow-[0_0_15px_rgba(34,211,238,0.2)] ${theme === 'light' ? 'bg-[#F8FAFC] border-slate-300 text-slate-900 placeholder-slate-400' : 'bg-[#000] border-zinc-800 text-white placeholder-zinc-600'}`} />
+            <div className="grid grid-cols-1 gap-3">
+              <div className="flex flex-col gap-1">
+                <label className={`block text-xs font-semibold uppercase tracking-wider ${theme === 'light' ? 'text-slate-700' : 'text-zinc-500'}`}>Business Name</label>
+                <input type="text" value={bName} onChange={e => setBName(e.target.value)} className={`w-full rounded-xl border p-3 md:p-4 text-xs md:text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-none focus:shadow-[0_0_10px_rgba(34,211,238,0.2)] ${theme === 'light' ? 'bg-[#F8FAFC] border-slate-300 text-slate-900 placeholder-slate-400' : 'bg-[#000] border-zinc-800 text-white placeholder-zinc-600'}`} />
               </div>
-              <div>
-                <label className={`mb-2 block text-xs font-semibold uppercase tracking-wider ${theme === 'light' ? 'text-slate-700' : 'text-zinc-500'}`}>About Business</label>
-                <textarea rows={4} value={about} onChange={e => setAbout(e.target.value)} className={`w-full rounded-xl border p-4 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-none focus:shadow-[0_0_15px_rgba(34,211,238,0.2)] resize-none ${theme === 'light' ? 'bg-[#F8FAFC] border-slate-300 text-slate-900 placeholder-slate-400' : 'bg-[#000] border-zinc-800 text-white placeholder-zinc-600'}`} placeholder="Briefly describe your services..."></textarea>
+              <div className="flex flex-col gap-1">
+                <label className={`block text-xs font-semibold uppercase tracking-wider ${theme === 'light' ? 'text-slate-700' : 'text-zinc-500'}`}>About Business</label>
+                <textarea rows={3} value={about} onChange={e => setAbout(e.target.value)} className={`w-full rounded-xl border p-3 md:p-4 text-xs md:text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-none focus:shadow-[0_0_10px_rgba(34,211,238,0.2)] resize-none ${theme === 'light' ? 'bg-[#F8FAFC] border-slate-300 text-slate-900 placeholder-slate-400' : 'bg-[#000] border-zinc-800 text-white placeholder-zinc-600'}`} placeholder="Briefly describe your services..."></textarea>
               </div>
             </div>
           </div>
         </div>
 
         {/* Bottom Row / Security */}
-        <div className={`rounded-2xl p-6 md:p-8 backdrop-blur-md border ${theme === 'light' ? 'bg-white border-[#E2E8F0] shadow-[0_4px_20px_rgba(0,255,255,0.05)]' : 'bg-[#0a0a0a]/50 border-zinc-800/80'}`}>
-           <h3 className="text-xs font-bold text-primary tracking-widest uppercase flex items-center gap-2 mb-6">
-             <Shield size={16} /> Security & Authentication
+        <div className={`rounded-2xl p-3 md:p-6 backdrop-blur-md border ${theme === 'light' ? 'bg-white border-[#E2E8F0] shadow-[0_4px_10px_rgba(0,255,255,0.05)]' : 'bg-[#0a0a0a]/50 border-zinc-800/80'}`}>
+           <h3 className="text-sm font-bold text-primary tracking-widest uppercase flex items-center gap-2 mb-3 md:mb-4">
+             <Shield size={14} className="md:size-[16px]" /> Security & Authentication
            </h3>
-           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-             <div>
-               <label className={`mb-2 block text-xs font-semibold uppercase tracking-wider ${theme === 'light' ? 'text-slate-700' : 'text-zinc-500'}`}>Email Address (Read-Only)</label>
-               <input type="email" value={userEmail} disabled className={`w-full rounded-xl border p-4 cursor-not-allowed ${theme === 'light' ? 'bg-slate-100 border-slate-200 text-slate-500' : 'bg-zinc-900/50 border-zinc-800/50 text-zinc-500'}`} />
+           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 text-left">
+             <div className="flex flex-col gap-1">
+               <label className={`block text-xs font-semibold uppercase tracking-wider ${theme === 'light' ? 'text-slate-700' : 'text-zinc-500'}`}>Email Address (Read-Only)</label>
+               <input type="email" value={userEmail} disabled className={`w-full rounded-xl border p-3 md:p-4 text-xs md:text-sm cursor-not-allowed ${theme === 'light' ? 'bg-slate-100 border-slate-200 text-slate-500' : 'bg-zinc-900/50 border-zinc-800/50 text-zinc-500'}`} />
              </div>
-             <div>
-               <label className={`mb-2 block text-xs font-semibold uppercase tracking-wider ${theme === 'light' ? 'text-slate-700' : 'text-zinc-500'}`}>Update Password</label>
-               <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" className={`w-full rounded-xl border p-4 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-none focus:shadow-[0_0_15px_rgba(34,211,238,0.2)] ${theme === 'light' ? 'bg-[#F8FAFC] border-slate-300 text-slate-900 placeholder-slate-400' : 'bg-[#000] border-zinc-800 text-white placeholder-zinc-600'}`} />
+             <div className="flex flex-col gap-1">
+               <label className={`block text-xs font-semibold uppercase tracking-wider ${theme === 'light' ? 'text-slate-700' : 'text-zinc-500'}`}>Update Password</label>
+               <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" className={`w-full rounded-xl border p-3 md:p-4 text-xs md:text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-none focus:shadow-[0_0_10px_rgba(34,211,238,0.2)] ${theme === 'light' ? 'bg-[#F8FAFC] border-slate-300 text-slate-900 placeholder-slate-400' : 'bg-[#000] border-zinc-800 text-white placeholder-zinc-600'}`} />
              </div>
            </div>
         </div>
 
-        <div className="pt-4">
-          <button type="submit" disabled={isLoading} className="w-full md:w-auto md:min-w-[240px] ml-auto flex items-center justify-center rounded-xl bg-primary px-8 py-4 font-bold text-black transition-all hover:bg-white disabled:opacity-50 shadow-[0_0_20px_rgba(34,211,238,0.4)] hover:shadow-[0_0_40px_rgba(255,255,255,0.6)] hover:scale-[1.02] uppercase tracking-widest text-sm">
+        <div className="pt-2 md:pt-4">
+          <button type="submit" disabled={isLoading} className="w-full md:w-auto md:min-w-[200px] ml-auto flex items-center justify-center rounded-xl bg-primary px-6 py-3 font-bold text-black transition-all hover:bg-white disabled:opacity-50 shadow-[0_0_10px_rgba(34,211,238,0.4)] hover:shadow-[0_0_30px_rgba(255,255,255,0.6)] hover:scale-[1.02] uppercase tracking-widest text-[11px] md:text-sm">
             {isLoading ? "Updating..." : "Save Profile"}
           </button>
         </div>
