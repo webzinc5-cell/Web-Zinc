@@ -21,10 +21,7 @@ export function CrystalLoader({ theme = 'dark' }: { theme?: 'light' | 'dark' }) 
     <div className={`relative flex items-center justify-center w-full min-h-[300px] bg-transparent`}>
       
       {/* Container to enforce centered breathing */}
-      <div 
-        className="relative flex items-center justify-center w-[120px] h-[120px]"
-        style={{ animation: 'breathing 4s ease-in-out infinite' }}
-      >
+      <div className="relative flex items-center justify-center w-[120px] h-[120px]">
         
         {/* Core Geometric Crystal / Wireframe */}
         <svg 
@@ -33,6 +30,10 @@ export function CrystalLoader({ theme = 'dark' }: { theme?: 'light' | 'dark' }) 
           viewBox="0 0 100 100" 
           fill="none" 
           xmlns="http://www.w3.org/2000/svg"
+          style={{ 
+            animation: 'premiumPulse 3s ease-in-out infinite',
+            transformOrigin: 'center'
+          }}
         >
           {/* Subtle Outer Hexagon Glow Base */}
           <polygon 

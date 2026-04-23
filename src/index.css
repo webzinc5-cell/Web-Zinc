@@ -11,6 +11,8 @@
   --animate-pulse-glow: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   
   --animate-cyan-pulse: cyan-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  
+  --animate-premium-pulse: premiumPulse 3s ease-in-out infinite;
 
   @keyframes pulse-glow {
     0%, 100% {
@@ -32,22 +34,10 @@
     }
   }
 
-  @keyframes breathing {
-    0% {
-      transform: scale(0.95);
-      opacity: 0.6;
-      filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.2));
-    }
-    50% {
-      transform: scale(1.05);
-      opacity: 1;
-      filter: drop-shadow(0 0 30px rgba(0, 255, 255, 0.8));
-    }
-    100% {
-      transform: scale(0.95);
-      opacity: 0.6;
-      filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.2));
-    }
+  @keyframes premiumPulse {
+    0% { transform: scale(0.9) rotate(0deg); opacity: 0.5; filter: drop-shadow(0 0 5px #00FFFF); }
+    50% { transform: scale(1.1) rotate(5deg); opacity: 1; filter: drop-shadow(0 0 25px #00FFFF); }
+    100% { transform: scale(0.9) rotate(0deg); opacity: 0.5; filter: drop-shadow(0 0 5px #00FFFF); }
   }
 
   @keyframes float-particle {
