@@ -19,6 +19,7 @@ import { PaymentsPage } from "./pages/Payments";
 import { DocumentationPage } from "./pages/Documentation";
 import { PrivacyPolicyPage } from "./pages/PrivacyPolicy";
 import { TermsConditionsPage } from "./pages/TermsConditions";
+import { Order } from "./pages/Order";
 import { ContactModal } from "./components/ContactModal";
 
 function AppContent() {
@@ -71,7 +72,7 @@ function AppContent() {
         }
       } else {
         setUserProjects([]);
-        if (window.location.pathname === "/profile" || window.location.pathname === "/start") {
+        if (window.location.pathname === "/profile" || window.location.pathname === "/start" || window.location.pathname === "/order") {
           navigate("/");
         }
       }
@@ -111,6 +112,17 @@ function AppContent() {
           element={
             isLoggedIn ? (
               <ProjectFunnel userProjects={userProjects} setUserProjects={setUserProjects} />
+            ) : (
+              <ProtectedGuard onRequireAuth={() => setIsAuthModalOpen(true)} />
+            )
+          } 
+        />
+        
+        <Route 
+          path="/order" 
+          element={
+            isLoggedIn ? (
+              <Order />
             ) : (
               <ProtectedGuard onRequireAuth={() => setIsAuthModalOpen(true)} />
             )

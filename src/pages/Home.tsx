@@ -71,7 +71,7 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
           </motion.p>
           <motion.div variants={fadeInUp} className="flex gap-[16px] w-full justify-start items-center mt-2 sm:mt-0">
             <button
-              onClick={isLoggedIn ? () => navigate("/start") : onGetStarted}
+              onClick={isLoggedIn ? () => navigate("/order") : onGetStarted}
               className="rounded-[4px] px-[24px] md:px-[36px] py-[14px] md:py-[16px] text-[12px] md:text-[14px] font-bold text-black bg-white uppercase tracking-[1px] border-none transition-all duration-300 ease-out shadow-[0_0_20px_rgba(34,211,238,0.6)] hover:shadow-[0_0_40px_rgba(34,211,238,1)] hover:scale-105 w-full sm:w-auto min-h-[48px] flex items-center justify-center cursor-pointer"
             >
               Get Started with WebZinc
