@@ -28,8 +28,13 @@ export function Navbar({ onSignUp, isLoggedIn, onOpenContact, theme = 'dark', to
   return (
     <>
       <nav className="fixed top-[20px] left-1/2 -translate-x-1/2 w-[900px] max-w-[95vw] h-[60px] bg-white/5 backdrop-blur-[12px] border border-white/10 rounded-full flex items-center justify-between px-[30px] z-[100] relative">
-        <Link to="/" className="text-[20px] font-[900] tracking-[-1px] uppercase text-white min-w-[120px]">
-          WEBZINC
+        <Link to="/" className="flex items-center text-[20px] font-[900] tracking-[-1px] uppercase text-white min-w-[120px]">
+          <img 
+            src="https://i.postimg.cc/vHJ6xhNm/Green-Modern-Web-Design-Studio-Logo-20260424-113627-0000.png" 
+            alt="Web Zinc Logo" 
+            className="h-[32px] mr-[10px]" 
+          />
+          WEB ZINC
         </Link>
         <div className="hidden md:flex absolute flex-row left-1/2 -translate-x-1/2 items-center gap-[24px]">
           {links.map((link) => (
