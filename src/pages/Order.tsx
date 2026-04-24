@@ -7,7 +7,7 @@ export function Order() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: "",
-    businessEmail: "",
+    whatsAppNumber: "",
     projectType: "Startup",
     description: ""
   });
@@ -82,13 +82,13 @@ export function Order() {
                     />
                   </div>
                   <div>
-                    <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-zinc-400">Business Email</label>
+                    <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-zinc-400">WhatsApp Number</label>
                     <input 
                       required
-                      type="email" 
-                      value={formData.businessEmail}
-                      onChange={e => setFormData({...formData, businessEmail: e.target.value})}
-                      placeholder="john@example.com"
+                      type="tel" 
+                      value={formData.whatsAppNumber}
+                      onChange={e => setFormData({...formData, whatsAppNumber: e.target.value})}
+                      placeholder="+91 98765 43210"
                       className="w-full h-12 md:h-14 rounded-xl border border-zinc-800 bg-[#000] px-4 text-white placeholder-zinc-600 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-none focus:shadow-[0_0_15px_rgba(34,211,238,0.2)_inset] text-sm" 
                     />
                   </div>

@@ -300,6 +300,7 @@ function ProjectCard({ title, category, goal, about, instructions, contactNumber
 // ---- SUB-VIEWS (TABS) ----
 
 function OverviewView({ userName, initials, projects, fadeUp, theme }: any) {
+  const navigate = useNavigate();
   return (
     <div className="w-full">
       <motion.div variants={fadeUp} className="mb-4 flex items-center justify-between">
@@ -330,7 +331,7 @@ function OverviewView({ userName, initials, projects, fadeUp, theme }: any) {
              </div>
              <h3 className="text-white font-bold tracking-tight text-xl mb-2">Start Your First Project</h3>
              <p className="text-zinc-500 text-sm mb-8 max-w-sm">You don't have any active web builds in your pipeline. Let's fix that.</p>
-             <button onClick={() => window.location.href = '/order'} className="bg-white text-black px-8 py-3 rounded hover:scale-[1.03] transition-all shadow-[0_0_20px_rgba(255,255,255,0.4)] font-bold uppercase text-[11px] tracking-widest cursor-pointer">
+             <button onClick={() => navigate('/order')} className="bg-white text-black px-8 py-3 rounded hover:scale-[1.03] transition-all shadow-[0_0_20px_rgba(255,255,255,0.4)] font-bold uppercase text-[11px] tracking-widest cursor-pointer">
                Launch Project
              </button>
            </div>
@@ -343,6 +344,7 @@ function OverviewView({ userName, initials, projects, fadeUp, theme }: any) {
 }
 
 function ProjectsView({ projects, fadeUp, theme }: any) {
+  const navigate = useNavigate();
   return (
     <motion.div variants={fadeUp} className="pb-8 w-full">
       <div className="mb-4">
@@ -355,7 +357,7 @@ function ProjectsView({ projects, fadeUp, theme }: any) {
           <FolderKanban size={48} className={`mb-6 ${theme === 'light' ? 'text-primary' : 'text-primary drop-shadow-[0_0_15px_rgba(34,211,238,0.5)]'}`} />
           <h2 className="text-2xl font-bold mb-2">No Active Projects</h2>
           <p className={`text-sm mb-8 max-w-md ${theme === 'light' ? 'text-slate-500' : 'text-zinc-400'}`}>You currently have no ongoing builds. Launch a new web project to view its real-time progress here.</p>
-          <button onClick={() => window.location.href = '/order'} className="flex items-center gap-2 rounded-lg bg-primary px-6 py-3.5 font-bold text-black transition-all hover:bg-primary/90 shadow-[0_0_20px_rgba(34,211,238,0.4)] hover:shadow-[0_0_40px_rgba(34,211,238,0.7)] hover:scale-[1.02]">
+          <button onClick={() => navigate('/order')} className="flex items-center gap-2 rounded-lg bg-primary px-6 py-3.5 font-bold text-black transition-all hover:bg-primary/90 shadow-[0_0_20px_rgba(34,211,238,0.4)] hover:shadow-[0_0_40px_rgba(34,211,238,0.7)] hover:scale-[1.02]">
             <Plus size={18} /> Launch New Build
           </button>
         </div>
@@ -524,6 +526,7 @@ function SettingsView({ userName, userEmail, fadeUp, theme }: any) {
 }
 
 function ProjectList({ projects, theme }: { projects: any[]; theme?: string }) {
+  const navigate = useNavigate();
   if (!projects || projects.length === 0) {
     return (
        <div className={`flex flex-col items-center justify-center p-12 md:p-20 border-2 border-dashed rounded-2xl text-center w-full ${theme === 'light' ? 'border-[#E2E8F0] shadow-sm' : 'border-zinc-800/80 bg-[#050505]'}`}>
@@ -532,7 +535,7 @@ function ProjectList({ projects, theme }: { projects: any[]; theme?: string }) {
          </div>
          <h3 className="font-bold tracking-tight text-xl mb-2">Start Your First Project</h3>
          <p className={`text-sm mb-8 max-w-sm ${theme === 'light' ? 'text-slate-500' : 'text-zinc-500'}`}>You don't have any active web builds in your pipeline. Let's fix that.</p>
-         <button onClick={() => window.location.href = '/order'} className={`px-8 py-3 rounded hover:scale-[1.03] transition-all font-bold uppercase text-[11px] tracking-widest cursor-pointer ${theme === 'light' ? 'bg-slate-900 text-white shadow-md' : 'bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.4)]'}`}>
+         <button onClick={() => navigate('/order')} className={`px-8 py-3 rounded hover:scale-[1.03] transition-all font-bold uppercase text-[11px] tracking-widest cursor-pointer ${theme === 'light' ? 'bg-slate-900 text-white shadow-md' : 'bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.4)]'}`}>
            Launch Project
          </button>
        </div>
