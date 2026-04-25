@@ -66,7 +66,7 @@ export function Order() {
       const payload = {
         userId,
         fullName: formData.fullName,
-        contactNumber: formData.contactNumber,
+        contactNumber: `+91 ${formData.contactNumber}`,
         category: formData.category,
         details: formData.details,
         specialInstructions: formData.specialInstructions,
@@ -84,12 +84,8 @@ export function Order() {
       setIsModalOpen(false);
       setSuccess(true);
       
-      // Auto-redirect back to dashboard after 3 seconds
-      setTimeout(() => {
-        // Trigger a reload to refresh the App.tsx state or simply navigate to profile
-        navigate("/profile");
-        window.location.reload(); 
-      }, 3000);
+      // Auto-redirect back to dashboard immediately
+      navigate("/profile");
     } catch (error) {
       console.error("Error saving order: ", error);
       setIsSubmitting(false);
@@ -160,14 +156,21 @@ export function Order() {
                     </div>
                     <div>
                       <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-zinc-400">Contact Number</label>
-                      <input 
-                        required
-                        type="tel" 
-                        value={formData.contactNumber}
-                        onChange={e => setFormData({...formData, contactNumber: e.target.value})}
-                        placeholder="+91 98765 43210"
-                        className="w-full h-12 md:h-14 rounded-xl border border-zinc-800 bg-[#000] px-4 text-white placeholder-zinc-600 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-none focus:shadow-[0_0_15px_rgba(34,211,238,0.2)_inset] text-sm" 
-                      />
+                      <div className="relative flex items-center">
+                        <span className="absolute left-4 text-zinc-400 font-medium text-sm">+91</span>
+                        <input 
+                          required
+                          type="tel" 
+                          maxLength={10}
+                          value={formData.contactNumber}
+                          onChange={e => {
+                            const val = e.target.value.replace(/\D/g, '').slice(0, 10);
+                            setFormData({...formData, contactNumber: val});
+                          }}
+                          placeholder="9876543210"
+                          className="w-full h-12 md:h-14 rounded-xl border border-zinc-800 bg-[#000] pl-12 pr-4 text-white placeholder-zinc-600 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-none focus:shadow-[0_0_15px_rgba(34,211,238,0.2)_inset] text-sm" 
+                        />
+                      </div>
                     </div>
                   </div>
 
