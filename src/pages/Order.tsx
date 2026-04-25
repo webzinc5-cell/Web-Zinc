@@ -1,18 +1,41 @@
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Rocket } from "lucide-react";
+import { ArrowLeft, Rocket, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+
+const CATEGORIES = [
+  "E-commerce Solutions",
+  "Startup Website Design",
+  "Professional Portfolio",
+  "Business Landing Page",
+  "Maintenance & Growth Subscription",
+  "Custom Enterprise Build",
+  "UI/UX Strategy & Redesign"
+];
 
 export function Order() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: "",
-    whatsAppNumber: "",
-    projectType: "Startup",
-    description: ""
+    contactNumber: "",
+    category: "Startup Website Design",
+    details: "",
+    specialInstructions: ""
   });
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -82,44 +105,73 @@ export function Order() {
                     />
                   </div>
                   <div>
-                    <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-zinc-400">WhatsApp Number</label>
+                    <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-zinc-400">Contact Number</label>
                     <input 
                       required
                       type="tel" 
-                      value={formData.whatsAppNumber}
-                      onChange={e => setFormData({...formData, whatsAppNumber: e.target.value})}
+                      value={formData.contactNumber}
+                      onChange={e => setFormData({...formData, contactNumber: e.target.value})}
                       placeholder="+91 98765 43210"
                       className="w-full h-12 md:h-14 rounded-xl border border-zinc-800 bg-[#000] px-4 text-white placeholder-zinc-600 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-none focus:shadow-[0_0_15px_rgba(34,211,238,0.2)_inset] text-sm" 
                     />
                   </div>
                 </div>
 
-                <div>
-                  <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-zinc-400">Project Type</label>
-                  <div className="relative">
-                    <select 
-                      value={formData.projectType}
-                      onChange={e => setFormData({...formData, projectType: e.target.value})}
-                      className="w-full h-12 md:h-14 rounded-xl border border-zinc-800 bg-[#000] px-4 text-white focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-none focus:shadow-[0_0_15px_rgba(34,211,238,0.2)_inset] text-sm appearance-none cursor-pointer"
-                    >
-                      <option value="E-commerce">E-commerce</option>
-                      <option value="Startup">Startup Website</option>
-                      <option value="Maintenance">Maintenance Subscription</option>
-                    </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-zinc-500">
-                      <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                    </div>
+                <div ref={dropdownRef} className="relative z-50">
+                  <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-zinc-400">Category</label>
+                  <div 
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    className={`flex items-center justify-between w-full h-12 md:h-14 rounded-xl border bg-[#000] px-4 text-white cursor-pointer transition-all ${isDropdownOpen ? 'border-primary ring-1 ring-primary shadow-[0_0_15px_rgba(34,211,238,0.2)_inset]' : 'border-zinc-800 hover:border-zinc-600'} text-sm`}
+                  >
+                    <span>{formData.category}</span>
+                    <ChevronDown size={18} className={`text-zinc-500 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180 text-primary' : ''}`} />
                   </div>
+                  
+                  <AnimatePresence>
+                    {isDropdownOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10, scaleY: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scaleY: 1 }}
+                        exit={{ opacity: 0, y: -10, scaleY: 0.95 }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
+                        className="absolute top-[calc(100%+8px)] left-0 w-full bg-[#000] border border-primary/50 shadow-[0_0_20px_rgba(34,211,238,0.15)] rounded-xl overflow-hidden origin-top z-50"
+                      >
+                        {CATEGORIES.map((cat, idx) => (
+                          <div 
+                            key={idx}
+                            onClick={() => {
+                              setFormData({...formData, category: cat});
+                              setIsDropdownOpen(false);
+                            }}
+                            className={`px-4 py-3 text-sm cursor-pointer transition-colors ${formData.category === cat ? 'bg-primary/20 text-white' : 'text-zinc-400 hover:bg-zinc-900 hover:text-white'}`}
+                          >
+                            {cat}
+                          </div>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-zinc-400">Project Description</label>
+                  <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-zinc-400">Details</label>
                   <textarea 
                     required
                     rows={4}
-                    value={formData.description}
-                    onChange={e => setFormData({...formData, description: e.target.value})}
+                    value={formData.details}
+                    onChange={e => setFormData({...formData, details: e.target.value})}
                     placeholder="Tell us about your brand, goals, and specific features you need..."
+                    className="w-full resize-none rounded-xl border border-zinc-800 bg-[#000] p-4 text-white placeholder-zinc-600 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-none focus:shadow-[0_0_15px_rgba(34,211,238,0.2)_inset] text-sm" 
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-zinc-400">Special Instructions <span className="text-zinc-600 font-normal normal-case">(Optional)</span></label>
+                  <textarea 
+                    rows={3}
+                    value={formData.specialInstructions}
+                    onChange={e => setFormData({...formData, specialInstructions: e.target.value})}
+                    placeholder="Any specific design references or extra requirements?"
                     className="w-full resize-none rounded-xl border border-zinc-800 bg-[#000] p-4 text-white placeholder-zinc-600 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-none focus:shadow-[0_0_15px_rgba(34,211,238,0.2)_inset] text-sm" 
                   />
                 </div>
