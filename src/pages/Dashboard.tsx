@@ -261,29 +261,31 @@ function ProjectCard({ title, category, goal, about, instructions, contactNumber
   return (
     <div className={`flex flex-col rounded-[10px] border p-3 md:p-6 transition-all duration-300 ${theme === 'light' ? 'bg-white border-[#E2E8F0] shadow-[0_4px_10px_rgba(0,255,255,0.05)] text-slate-900' : 'bg-[#0a0a0a] border-[#222] hover:border-primary/30 shadow-none hover:shadow-[0_0_10px_rgba(34,211,238,0.05)]'}`}>
       <div className={`mb-3 md:mb-6 border-b pb-3 md:pb-6 ${theme === 'light' ? 'border-[#E2E8F0]' : 'border-[#222]'}`}>
-        <h3 className={`text-sm md:text-[20px] font-[800] tracking-tight ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>{title}</h3>
+        <h3 className={`text-sm md:text-[20px] font-[800] tracking-tight ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>{title || "New Project"}</h3>
         <p className={`text-[10px] md:text-[12px] mt-1 ${theme === 'light' ? 'text-slate-500' : 'text-zinc-500'}`}>Started: {date}</p>
       </div>
       
       <div className="space-y-2 md:space-y-4">
         <div>
           <span className={`text-[9px] md:text-[11px] font-bold uppercase tracking-widest block mb-0.5 md:mb-1 ${theme === 'light' ? 'text-slate-500' : 'text-zinc-500'}`}>Category</span>
-          <span className="text-xs md:text-sm font-medium text-primary">{category || "N/A"}</span>
+          <span className="text-xs md:text-sm font-medium text-primary">{category || "Details pending"}</span>
         </div>
         
+        {goal && (
         <div>
           <span className={`text-[9px] md:text-[11px] font-bold uppercase tracking-widest block mb-0.5 md:mb-1 ${theme === 'light' ? 'text-slate-500' : 'text-zinc-500'}`}>Primary Goal</span>
-          <span className={`text-xs md:text-sm ${theme === 'light' ? 'text-slate-700' : 'text-white'}`}>{goal || "N/A"}</span>
+          <span className={`text-xs md:text-sm ${theme === 'light' ? 'text-slate-700' : 'text-white'}`}>{goal || "Details pending"}</span>
         </div>
+        )}
         
         <div>
           <span className={`text-[9px] md:text-[11px] font-bold uppercase tracking-widest block mb-0.5 md:mb-1 ${theme === 'light' ? 'text-slate-500' : 'text-zinc-500'}`}>Contact Number</span>
-          <span className={`text-xs md:text-sm ${theme === 'light' ? 'text-slate-700' : 'text-white'}`}>{contactNumber || "N/A"}</span>
+          <span className={`text-xs md:text-sm ${theme === 'light' ? 'text-slate-700' : 'text-white'}`}>{contactNumber || "Details pending"}</span>
         </div>
         
         <div className="pt-1 md:pt-2">
           <span className={`text-[9px] md:text-[11px] font-bold uppercase tracking-widest block mb-0.5 md:mb-1 ${theme === 'light' ? 'text-slate-500' : 'text-zinc-500'}`}>Business Description</span>
-          <p className={`text-[11px] md:text-sm leading-relaxed whitespace-pre-line ${theme === 'light' ? 'text-slate-700' : 'text-zinc-300'}`}>{about || "N/A"}</p>
+          <p className={`text-[11px] md:text-sm leading-relaxed whitespace-pre-line ${theme === 'light' ? 'text-slate-700' : 'text-zinc-300'}`}>{about || "Details pending"}</p>
         </div>
         
         {instructions && (
@@ -549,16 +551,16 @@ function ProjectList({ projects, theme }: { projects: any[]; theme?: string }) {
       {projects.map((p) => (
         <ProjectCard 
           key={p.id} 
-          title={p.title || p.name || "Untitled Project"} 
+          title={p.projectName || "New Project"} 
           category={p.category} 
           goal={p.goal} 
-          about={p.about} 
-          instructions={p.instructions} 
+          about={p.description} 
+          instructions={p.instructions || p.specialInstructions} 
           contactNumber={p.contactNumber} 
-          date={p.date || "Just started"} 
+          date={p.createdAt?.toDate ? new Date(p.createdAt.toDate()).toLocaleDateString() : (p.date || "Just started")} 
           theme={theme}
         />
       ))}
     </div>
-  )
+  );
 }

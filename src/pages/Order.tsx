@@ -74,11 +74,14 @@ export function Order() {
       }
       
       const orderToSave = {
-        ...formData,
-        userId: auth.currentUser.uid,
+        projectName: formData.fullName,
+        category: formData.category,
         contactNumber: `+91 ${formData.contactNumber}`,
-        status: "pending",
-        timestamp: new Date()
+        description: formData.details,
+        specialInstructions: formData.specialInstructions,
+        userId: auth.currentUser.uid,
+        status: "In Progress",
+        createdAt: new Date(),
       };
 
       const docRef = await addDoc(collection(db, "orders"), orderToSave);
