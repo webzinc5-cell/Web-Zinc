@@ -69,6 +69,7 @@ export function Reviews({ theme = 'dark' }: { theme?: 'dark' | 'light' }) {
         name,
         email: currentUser.email || null,
         uid: currentUser.uid,
+        userId: currentUser.uid,
         experience,
         rating,
         sentiment,

@@ -414,8 +414,10 @@ function SettingsView({ userName, userEmail, fadeUp, theme }: any) {
       await setDoc(doc(db, "users", user.uid), {
         fullName: name,
         phoneNumber: phone,
+        email: user.email || userEmail,
         businessName: bName,
-        aboutBusiness: about
+        aboutBusiness: about,
+        userId: user.uid
       }, { merge: true });
       
       setSuccessMsg("Profile Updated Successfully!");
