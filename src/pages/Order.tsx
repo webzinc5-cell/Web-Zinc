@@ -29,6 +29,7 @@ export function Order() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [hasClickedWhatsApp, setHasClickedWhatsApp] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -44,6 +45,10 @@ export function Order() {
 
   const handleReviewSubmit = (e: FormEvent) => {
     e.preventDefault();
+    if (formData.contactNumber.length !== 10) {
+      alert("Please enter exactly 10 digits for your contact number.");
+      return;
+    }
     setStep(2);
   };
 
@@ -52,16 +57,24 @@ export function Order() {
   };
 
   const handleSendToWhatsApp = () => {
-    const text = `Hello WebZinc! I want to place an order.\n\nOrder Details:\n-Name: ${formData.fullName}\n-Category: ${formData.category}\n-Details: ${formData.details}`;
-    const url = `https://wa.me/919641553429?text=${encodeURIComponent(text)}`;
-    window.open(url, "_blank");
+    setHasClickedWhatsApp(true);
+    const waLink = `https://wa.me/919641553429?text=${encodeURIComponent(
+      `NEW WEBZINC ORDER:\n\nName: ${formData.fullName}\nContact: +91 ${formData.contactNumber}\nCategory: ${formData.category}\nDetails: ${formData.details}\nSpecial Instructions: ${formData.specialInstructions || 'None'}`
+    )}`;
+    window.open(waLink, "_blank");
   };
 
   const handleConfirmSent = async () => {
     setIsSubmitting(true);
     try {
       // Save data conditionally to the 'orders' collection (also 'projects' to show on dashboard)
-      const userId = auth.currentUser?.uid || "anonymous";
+      const userId = auth.currentUser?.uid;
+      
+      if (!userId) {
+        alert("Authentication error: User ID missing. Please log in again.");
+        setIsSubmitting(false);
+        return;
+      }
       
       const payload = {
         userId,
@@ -352,8 +365,12 @@ export function Order() {
                   
                   <button 
                     onClick={handleConfirmSent}
-                    disabled={isSubmitting}
-                    className="group relative overflow-hidden flex w-full items-center justify-center gap-2 rounded-xl bg-transparent border border-primary px-6 py-4 font-bold text-primary transition-all hover:bg-primary/10 cursor-pointer tracking-wide shadow-[0_0_10px_rgba(34,211,238,0.1)_inset]"
+                    disabled={isSubmitting || !hasClickedWhatsApp}
+                    className={`group relative overflow-hidden flex w-full items-center justify-center gap-2 rounded-xl bg-transparent border px-6 py-4 font-bold transition-all tracking-wide 
+                      ${(!isSubmitting && hasClickedWhatsApp) 
+                        ? "border-primary text-primary hover:bg-primary/10 shadow-[0_0_10px_rgba(34,211,238,0.1)_inset] cursor-pointer" 
+                        : "border-zinc-800 text-zinc-600 cursor-not-allowed opacity-50"
+                      }`}
                   >
                     <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     {isSubmitting ? "Finalizing Order..." : (
