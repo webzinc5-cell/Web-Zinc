@@ -56,7 +56,7 @@ function AppContent() {
       if (user) {        
         try {
           const q = query(
-            collection(db, "projects"),
+            collection(db, "orders"),
             where("userId", "==", user.uid)
           );
           const querySnapshot = await getDocs(q);

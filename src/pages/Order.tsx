@@ -67,40 +67,30 @@ export function Order() {
   const handleConfirmSent = async () => {
     setIsSubmitting(true);
     try {
-      // Save data conditionally to the 'orders' collection (also 'projects' to show on dashboard)
-      const userId = auth.currentUser?.uid;
-      
-      if (!userId) {
+      if (!auth.currentUser?.uid) {
         alert("Authentication error: User ID missing. Please log in again.");
         setIsSubmitting(false);
         return;
       }
       
-      const payload = {
-        userId,
-        fullName: formData.fullName,
+      const orderToSave = {
+        ...formData,
+        userId: auth.currentUser.uid,
         contactNumber: `+91 ${formData.contactNumber}`,
-        category: formData.category,
-        details: formData.details,
-        specialInstructions: formData.specialInstructions,
-        projectName: `${formData.category} - ${formData.fullName}`,
-        status: "Pending Review",
-        progress: 0,
-        createdAt: serverTimestamp(),
+        status: "pending",
+        timestamp: new Date()
       };
 
-      await addDoc(collection(db, "orders"), payload);
-      // Also add to 'projects' so it shows on the dashboard correctly
-      await addDoc(collection(db, "projects"), payload);
+      const docRef = await addDoc(collection(db, "orders"), orderToSave);
+      console.log("Order saved with ID:", docRef.id);
 
       setIsSubmitting(false);
       setIsModalOpen(false);
       setSuccess(true);
       
-      // Auto-redirect back to dashboard immediately
       navigate("/profile");
-    } catch (error) {
-      console.error("Error saving order: ", error);
+    } catch (error: any) {
+      console.error("DEBUG INFO:", error.code, error.message);
       setIsSubmitting(false);
       alert("There was an error saving your order. Please try again.");
     }
