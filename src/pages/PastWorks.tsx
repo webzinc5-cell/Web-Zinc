@@ -53,6 +53,13 @@ export function PastWorksPage() {
       description: "A sleek, modern architectural site focused on technical precision and luminescent UI.",
       link: "https://axon-s-website.vercel.app"
     },
+    {
+      id: 4,
+      title: "Mednaif",
+      category: "Doctor's Clinic Website",
+      description: "A professional and welcoming doctor's clinic interface prioritizing patient experience and clean design.",
+      link: "https://mednaif.vercel.app"
+    },
   ];
 
   const fadeUp = {
