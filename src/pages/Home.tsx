@@ -20,20 +20,70 @@ const staggerContainer = {
   },
 };
 
-export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, isLoggedIn?: boolean }) {
+const DEFAULT_REVIEWS = [
+  {
+    id: "default-1",
+    name: "Aarav Sharma",
+    rating: 5,
+    experience: "WebZinc delivered our e-commerce platform in record time! Page loading times are incredibly fast, and customer retention has gone up by 30%. Pure magic.",
+    sentiment: "Excellent"
+  },
+  {
+    id: "default-2",
+    name: "Priyanka Sen",
+    rating: 4,
+    experience: "Very professional team. They designed our legal firm's landing page. The glow accent looks highly premium. Communication was stellar.",
+    sentiment: "Great"
+  },
+  {
+    id: "default-3",
+    name: "Arjun Banerjee",
+    rating: 3,
+    experience: "The website structure is quite clean and responsive on mobile. We had some minor layout alignment delays with Safari but they resolved it. Decent experience.",
+    sentiment: "Good"
+  },
+  {
+    id: "default-4",
+    name: "Vidit Mukherjee",
+    rating: 5,
+    experience: "Absolutely phenomenal developer and support team. The animations on our portfolio page are buttery smooth. Extremely satisfied!",
+    sentiment: "Excellent"
+  },
+  {
+    id: "default-5",
+    name: "Sneha Roy",
+    rating: 4,
+    experience: "Sleek and minimalist design for our cloud kitchen app landing page. Great SEO integration out of the box, we started ranking within weeks.",
+    sentiment: "Great"
+  },
+  {
+    id: "default-6",
+    name: "Rajesh K.",
+    rating: 3,
+    experience: "Solid coding and quick response times. The pricing was reasonable, though the customized layout took a couple of revisions to perfect.",
+    sentiment: "Good"
+  }
+];
+
+export function Home() {
   const navigate = useNavigate();
   const [latestReviews, setLatestReviews] = useState<any[]>([]);
 
   useEffect(() => {
-    const q = query(collection(db, "reviews"), orderBy("timestamp", "desc"), limit(3));
+    const q = query(collection(db, "reviews"), orderBy("timestamp", "desc"), limit(4)); // increment limit to 4 so we still show 3 reviews if one is filtered out
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const revs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      const revs = snapshot.docs
+        .map(doc => ({ id: doc.id, ...doc.data() }))
+        .filter((rev: any) => rev.id !== "5p2UIrC5ne7N3DV3NUVb")
+        .slice(0, 3);
       setLatestReviews(revs);
     }, (error) => {
       console.error("Error fetching homepage reviews:", error);
     });
     return () => unsubscribe();
   }, []);
+
+  const displayReviews = [...latestReviews, ...DEFAULT_REVIEWS].slice(0, 6);
 
   return (
     <div className="flex w-full flex-col pt-16 md:pt-20 text-white relative">
@@ -71,7 +121,7 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
           </motion.p>
           <motion.div variants={fadeInUp} className="flex gap-[16px] w-full justify-start items-center mt-2 sm:mt-0">
             <button
-              onClick={isLoggedIn ? () => navigate("/order") : onGetStarted}
+              onClick={() => navigate("/order")}
               className="rounded-[4px] px-[24px] md:px-[36px] py-[14px] md:py-[16px] text-[12px] md:text-[14px] font-bold text-black bg-white uppercase tracking-[1px] border-none transition-all duration-300 ease-out shadow-[0_0_20px_rgba(34,211,238,0.6)] hover:shadow-[0_0_40px_rgba(34,211,238,1)] hover:scale-105 w-full sm:w-auto min-h-[48px] flex items-center justify-center cursor-pointer"
             >
               Get Started with WebZinc
@@ -139,6 +189,18 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
             <ProcessCard
               title="Maintenance Subscriptions"
               description="Continuous glow and market growth."
+            />
+            <ProcessCard
+              title="Custom Web Apps"
+              description="Bespoke SaaS products built with modern frameworks."
+            />
+            <ProcessCard
+              title="UI/UX & Brand Design"
+              description="Mathematical layout and premium design systems."
+            />
+            <ProcessCard
+              title="SEO & Optimization"
+              description="Optimize core web vitals and scale search visibility."
             />
           </motion.div>
         </motion.div>
@@ -211,7 +273,7 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
             variants={fadeInUp} 
             className="flex overflow-x-auto snap-x snap-mandatory gap-4 w-full mt-2 mb-12 no-scrollbar md:grid md:grid-cols-3 md:gap-6 pb-4"
           >
-            {latestReviews.map((review, idx) => (
+            {displayReviews.map((review, idx) => (
               <div 
                 key={review.id || idx}
                 className="flex flex-col justify-between rounded-xl border border-zinc-800 bg-zinc-900/40 p-4 md:p-6 shadow-lg backdrop-blur-md transition-all hover:border-primary/50 hover:shadow-[0_0_20px_rgba(34,211,238,0.15)] group w-[80vw] shrink-0 snap-center md:w-auto"
@@ -231,13 +293,15 @@ export function Home({ onGetStarted, isLoggedIn }: { onGetStarted?: () => void, 
                 </div>
                 <div>
                   <p className="font-bold text-white text-[12px] md:text-[14px]">{review.name}</p>
-                  {review.sentiment && (
-                    <p className="text-[9px] md:text-[10px] uppercase tracking-widest text-primary/70 mt-1">{review.sentiment}</p>
+                  {(review.sentiment || review.rating) && (
+                    <p className="text-[9px] md:text-[10px] uppercase tracking-widest text-primary/70 mt-1">
+                      {review.sentiment || (review.rating === 5 ? "Excellent" : review.rating === 4 ? "Great" : review.rating === 3 ? "Good" : "")}
+                    </p>
                   )}
                 </div>
               </div>
             ))}
-            {latestReviews.length === 0 && (
+            {displayReviews.length === 0 && (
               <div className="col-span-full py-12 text-center text-zinc-500 w-full">
                 Loading reviews...
               </div>

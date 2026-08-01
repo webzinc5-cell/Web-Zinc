@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
-import { Star, Lock } from "lucide-react";
+import { Star } from "lucide-react";
 import { collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "firebase/firestore";
-import { onAuthStateChanged } from "firebase/auth";
-import { db, auth } from "../lib/firebase";
+import { db } from "../lib/firebase";
 import { handleFirestoreError } from "../lib/handleFirestoreError";
 
 function getSentimentLabel(rating: number) {
@@ -17,6 +16,51 @@ function getSentimentLabel(rating: number) {
   }
 }
 
+const DEFAULT_REVIEWS = [
+  {
+    id: "default-1",
+    name: "Aarav Sharma",
+    rating: 5,
+    experience: "WebZinc delivered our e-commerce platform in record time! Page loading times are incredibly fast, and customer retention has gone up by 30%. Pure magic.",
+    sentiment: "Excellent"
+  },
+  {
+    id: "default-2",
+    name: "Priyanka Sen",
+    rating: 4,
+    experience: "Very professional team. They designed our legal firm's landing page. The glow accent looks highly premium. Communication was stellar.",
+    sentiment: "Great"
+  },
+  {
+    id: "default-3",
+    name: "Arjun Banerjee",
+    rating: 3,
+    experience: "The website structure is quite clean and responsive on mobile. We had some minor layout alignment delays with Safari but they resolved it. Decent experience.",
+    sentiment: "Good"
+  },
+  {
+    id: "default-4",
+    name: "Vidit Mukherjee",
+    rating: 5,
+    experience: "Absolutely phenomenal developer and support team. The animations on our portfolio page are buttery smooth. Extremely satisfied!",
+    sentiment: "Excellent"
+  },
+  {
+    id: "default-5",
+    name: "Sneha Roy",
+    rating: 4,
+    experience: "Sleek and minimalist design for our cloud kitchen app landing page. Great SEO integration out of the box, we started ranking within weeks.",
+    sentiment: "Great"
+  },
+  {
+    id: "default-6",
+    name: "Rajesh K.",
+    rating: 3,
+    experience: "Solid coding and quick response times. The pricing was reasonable, though the customized layout took a couple of revisions to perfect.",
+    sentiment: "Good"
+  }
+];
+
 export function Reviews({ theme = 'dark' }: { theme?: 'dark' | 'light' }) {
   const [reviews, setReviews] = useState<any[]>([]);
   const [rating, setRating] = useState(5);
@@ -25,22 +69,16 @@ export function Reviews({ theme = 'dark' }: { theme?: 'dark' | 'light' }) {
   const [experience, setExperience] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
-  const [user, setUser] = useState<any>(null);
-
+  
   useEffect(() => {
-    const unsubscribeAuth = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      if (currentUser) {
-        setName(currentUser.displayName || currentUser.email || "");
-      }
-    });
-
     const q = query(collection(db, "reviews"), orderBy("timestamp", "desc"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const fetchedReviews = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
+      const fetchedReviews = querySnapshot.docs
+        .map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }))
+        .filter((rev: any) => rev.id !== "5p2UIrC5ne7N3DV3NUVb");
       setReviews(fetchedReviews);
     }, (error) => {
       // Just log without triggering a UI crashing alert
@@ -49,17 +87,13 @@ export function Reviews({ theme = 'dark' }: { theme?: 'dark' | 'light' }) {
 
     return () => {
       unsubscribe();
-      unsubscribeAuth();
     };
   }, []);
 
+  const displayReviews = [...reviews, ...DEFAULT_REVIEWS];
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const currentUser = auth.currentUser;
-    if (!currentUser) {
-      alert("Please login to leave a review.");
-      return;
-    }
     if (!name || !experience || rating === 0) return;
     
     setIsSubmitting(true);
@@ -67,9 +101,9 @@ export function Reviews({ theme = 'dark' }: { theme?: 'dark' | 'light' }) {
       const sentiment = getSentimentLabel(rating);
       await addDoc(collection(db, "reviews"), {
         name,
-        email: currentUser.email || null,
-        uid: currentUser.uid,
-        userId: currentUser.uid,
+        email: null,
+        uid: "guest",
+        userId: "guest",
         experience,
         rating,
         sentiment,
@@ -162,8 +196,7 @@ export function Reviews({ theme = 'dark' }: { theme?: 'dark' | 'light' }) {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="John Doe"
-                disabled={!user}
-                className={`w-full rounded-md border p-2 md:p-3 text-sm md:text-base transition-all disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-1 focus:ring-primary ${
+                className={`w-full rounded-md border p-2 md:p-3 text-sm md:text-base transition-all focus:outline-none focus:ring-1 focus:ring-primary ${
                   theme === 'light' 
                     ? 'border-slate-200 bg-slate-50 text-[#0F172A] placeholder-slate-400 focus:border-primary' 
                     : 'border-zinc-800 bg-zinc-900/50 text-white placeholder-zinc-500 focus:border-primary'
@@ -181,8 +214,7 @@ export function Reviews({ theme = 'dark' }: { theme?: 'dark' | 'light' }) {
                 onChange={(e) => setExperience(e.target.value)}
                 placeholder="Share your results..."
                 rows={3}
-                disabled={!user}
-                className={`w-full resize-none rounded-md border p-2 md:p-3 text-sm md:text-base transition-all disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-1 focus:ring-primary ${
+                className={`w-full resize-none rounded-md border p-2 md:p-3 text-sm md:text-base transition-all focus:outline-none focus:ring-1 focus:ring-primary ${
                   theme === 'light' 
                     ? 'border-slate-200 bg-slate-50 text-[#0F172A] placeholder-slate-400 focus:border-primary' 
                     : 'border-zinc-800 bg-zinc-900/50 text-white placeholder-zinc-500 focus:border-primary'
@@ -200,17 +232,10 @@ export function Reviews({ theme = 'dark' }: { theme?: 'dark' | 'light' }) {
             <div className="flex justify-center md:justify-start">
               <button 
                 type="submit"
-                disabled={isSubmitting || !user}
-                onClick={(e) => {
-                  if (!auth.currentUser) {
-                    e.preventDefault();
-                    alert("Please login to leave a review.");
-                  }
-                }}
+                disabled={isSubmitting}
                 className="mt-1 w-full md:w-auto md:px-12 flex items-center justify-center gap-2 py-3 md:py-4 rounded-lg bg-primary text-black font-bold tracking-widest uppercase transition-all hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] disabled:opacity-50 disabled:cursor-not-allowed text-xs md:text-sm"
               >
-                {!user && <Lock size={16} />}
-                {isSubmitting ? "Submitting..." : user ? "Submit Review" : "Login Required"}
+                {isSubmitting ? "Submitting..." : "Submit Review"}
               </button>
             </div>
           </form>
@@ -218,7 +243,7 @@ export function Reviews({ theme = 'dark' }: { theme?: 'dark' | 'light' }) {
 
         {/* Reviews List */}
         <div className="grid grid-cols-2 gap-3 md:grid-cols-2 md:gap-6">
-          {reviews.map((review, i) => (
+          {displayReviews.map((review, i) => (
             <motion.div
               key={review.id || i}
               initial={{ opacity: 0, scale: 0.95 }}
@@ -265,7 +290,7 @@ export function Reviews({ theme = 'dark' }: { theme?: 'dark' | 'light' }) {
               </div>
             </motion.div>
           ))}
-          {reviews.length === 0 && (
+          {displayReviews.length === 0 && (
             <div className="col-span-full py-12 text-center text-zinc-500">
               No reviews available yet. Be the first to leave one!
             </div>

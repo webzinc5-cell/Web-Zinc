@@ -1,7 +1,7 @@
 import React, { useState, FormEvent, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { collection, addDoc, serverTimestamp, doc, updateDoc } from "firebase/firestore";
-import { auth, db } from "../lib/firebase";
+import { db } from "../lib/firebase";
 import { ArrowLeft, Rocket, ChevronDown, CheckCircle2, MessageCircle } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { CrystalLoader } from "../components/ui/CrystalLoader";
@@ -108,17 +108,17 @@ export function ProjectFunnel({ userProjects = [], setUserProjects }: any) {
   };
 
   const handleOrderSubmit = async () => {
-    const user = auth.currentUser;
-    if (!user) {
-      alert("You must be logged in to order a web build.");
-      return;
-    }
-      
     setIsSubmitting(true);
 
     try {
+      const guestId = localStorage.getItem("guest_id") || (() => {
+        const id = "guest_" + Math.random().toString(36).substring(2, 15);
+        localStorage.setItem("guest_id", id);
+        return id;
+      })();
+
       const newOrderInfo = {
-        userId: user.uid,
+        userId: guestId,
         name: formData.title,
         category: formData.category,
         contactNumber: `+91 ${formData.contactNumber}`,
@@ -165,7 +165,7 @@ export function ProjectFunnel({ userProjects = [], setUserProjects }: any) {
       if (setUserProjects) {
         setUserProjects([...userProjects, { ...orderData, isVerified: true, status: "Pending Review" }]);
       }
-      navigate("/profile");
+      navigate("/");
     } catch (error) {
       alert("Error confirming your submission. Please try again.");
     } finally {

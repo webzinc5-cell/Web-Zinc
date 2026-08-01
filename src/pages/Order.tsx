@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Rocket, ChevronDown, CheckCircle, Send, MessageCircle } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { auth, db } from "../lib/firebase";
+import { db } from "../lib/firebase";
 
 const CATEGORIES = [
   "E-commerce Solutions",
@@ -67,11 +67,11 @@ export function Order() {
   const handleConfirmSent = async () => {
     setIsSubmitting(true);
     try {
-      if (!auth.currentUser?.uid) {
-        alert("Authentication error: User ID missing. Please log in again.");
-        setIsSubmitting(false);
-        return;
-      }
+      const guestId = localStorage.getItem("guest_id") || (() => {
+        const id = "guest_" + Math.random().toString(36).substring(2, 15);
+        localStorage.setItem("guest_id", id);
+        return id;
+      })();
       
       const orderToSave = {
         projectName: formData.fullName,
@@ -79,7 +79,7 @@ export function Order() {
         contactNumber: `+91 ${formData.contactNumber}`,
         description: formData.details,
         specialInstructions: formData.specialInstructions,
-        userId: auth.currentUser.uid,
+        userId: guestId,
         status: "In Progress",
         createdAt: new Date(),
       };
@@ -89,9 +89,7 @@ export function Order() {
 
       setIsSubmitting(false);
       setIsModalOpen(false);
-      setSuccess(true);
-      
-      navigate("/profile");
+      navigate("/");
     } catch (error: any) {
       console.error("DEBUG INFO:", error.code, error.message);
       setIsSubmitting(false);
@@ -312,7 +310,7 @@ export function Order() {
                 </div>
                 <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-white mb-2">Order Finalized!</h3>
                 <p className="text-zinc-400 text-sm md:text-base max-w-md mb-8 leading-relaxed">
-                  Your project is officially queued for review. You can now track its progress directly from your dashboard. Redirecting...
+                  Your project is officially queued for review. We will connect with you on WhatsApp shortly. Redirecting to home...
                 </p>
               </motion.div>
             )}

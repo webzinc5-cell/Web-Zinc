@@ -5,14 +5,12 @@ import { Menu, X, Sun, Moon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface NavbarProps {
-  onSignUp: () => void;
-  isLoggedIn?: boolean;
   onOpenContact?: () => void;
   theme?: 'dark' | 'light';
   toggleTheme?: () => void;
 }
 
-export function Navbar({ onSignUp, isLoggedIn, onOpenContact, theme = 'dark', toggleTheme }: NavbarProps) {
+export function Navbar({ onOpenContact, theme = 'dark', toggleTheme }: NavbarProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -83,10 +81,10 @@ export function Navbar({ onSignUp, isLoggedIn, onOpenContact, theme = 'dark', to
             {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
           </button>
           <button
-            onClick={isLoggedIn ? () => navigate("/profile") : onSignUp}
+            onClick={() => navigate("/order")}
             className="bg-transparent border border-primary text-white px-[20px] py-[8px] rounded-full text-[13px] font-bold uppercase transition-all hover:bg-primary/10 hover:text-[#00FFFF] cursor-pointer min-h-[48px]"
           >
-            {isLoggedIn ? "PROFILE" : "Sign Up"}
+            GET STARTED
           </button>
         </div>
         <div className="md:hidden flex items-center gap-2">
@@ -177,11 +175,11 @@ export function Navbar({ onSignUp, isLoggedIn, onOpenContact, theme = 'dark', to
                 <button
                   onClick={() => {
                     setIsMobileMenuOpen(false);
-                    isLoggedIn ? navigate("/profile") : onSignUp();
+                    navigate("/order");
                   }}
                   className="w-full bg-primary/10 border border-primary text-primary px-[20px] py-[12px] rounded-lg text-[14px] font-bold uppercase transition-all shadow-[0_0_15px_rgba(34,211,238,0.2)] min-h-[48px]"
                 >
-                  {isLoggedIn ? "PROFILE" : "Sign Up"}
+                  GET STARTED
                 </button>
               </div>
             </motion.div>
