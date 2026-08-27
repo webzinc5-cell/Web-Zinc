@@ -40,7 +40,7 @@ export function Footer({ onOpenContact, theme = 'dark' }: FooterProps) {
             Terms of Service
           </Link>
           <a 
-            href="https://wa.me/919641553429" 
+            href="https://wa.me/919091063123" 
             target="_blank" 
             rel="noopener noreferrer"
             className={`text-xs font-medium uppercase tracking-wider flex items-center gap-2 group transition-all ${isLight ? 'text-slate-500 hover:text-slate-900' : 'text-zinc-500 hover:text-white'}`}

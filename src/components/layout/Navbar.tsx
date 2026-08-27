@@ -18,7 +18,7 @@ export function Navbar({ onOpenContact, theme = 'dark', toggleTheme }: NavbarPro
   const links = [
     { name: "HOME", path: "/" },
     { name: "PORTFOLIO", path: "/past-works" },
-    { name: "PAYMENTS", path: "/payments" },
+    { name: "PRISING", path: "/payments" },
     { name: "REVIEWS", path: "/reviews" },
     { name: "CONTACT", action: onOpenContact },
   ];

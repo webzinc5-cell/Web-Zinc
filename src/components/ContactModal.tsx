@@ -57,10 +57,10 @@ export function ContactModal({ isOpen, onClose, theme }: ContactModalProps) {
                   theme === 'light' ? "text-slate-600" : "text-zinc-300"
                 }`}>
                   <MessageCircle aria-label="WhatsApp Profile" size={14} className="text-primary md:size-[18px]" />
-                  <span className="font-bold tracking-wide text-xs md:text-base">WhatsApp: +91 9641553429</span>
+                  <span className="font-bold tracking-wide text-xs md:text-base">WhatsApp: +91 9091063123</span>
                 </div>
                 <a 
-                  href="https://wa.me/919641553429?text=Hi%20WebZinc%2C%20I%27m%20interested%20in%20a%20website."
+                  href="https://wa.me/919091063123?text=Hi%20WebZinc%2C%20I%27m%20interested%20in%20a%20website."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center w-full py-2.5 md:py-4 rounded-lg bg-primary/10 border border-primary/40 text-primary font-bold tracking-widest uppercase text-[10px] md:text-sm hover:bg-primary hover:text-black transition-all shadow-[0_0_10px_rgba(34,211,238,0.1)] hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] cursor-pointer"

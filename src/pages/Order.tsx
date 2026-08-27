@@ -58,7 +58,7 @@ export function Order() {
 
   const handleSendToWhatsApp = () => {
     setHasClickedWhatsApp(true);
-    const waLink = `https://wa.me/919641553429?text=${encodeURIComponent(
+    const waLink = `https://wa.me/919091063123?text=${encodeURIComponent(
       `NEW WEBZINC ORDER:\n\nName: ${formData.fullName}\nContact: +91 ${formData.contactNumber}\nCategory: ${formData.category}\nDetails: ${formData.details}\nSpecial Instructions: ${formData.specialInstructions || 'None'}`
     )}`;
     window.open(waLink, "_blank");
@@ -111,7 +111,7 @@ export function Order() {
         <button 
           onClick={() => {
             if (step === 2) setStep(1);
-            else navigate(-1);
+            else navigate("/");
           }}
           className="mb-8 flex items-center gap-2 text-zinc-400 hover:text-white transition-colors text-[13px] font-bold tracking-widest uppercase cursor-pointer"
         >
@@ -148,12 +148,22 @@ export function Order() {
                 >
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-zinc-400">Full Name</label>
+                      <div className="flex items-center justify-between mb-2">
+                        <label className="block text-xs font-bold uppercase tracking-wider text-zinc-400">Full Name</label>
+                        <span className="text-[10px] font-medium text-zinc-500">
+                          {formData.fullName.length}/25
+                        </span>
+                      </div>
                       <input 
                         required
                         type="text" 
+                        maxLength={25}
                         value={formData.fullName}
-                        onChange={e => setFormData({...formData, fullName: e.target.value})}
+                        onChange={e => {
+                          if (e.target.value.length <= 25) {
+                            setFormData({...formData, fullName: e.target.value});
+                          }
+                        }}
                         placeholder="John Doe"
                         className="w-full h-12 md:h-14 rounded-xl border border-zinc-800 bg-[#000] px-4 text-white placeholder-zinc-600 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-none focus:shadow-[0_0_15px_rgba(34,211,238,0.2)_inset] text-sm" 
                       />
@@ -215,23 +225,43 @@ export function Order() {
                   </div>
 
                   <div>
-                    <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-zinc-400">Details</label>
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="block text-xs font-bold uppercase tracking-wider text-zinc-400">Details</label>
+                      <span className="text-[10px] font-medium text-zinc-500">
+                        {formData.details.length}/400
+                      </span>
+                    </div>
                     <textarea 
                       required
                       rows={4}
+                      maxLength={400}
                       value={formData.details}
-                      onChange={e => setFormData({...formData, details: e.target.value})}
+                      onChange={e => {
+                        if (e.target.value.length <= 400) {
+                          setFormData({...formData, details: e.target.value});
+                        }
+                      }}
                       placeholder="Tell us about your brand, goals, and specific features you need..."
                       className="w-full resize-none rounded-xl border border-zinc-800 bg-[#000] p-4 text-white placeholder-zinc-600 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-none focus:shadow-[0_0_15px_rgba(34,211,238,0.2)_inset] text-sm" 
                     />
                   </div>
 
                   <div>
-                    <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-zinc-400">Special Instructions <span className="text-zinc-600 font-normal normal-case">(Optional)</span></label>
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="block text-xs font-bold uppercase tracking-wider text-zinc-400">Special Instructions <span className="text-zinc-600 font-normal normal-case">(Optional)</span></label>
+                      <span className="text-[10px] font-medium text-zinc-500">
+                        {formData.specialInstructions.length}/400
+                      </span>
+                    </div>
                     <textarea 
                       rows={3}
+                      maxLength={400}
                       value={formData.specialInstructions}
-                      onChange={e => setFormData({...formData, specialInstructions: e.target.value})}
+                      onChange={e => {
+                        if (e.target.value.length <= 400) {
+                          setFormData({...formData, specialInstructions: e.target.value});
+                        }
+                      }}
                       placeholder="Any specific design references or extra requirements?"
                       className="w-full resize-none rounded-xl border border-zinc-800 bg-[#000] p-4 text-white placeholder-zinc-600 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-none focus:shadow-[0_0_15px_rgba(34,211,238,0.2)_inset] text-sm" 
                     />

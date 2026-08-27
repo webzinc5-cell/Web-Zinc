@@ -1,16 +1,11 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if false;
+    // Standard matches
+    match /reviews/{reviewId} {
+      allow read, write: if true;
     }
     
-    match /reviews/{document=**} {
-      allow read: if true;
-      allow write: if true;
-    }
-    
-    // Add allow read, write for users just in case Dashboard hits it
     match /users/{userId} {
       allow read, write: if true;
     }
@@ -20,6 +15,23 @@ service cloud.firestore {
     }
 
     match /orders/{orderId} {
+      allow read, write: if true;
+    }
+
+    // Recursive wildcards to guarantee permission for subcollections or nested paths
+    match /reviews/{document=**} {
+      allow read, write: if true;
+    }
+    
+    match /users/{document=**} {
+      allow read, write: if true;
+    }
+
+    match /projects/{document=**} {
+      allow read, write: if true;
+    }
+
+    match /orders/{document=**} {
       allow read, write: if true;
     }
   }
